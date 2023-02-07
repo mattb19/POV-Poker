@@ -16,3 +16,4 @@ random.shuffle(deck)
 
 for i in deck:
     print(i)
+
