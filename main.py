@@ -19,6 +19,9 @@ class Game:
         
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
+        
+        self.shuffleDeck()
+        self.dealCards()
     
     
     def shuffleDeck(self):
@@ -44,8 +47,8 @@ class Game:
         for i in range(0, len(self.players)):
             self.players[i].setCard2(self.deck[-1])
             self.deck.pop()
-
-
+        
+        
     def newRound(self):     
         # generate a new deck
         self.shuffleDeck()
@@ -96,7 +99,7 @@ class Game:
         
         # if they fold
         if self.currentBet == None: 
-            player.setCurrentBet(None)
+            player.setFolded()
             self.players[x] = player
             final = player.getUser().getUserName()+" Folds."
         
@@ -147,4 +150,10 @@ class Game:
         
         
     def whoGoesNext(self): 
+        noFolds = [i.getCurrentBet() for i in self.players]
+        counter = 0
         
+            
+            
+player = [Player(i,None,None,1000,0,i,0) for i in range(7)]
+game = Game(player, 10, 12)

@@ -43,6 +43,9 @@ class Player:
 
     def setCurrentBet(self, currentBet):
         self.currentBet += currentBet
+    
+    def setFolded(self):
+        self.currentBet = None
 
     def getPlayerNum(self):
         return self.playerNum
