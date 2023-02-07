@@ -1,5 +1,9 @@
 class User:
-    def __init__(self, userID, userName, userEmail, userPassword, winCount, straightCount, flushCount, fullHouseCount, quadCount, straightFlushCount, royalFlushCount, muckCount, blind2Count, blind4Count, tenFlopCount, tenCount, tenPreFlopCount, challengeCount, challengeDenyCount, flopPeekCount, playerPeekCount) -> None:
+    def __init__(self, userID, userName, userEmail, userPassword, winCount, straightCount, 
+                 flushCount, fullHouseCount, quadCount, straightFlushCount, royalFlushCount,
+                 muckCount, blind2Count, blind4Count, tenFlopCount, tenCount, tenPreFlopCount, 
+                 challengeCount, challengeDenyCount, flopPeekCount, playerPeekCount) -> None:
+        
         self.userID = userID
         self.userName = userName
         self.userEmail = userEmail
