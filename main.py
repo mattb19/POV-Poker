@@ -20,9 +20,35 @@ class Game:
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
         
-        self.shuffleDeck()
-        self.dealCards()
-    
+        
+        # pre-flop test
+        self.newRound()
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(10)
+        self.placeBetFold(0)
+        
+        # flop test
+        self.placeBetFold(0)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        
+        # turn test
+        self.placeBetFold(0)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        
+        # river test
+        self.placeBetFold(0)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        
     
     def shuffleDeck(self):
         # generate a new deck
@@ -54,12 +80,11 @@ class Game:
         self.shuffleDeck()
         
         # rotates player list by 1
-        for i in range(self.players):
-            self.players = self.players[:1] + self.players[1:]
-                
+        self.players = self.players[:1] + self.players[1:]
+        
         # set everyones bet count to zero and turn to true
         for i in self.players:
-            i.setCurrentBet(0)
+            i.setCurrentBetZero()
         for i in self.players:
             i.setTurn(True)
         
@@ -101,26 +126,26 @@ class Game:
         final = ""
         
         # if they fold
-        if self.currentBet == None: 
+        if value == None: 
             player.setFolded()
             player.setTurn(False)
             self.players[x] = player
-            final = player.getUser().getUserName()+" Folds."
+            final = player.getUser()+" Folds."
         
         # if they check
         elif value == 0 and player.getCurrentBet() == self.currentBet:
             player.setTurn(False)
             self.players[x] = player
-            final = player.getUser().getUserName()+" Checks."
+            final = player.getUser()+" Checks."
         
         # if they call
-        elif value == self.currentBet and value < player.getChipCount(): 
+        elif value+player.getCurrentBet() == self.currentBet and value < player.getChipCount(): 
             player.setCurrentBet(value)
             player.setChipCount(0-value)
             player.setTurn(False)
             self.pot += value
             self.players[x] = player
-            final = player.getUser().getUserName()+" Calls "+str(value)+"!"
+            final = player.getUser()+" Calls "+str(value)+"!"
         
         # if they raise
         elif value >= self.currentBet and value < player.getChipCount():
@@ -130,7 +155,7 @@ class Game:
             self.currentBet = value
             self.pot += value
             self.players[x] = player
-            final = player.getUser().getUserName()+" Bets "+str(value)+"!"
+            final = player.getUser()+" Bets "+str(value)+"!"
         
         # if they go all in
         elif value == player.getChipCount():
@@ -140,7 +165,7 @@ class Game:
             self.pot += value
             self.currentBet = value
             self.players[x] = player
-            final = player.getUser().getUserName()+" IS ALL IN! "
+            final = player.getUser()+" IS ALL IN! "
         
         # if they don't bet enough
         elif value < self.currentBet:
@@ -157,16 +182,12 @@ class Game:
         for i in self.players:
             if i.getCurrentBet() == None:
                 continue
+            elif value == None:
+                continue
             elif i.getCurrentBet() < value:
                 i.setTurn(True)
         
         return final
-        
-    
-    def revealCards(self):
-        # set all players current bet count back to zero
-        self.currentBet = 0
-        self.players = [i.setCurrentBet(0) for i in self.players]
         
         
     def whoGoesNext(self): 
@@ -177,10 +198,12 @@ class Game:
             # if all players have called, checked or folded
             if True not in turns:
                 self.currentPlayer = 0
+                self.currentBet = 0
                 self.round += 1
                 for i in self.players:
-                    if i.getCurrentBet is not None:
-                        i.setCurrentBet(0)
+                    if i.getCurrentBet() is not None:
+                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setTurn(True)
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -209,10 +232,12 @@ class Game:
             # if all players have called, checked or folded
             if True not in turns:
                 self.currentPlayer = 0
+                self.currentBet = 0
                 self.round += 1
                 for i in self.players:
-                    if i.getCurrentBet is not None:
-                        i.setCurrentBet(0)
+                    if i.getCurrentBet() is not None:
+                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setTurn(True)
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -234,10 +259,12 @@ class Game:
             turns = [i.getTurn() for i in self.players]
             if True not in turns:
                 self.currentPlayer = 0
+                self.currentBet = 0
                 self.round += 1
                 for i in self.players:
-                    if i.getCurrentBet is not None:
-                        i.setCurrentBet(0)
+                    if i.getCurrentBet() is not None:
+                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setTurn(True)
                 return self.currentPlayer
             counter = self.currentPlayer
             while True:
@@ -258,8 +285,8 @@ class Game:
             if True not in turns:
                 self.currentPlayer = 0
                 for i in self.players:
-                    if i.getCurrentBet is not None:
-                        i.setCurrentBet(0)
+                    if i.getCurrentBet() is not None:
+                        i.setCurrentBet(0-i.getCurrentBet())
                 return self.endRound()
             counter = self.currentPlayer
             while True:
@@ -279,9 +306,9 @@ class Game:
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
         for i in finalPlayers:
             lst = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
-            unsortedCards = [[i.getNum(), i.getSuit()] for i in lst]
+            unsortedCards = [[i.getValue(), i.getSuit()] for i in lst]
             card = sorted(unsortedCards,key=lambda l:l[0])
-            cards = [i[0] for i in card]
+            cards = [int(i[0]) for i in card]
             suits = [i[1] for i in card]
             
             quads = 0
@@ -460,12 +487,16 @@ class Game:
             if i.getCurrentBet() > high:
                 if len(winner) != 0:
                     winner.clear()
+                high = i.getCurrentBet()
                 winner.append(i)
-            if i.getCurrentBet() == high:
+            elif i.getCurrentBet() == high:
                 winner.append(i)
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
+        self.newRound()
+        for i in winners:
+            print(i[0].getUser(), i[1])
         return winners
             
                 
@@ -475,5 +506,5 @@ class Game:
                 
                 
             
-player = [Player(i,None,None,1000,0,i,0) for i in range(7)]
-game = Game(player, 10, 12)
+player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Luke",None,None,1000,3,0)]
+game = Game(player, 10, 20)

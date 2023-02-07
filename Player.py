@@ -22,7 +22,7 @@ class Player:
         self.turn = turn
     
     def getUser(self):
-        return self.user
+        return str(self.user)
     
     def setUser(self, user):
         self.user = user
@@ -50,6 +50,9 @@ class Player:
 
     def setCurrentBet(self, currentBet):
         self.currentBet += currentBet
+    
+    def setCurrentBetZero(self):
+        self.currentBet = 0
     
     def setFolded(self):
         self.currentBet = None
