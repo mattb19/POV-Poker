@@ -42,7 +42,7 @@ class Player:
         return self.currentBet
 
     def setCurrentBet(self, currentBet):
-        self.currentBet = currentBet
+        self.currentBet += currentBet
 
     def getPlayerNum(self):
         return self.playerNum

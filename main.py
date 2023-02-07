@@ -9,6 +9,7 @@ class Game:
         self.pot = 0
         self.currentBet = 0
         self.round = 0
+        self.currentPlayer = 0
         
         self.flop1 = None
         self.flop2 = None
@@ -46,21 +47,24 @@ class Game:
 
 
     def newRound(self):     
-        # generates a new deck
+        # generate a new deck
         self.shuffleDeck()
         
-        # rotates player list based on who are blinds
+        # rotates player list by 1
         for i in range(self.players):
-            if self.players[i].getBlind() == 'small':
-                self.players = self.players[:i] + self.players[i:]
+            self.players = self.players[:1] + self.players[1:]
                 
         # set everyones bet count to zero
         self.players = [i.setCurrentBet(0) for i in self.players]
         
         # set blinds bet count
         self.players[0].setCurrentBet(self.smallBlind)
+        self.players[0].setChipCount(0-self.smallBlind)
         self.players[1].setCurrentBet(self.bigBlind)
+        self.players[1].setChipCount(0-self.bigBlind)
         self.currentBet = self.bigBlind
+        self.pot += self.bigBlind
+        self.pot += self.smallBlind
         
         # get dealt deck and playerlist with updated player hands
         self.dealCards()
@@ -78,37 +82,69 @@ class Game:
         self.flop3 = tableCards[2]
         self.turn = tableCards[3]
         self.river = tableCards[4]
+        
+        # get player 3, set him to bet first
+        self.currentPlayer = 2
     
     
-    def placeBetFold(self, value, currentBet, playerNum):
-        player = self.players[playerNum-1]
+    def placeBetFold(self, value):
+        # get current player
+        x = self.currentPlayer
+        player = self.players[x]
+        
+        final = ""
         
         # if they fold
         if self.currentBet == None: 
             player.setCurrentBet(None)
-            return player.getUser().getUserName()+" Folds."
+            self.players[x] = player
+            final = player.getUser().getUserName()+" Folds."
         
         # if they call
         elif value == self.currentBet and value < player.getChipCount(): 
-            player.setCurrentBet(0-value)
-            return player.getUser().getUserName()+" Calls "+str(value)+"!"
+            player.setCurrentBet(value)
+            player.setChipCount(0-value)
+            self.pot += value
+            self.players[x] = player
+            final = player.getUser().getUserName()+" Calls "+str(value)+"!"
         
         # if they raise
         elif value >= self.currentBet and value < player.getChipCount():
-            player.setCurrentBet(0-value)
+            player.setCurrentBet(value)
+            player.setChipCount(0-value)
             self.currentBet = value
-            return player.getUser().getUserName()+" Bets "+str(value)+"!"
-        
-        # if they don't bet enough
-        elif value < self.currentBet:
-            return "You must put more in to call or raise"
-        
-        # if they put in too much
-        elif value > player.getChipCount():
-            return "Insufficient Funds"
+            self.pot += value
+            self.players[x] = player
+            final = player.getUser().getUserName()+" Bets "+str(value)+"!"
         
         # if they go all in
         elif value == player.getChipCount():
-            player.setCurrentBet(0-value)
+            player.setCurrentBet(value)
+            player.setChipCount(0-value)
+            self.pot += value
             self.currentBet = value
-            return player.getUser().getUserName()+" IS ALL IN! "
+            self.players[x] = player
+            final = player.getUser().getUserName()+" IS ALL IN! "
+        
+        # if they don't bet enough
+        elif value < self.currentBet:
+            final = "You must put more in to call or raise"
+        
+        # if they put in too much
+        elif value > player.getChipCount():
+            final = "Insufficient Funds"
+            
+        # determine who goes next
+        self.whoGoesNext()
+        
+        return final
+        
+    
+    def revealCards(self):
+        # set all players current bet count back to zero
+        self.currentBet = 0
+        self.players = [i.setCurrentBet(0) for i in self.players]
+        
+        
+    def whoGoesNext(self): 
+        
