@@ -49,7 +49,7 @@ class Game:
             self.deck.pop()
         
         
-    def newRound(self):     
+    def newRound(self):
         # generate a new deck
         self.shuffleDeck()
         
@@ -57,8 +57,9 @@ class Game:
         for i in range(self.players):
             self.players = self.players[:1] + self.players[1:]
                 
-        # set everyones bet count to zero
+        # set everyones bet count to zero and turn to true
         self.players = [i.setCurrentBet(0) for i in self.players]
+        self.players = [i.setTurn(True) for i in self.players]
         
         # set blinds bet count
         self.players[0].setCurrentBet(self.smallBlind)
@@ -100,13 +101,21 @@ class Game:
         # if they fold
         if self.currentBet == None: 
             player.setFolded()
+            player.setTurn(False)
             self.players[x] = player
             final = player.getUser().getUserName()+" Folds."
+        
+        # if they check
+        elif value == 0 and player.getCurrentBet() == self.currentBet:
+            player.setTurn(False)
+            self.players[x] = player
+            final = player.getUser().getUserName()+" Checks."
         
         # if they call
         elif value == self.currentBet and value < player.getChipCount(): 
             player.setCurrentBet(value)
             player.setChipCount(0-value)
+            player.setTurn(False)
             self.pot += value
             self.players[x] = player
             final = player.getUser().getUserName()+" Calls "+str(value)+"!"
@@ -115,6 +124,7 @@ class Game:
         elif value >= self.currentBet and value < player.getChipCount():
             player.setCurrentBet(value)
             player.setChipCount(0-value)
+            player.setTurn(False)
             self.currentBet = value
             self.pot += value
             self.players[x] = player
@@ -124,6 +134,7 @@ class Game:
         elif value == player.getChipCount():
             player.setCurrentBet(value)
             player.setChipCount(0-value)
+            player.setTurn(False)
             self.pot += value
             self.currentBet = value
             self.players[x] = player
@@ -140,6 +151,13 @@ class Game:
         # determine who goes next
         self.whoGoesNext()
         
+        # set turn to true for all players who havent folded or called new bet
+        for i in self.players:
+            if i.getCurrentBet() == None:
+                continue
+            elif i.getCurrentBet() < value:
+                i.setTurn(True)
+        
         return final
         
     
@@ -150,10 +168,100 @@ class Game:
         
         
     def whoGoesNext(self): 
-        noFolds = [i.getCurrentBet() for i in self.players]
-        counter = 0
-        
+        # if its pre flop
+        if self.round == 0:
+            turns = [i.getTurn() for i in self.players]
             
+            # if all players have called, checked or folded
+            if True not in turns:
+                self.currentPlayer = 0
+                self.round += 1
+                return self.currentPlayer
+            
+            # determine who's turn is next
+            counter = self.currentPlayer
+            while True:
+                if counter == len(self.players)-1:
+                    if turns[0] == False:
+                        counter = 0
+                        continue
+                    elif turns[0] == True:
+                        self.currentPlayer = 0
+                        return self.currentPlayer
+                    continue
+                elif turns[counter+1] == False:
+                    counter += 1
+                    continue
+                elif turns[counter+1] == True:
+                    counter += 1
+                    self.currentPlayer = counter
+                    return self.currentPlayer        
+        
+        # if the flop is down
+        elif self.round == 1:
+            turns = [i.getTurn() for i in self.players]
+            
+            # if all players have called, checked or folded
+            if True not in turns:
+                self.currentPlayer = 0
+                self.round += 1
+                return self.currentPlayer
+            
+            # determine who's turn is next
+            counter = self.currentPlayer
+            while True:
+                if counter == len(self.players)-1:
+                    self.currentPlayer = turns.index(True)
+                    return self.currentPlayer
+                elif turns[counter+1] == False:
+                    counter += 1
+                    continue
+                elif turns[counter+1] == True:
+                    counter += 1
+                    self.currentPlayer = counter
+                    return self.currentPlayer
+                
+        # if the turn is down
+        elif self.round == 2:
+            turns = [i.getTurn() for i in self.players]
+            if True not in turns:
+                self.currentPlayer = 0
+                self.round += 1
+                return self.currentPlayer
+            counter = self.currentPlayer
+            while True:
+                if counter == len(self.players)-1:
+                    self.currentPlayer = turns.index(True)
+                    return self.currentPlayer
+                elif turns[counter+1] == False:
+                    counter += 1
+                    continue
+                elif turns[counter+1] == True:
+                    counter += 1
+                    self.currentPlayer = counter
+                    return self.currentPlayer
+
+        # if the river is down
+        elif self.round == 3:
+            turns = [i.getTurn() for i in self.players]
+            if True not in turns:
+                self.currentPlayer = 0
+                return self.endRound()
+            counter = self.currentPlayer
+            while True:
+                if counter == len(self.players)-1:
+                    self.currentPlayer = turns.index(True)
+                    return self.currentPlayer
+                elif turns[counter+1] == False:
+                    counter += 1
+                    continue
+                elif turns[counter+1] == True:
+                    counter += 1
+                    self.currentPlayer = counter
+                    return self.currentPlayer
+                    
+                
+                
             
 player = [Player(i,None,None,1000,0,i,0) for i in range(7)]
 game = Game(player, 10, 12)

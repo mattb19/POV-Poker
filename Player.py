@@ -1,18 +1,25 @@
 class Player:
-    def __init__(self, user, card1, card2, chipCount, currentBet, playerNum, blind) -> None:
+    def __init__(self, user, card1, card2, chipCount, playerNum, blind) -> None:
         self.user = user
         self.card1 = card1
         self.card2 = card2
         self.chipCount = chipCount
-        self.currentBet = currentBet
+        self.currentBet = 0
         self.playerNum = playerNum
         self.blind = blind
+        self.turn = False
     
     def getBlind(self):
         return self.blind
     
     def setBlind(self, blind):
         self.blind = blind
+        
+    def getTurn(self):
+        return self.turn
+    
+    def setTurn(self, turn):
+        self.turn = turn
     
     def getUser(self):
         return self.user
