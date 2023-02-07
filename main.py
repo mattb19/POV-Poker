@@ -7,11 +7,18 @@ class Game:
         self.players = players
         self.deck = []
         self.pot = 0
-        self.flop = None
+        self.currentBet = 0
+        self.round = 0
+        
+        self.flop1 = None
+        self.flop2 = None
+        self.flop3 = None
         self.turn = None
         self.river = None
+        
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
+    
     
     def shuffleDeck(self):
         # generate a new deck
@@ -46,6 +53,14 @@ class Game:
         for i in range(self.players):
             if self.players[i].getBlind() == 'small':
                 self.players = self.players[:i] + self.players[i:]
+                
+        # set everyones bet count to zero
+        self.players = [i.setCurrentBet(0) for i in self.players]
+        
+        # set blinds bet count
+        self.players[0].setCurrentBet(self.smallBlind)
+        self.players[1].setCurrentBet(self.bigBlind)
+        self.currentBet = self.bigBlind
         
         # get dealt deck and playerlist with updated player hands
         self.dealCards()
@@ -58,6 +73,42 @@ class Game:
                 self.deck.pop()
             else:
                 self.deck.pop()
-        self.flop = tableCards[:3]
+        self.flop1 = tableCards[0]
+        self.flop2 = tableCards[1]
+        self.flop3 = tableCards[2]
         self.turn = tableCards[3]
         self.river = tableCards[4]
+    
+    
+    def placeBetFold(self, value, currentBet, playerNum):
+        player = self.players[playerNum-1]
+        
+        # if they fold
+        if self.currentBet == None: 
+            player.setCurrentBet(None)
+            return player.getUser().getUserName()+" Folds."
+        
+        # if they call
+        elif value == self.currentBet and value < player.getChipCount(): 
+            player.setCurrentBet(0-value)
+            return player.getUser().getUserName()+" Calls "+str(value)+"!"
+        
+        # if they raise
+        elif value >= self.currentBet and value < player.getChipCount():
+            player.setCurrentBet(0-value)
+            self.currentBet = value
+            return player.getUser().getUserName()+" Bets "+str(value)+"!"
+        
+        # if they don't bet enough
+        elif value < self.currentBet:
+            return "You must put more in to call or raise"
+        
+        # if they put in too much
+        elif value > player.getChipCount():
+            return "Insufficient Funds"
+        
+        # if they go all in
+        elif value == player.getChipCount():
+            player.setCurrentBet(0-value)
+            self.currentBet = value
+            return player.getUser().getUserName()+" IS ALL IN! "
