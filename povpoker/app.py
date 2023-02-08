@@ -1,20 +1,58 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response, session, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from main import Game
 from Player import Player
 from User import User
+from flask_session import Session
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
-@app.route('/', methods=["GET", "POST"])
+player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,6,0), Player("Ethan",None,None,1000,6,0), Player("Jack",None,None,1000,6,0)]
+game = Game(player, 10, 20)
+game.newRound()
+
+@app.route("/")
+def index():
+    if not session.get("name"):
+        return redirect("/login")
+    return render_template('index.html')
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session["name"] = None
+    return redirect("/")
+
+
+
+
+
+
+@app.route('/poker', methods=["GET", "POST"])
 def pokerTable():
-    player = [Player("1",None,None,1000,0,0), Player("2",None,None,1000,1,0), Player("3",None,None,1000,2,0), Player("4",None,None,1000,3,0), Player("5",None,None,1000,4,0), Player("6",None,None,1000,5,0), Player("7",None,None,1000,6,0), Player("8",None,None,1000,6,0), Player("9",None,None,1000,6,0), Player("10",None,None,1000,6,0)]
-    return render_template("table.html", Player1=player[0], Player2=player[1], Player3=player[2], Player4=player[3], Player5=player[4], Player6=player[5], Player7=player[6], Player8=player[7], Player9=player[8], Player10=player[9], )
+    return render_template("table.html", game=game)
 
-@app.route('/', methods=["GET", "POST"])
+
+@app.route('/bet/', methods=["GET", "POST"])
 def getBets():
     if request.method == "POST":
         bet = request.form.get("bet")
-        return "You have bet"+str(bet)
-    return render_template("table.html")
+        bet = int(bet)
+        if bet == -1:
+            bet = None
+        game.placeBetFold(bet)
+        return render_template("table.html", game=game)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

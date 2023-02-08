@@ -18,6 +18,6 @@ class Card:
         return self._id
     
     def __str__(self) -> str:
-        return self._num+" of "+self._suit
+        return "../static/PNG-cards-1.3/"+self._num+"_of_"+self._suit+".png"
     
     

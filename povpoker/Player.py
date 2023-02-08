@@ -8,9 +8,16 @@ class Player:
         self.playerNum = playerNum
         self.blind = blind
         self.turn = False
+        self.color = "white"
     
     def getBlind(self):
         return self.blind
+    
+    def getColor(self):
+        return self.color
+    
+    def setColor(self, color):
+        self.color = str(color)
     
     def setBlind(self, blind):
         self.blind = blind

@@ -1,4 +1,5 @@
 import random
+from Card import Card
 
 class Game:
     def __init__(self, players, smallBlind, bigBlind) -> None:
@@ -8,12 +9,15 @@ class Game:
         self.currentBet = 0
         self.round = 0
         self.currentPlayer = 0
+        self.tableCards = []
+        self.lastWinners = []
+        self.playerNames= [i.getUser() for i in self.players]
         
-        self.flop1 = None
-        self.flop2 = None
-        self.flop3 = None
-        self.turn = None
-        self.river = None
+        self.flop1 = Card("None","None",0)
+        self.flop2 = Card("None","None",0)
+        self.flop3 = Card("None","None",0)
+        self.turn = Card("None","None",0)
+        self.river = Card("None","None",0)
         
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
@@ -65,8 +69,16 @@ class Game:
         self.players[1].setCurrentBet(self.bigBlind)
         self.players[1].setChipCount(0-self.bigBlind)
         self.currentBet = self.bigBlind
+        self.pot = 0
         self.pot += self.bigBlind
         self.pot += self.smallBlind
+        
+        # set table cards to face down
+        self.flop1 = Card("None","None",0)
+        self.flop2 = Card("None","None",0)
+        self.flop3 = Card("None","None",0)
+        self.turn = Card("None","None",0)
+        self.river = Card("None","None",0)
         
         # get dealt deck and playerlist with updated player hands
         self.dealCards()
@@ -79,11 +91,7 @@ class Game:
                 self.deck.pop()
             else:
                 self.deck.pop()
-        self.flop1 = tableCards[0]
-        self.flop2 = tableCards[1]
-        self.flop3 = tableCards[2]
-        self.turn = tableCards[3]
-        self.river = tableCards[4]
+        self.tableCards = tableCards
         
         # get player 3, set him to bet first
         self.currentPlayer = 2
@@ -94,18 +102,18 @@ class Game:
         x = self.currentPlayer
         player = self.players[x]
         
-        final = ""
-        
         # if they fold
         if value == None: 
             player.setFolded()
             player.setTurn(False)
+            player.setColor("black")
             self.players[x] = player
             final = player.getUser()+" Folds."
         
         # if they check
         elif value == 0 and player.getCurrentBet() == self.currentBet:
             player.setTurn(False)
+            player.setColor("#00FF00")
             self.players[x] = player
             final = player.getUser()+" Checks."
         
@@ -114,6 +122,7 @@ class Game:
             player.setCurrentBet(value)
             player.setChipCount(0-value)
             player.setTurn(False)
+            player.setColor("#A020F0")
             self.pot += value
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
@@ -123,6 +132,7 @@ class Game:
             player.setCurrentBet(value)
             player.setChipCount(0-value)
             player.setTurn(False)
+            player.setColor("#A020F0")
             self.currentBet = value
             self.pot += value
             self.players[x] = player
@@ -133,6 +143,7 @@ class Game:
             player.setCurrentBet(value)
             player.setChipCount(0-value)
             player.setTurn(False)
+            player.setColor("#EE4B2B")
             self.pot += value
             self.currentBet = value
             self.players[x] = player
@@ -145,9 +156,6 @@ class Game:
         # if they put in too much
         elif value > player.getChipCount():
             final = "Insufficient Funds"
-            
-        # determine who goes next
-        
         
         # set turn to true for all players who havent folded or called new bet
         for i in self.players:
@@ -157,6 +165,9 @@ class Game:
                 continue
             elif i.getCurrentBet() < value:
                 i.setTurn(True)
+                
+        # determine who goes next
+        self.whoGoesNext()
         
         
     def whoGoesNext(self): 
@@ -169,9 +180,14 @@ class Game:
                 self.currentPlayer = 0
                 self.currentBet = 0
                 self.round += 1
+                self.flop1 = self.tableCards[0]
+                self.flop2 = self.tableCards[1]
+                self.flop3 = self.tableCards[2]
+                
+                # set all players current bets to zero
                 for i in self.players:
                     if i.getCurrentBet() is not None:
-                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setCurrentBetZero()
                         i.setTurn(True)
                 return self.currentPlayer
             
@@ -203,9 +219,10 @@ class Game:
                 self.currentPlayer = 0
                 self.currentBet = 0
                 self.round += 1
+                self.turn = self.tableCards[3]
                 for i in self.players:
                     if i.getCurrentBet() is not None:
-                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setCurrentBetZero()
                         i.setTurn(True)
                 return self.currentPlayer
             
@@ -230,9 +247,10 @@ class Game:
                 self.currentPlayer = 0
                 self.currentBet = 0
                 self.round += 1
+                self.river = self.tableCards[4]
                 for i in self.players:
                     if i.getCurrentBet() is not None:
-                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setCurrentBetZero()
                         i.setTurn(True)
                 return self.currentPlayer
             counter = self.currentPlayer
@@ -255,7 +273,7 @@ class Game:
                 self.currentPlayer = 0
                 for i in self.players:
                     if i.getCurrentBet() is not None:
-                        i.setCurrentBet(0-i.getCurrentBet())
+                        i.setCurrentBetZero()
                 return self.endRound()
             counter = self.currentPlayer
             while True:
@@ -471,71 +489,116 @@ class Game:
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
+        print(winners[0][1])
+        for i in winners:
+            i[0].setChipCount(self.pot//len(winners))
+        self.lastWinners = winners
         self.newRound()
-        return winners[0][1]
+
 
     def gay(self):
         self.newRound()
         self.placeBetFold(20)
-        self.whoGoesNext()
+        
         self.placeBetFold(20)
-        self.whoGoesNext()
+        
         self.placeBetFold(20)
-        self.whoGoesNext()
+        
         self.placeBetFold(20)
-        self.whoGoesNext()
+        
         self.placeBetFold(20)
-        self.whoGoesNext()
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        self.placeBetFold(20)
+        
         self.placeBetFold(10)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         
         # flop test
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
+        self.placeBetFold(0)
+        
+        self.placeBetFold(0)
+        
+        self.placeBetFold(0)
+        
         
         # turn test
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        self.placeBetFold(0)
+        
+        self.placeBetFold(0)
+        
+        self.placeBetFold(0)
+        
         
         # river test
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        self.whoGoesNext()
+        
         self.placeBetFold(0)
-        result = self.whoGoesNext()
-        print(result)
+
+        self.placeBetFold(0)
+
+        self.placeBetFold(0)
+
+        self.placeBetFold(0)
+        
+    
+    def getPlayers(self):
+        return self.players
+    
+    def getCurrentBet(self):
+        return self.currentBet
+
+    def getPot(self):
+        return self.pot
+    
+    def getFlop1(self):
+        return self.flop1
+    
+    def getFlop2(self):
+        return self.flop2
+    
+    def getFlop3(self):
+        return self.flop3
+    
+    def getTurn(self):
+        return self.turn
+    
+    def getRiver(self):
+        return self.river
+    
+    def getCurrentPlayer(self):
+        return self.currentPlayer
+    
+    def getPlayerNames(self):
+        return self.playerNames
+    
