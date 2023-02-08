@@ -498,8 +498,9 @@ class Game:
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         self.lastWinners = winners
+        winnersList = [i[0] for i in winners]
         for i in range(len(self.players)):
-            if winners[i][0] != self.players[i]:
+            if self.players[i] not in winnersList:
                 self.players[i].setColor("black")
         
         self.newRound()
