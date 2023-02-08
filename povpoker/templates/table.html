@@ -1,13 +1,120 @@
+<style type="text/css">
+    .slot-1
+    {
+      position:absolute;
+      right:75%;bottom:25%;
+    }
+    .slot-6
+    {
+      position:absolute;
+      right:25%;bottom:75%;
+    }
+    .slot-3
+    {
+      position:absolute;
+      right:75%;bottom:75%;
+    }
+    .slot-8
+    {
+      position:absolute;
+      right:25%;bottom:25%;
+    }
+    .slot-2
+    {
+      position:absolute;
+      right:80%;bottom:50%;
+    }
+    .slot-7
+    {
+      position:absolute;
+      right:20%;bottom:50%;
+    }
+    .slot-10
+    {
+      position:absolute;
+      right:60%;bottom:16%;
+    }
+    .slot-9
+    {
+      position:absolute;
+      right:40%;bottom:16%;
+    }
+    .slot-5
+    {
+      position:absolute;
+      right:40%;bottom:84%;
+    }
+    .slot-4
+    {
+      position:absolute;
+      right:60%;bottom:84%;
+    }
+    .table
+    {
+      position:absolute;
+      right:5%;
+    }
+    .slots
+    {
+      font-size: 26px;
+      font-family: "Lucida Console", "Courier New", monospace;
+    }
+    .form
+    {
+      position:absolute;
+      right:40%;bottom:2%
+    }
+  
+</style>
+
 <html>
+    <div class="slots">
+        <div class="slot-1">
+            <body>{{ Player1.getUser() }}</body>
+        </div>
+        <div class="slot-2">
+            <body>{{ Player2.getUser() }}</body>
+        </div>
+        <div class="slot-3">
+            <body>{{ Player3.getUser() }}</body>
+        </div>
+        <div class="slot-4">
+            <body>{{ Player4.getUser() }}</body>
+        </div>
+        <div class="slot-5">
+            <body>{{ Player5.getUser() }}</body>
+        </div>
+        <div class="slot-6">
+            <body>{{ Player6.getUser() }}</body>
+        </div>
+        <div class="slot-7">
+            <body>{{ Player7.getUser() }}</body>
+        </div>
+        <div class="slot-8">
+            <body>{{ Player8.getUser() }}</body>
+        </div>
+        <div class="slot-9">
+            <body>{{ Player9.getUser() }}</body>
+        </div>
+        <div class="slot-10">
+            <body>{{ Player10.getUser() }}</body>
+        </div>
+        <div class="form">
+            <form action="{{ url_for("getBets")}}" method="post">
+            <label for="bet">Your bet: </label>
+            <input type="text" id="bet" name="bet" placeholder="0"
+        </div>
+    </div>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
             html,body { width: 99%; height: 99%; }
         </style>
     </head>
-    <body style="background: url(../static/table.jpeg) no-repeat center center fixed; background-size: 50%;">
-    </body>
+    <div class="table">
+        <body style="background: url(../static/table.jpeg) no-repeat center center fixed; background-size: 50%;">
+        </body>
+    </div>
 </html>
-
 
 

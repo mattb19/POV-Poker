@@ -1,6 +1,4 @@
-from Card import Card
 import random
-from Player import Player
 
 class Game:
     def __init__(self, players, smallBlind, bigBlind) -> None:
@@ -19,35 +17,8 @@ class Game:
         
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
+       
         
-        
-        # pre-flop test
-        self.newRound()
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(10)
-        self.placeBetFold(0)
-        
-        # flop test
-        self.placeBetFold(0)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        
-        # turn test
-        self.placeBetFold(0)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        
-        # river test
-        self.placeBetFold(0)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
-        self.placeBetFold(20)
         
     
     def shuffleDeck(self):
@@ -176,7 +147,7 @@ class Game:
             final = "Insufficient Funds"
             
         # determine who goes next
-        self.whoGoesNext()
+        
         
         # set turn to true for all players who havent folded or called new bet
         for i in self.players:
@@ -186,8 +157,6 @@ class Game:
                 continue
             elif i.getCurrentBet() < value:
                 i.setTurn(True)
-        
-        return final
         
         
     def whoGoesNext(self): 
@@ -310,6 +279,9 @@ class Game:
             card = sorted(unsortedCards,key=lambda l:l[0])
             cards = [int(i[0]) for i in card]
             suits = [i[1] for i in card]
+            # for j in lst:
+                # print(j)
+                
             
             quads = 0
             for j in cards:
@@ -341,21 +313,20 @@ class Game:
                 one = newCards[0]
                 two = newCards[1]
             
-            
-            pair1 = 0
-            pair2 = 0
+        
             card5 = 0
             twoPair = []
+            twowee = []
             for j in cards:
-                if cards.count(j) == 2 and j > pair1 and j != pair2:
-                    pair1 = j
-                elif cards.count(j) == 2 and j > pair2 and j != pair1:
-                    pair2 = j
-            if pair1 != 0 and pair2 != 0 and len(twoPair) != 0:
-                twoPair.append(pair1)
-                twoPair.append(pair2)
+                if cards.count(j) == 2 and j not in twowee:
+                    twowee.append(j)
+            if len(twowee) >= 2:
+                twowee.sort()
+                twowee.reverse()
+                twoPair.append(twowee[0])
+                twoPair.append(twowee[1])
                 twoPair.sort()
-                newCards = [i for i in cards if i != pair1 or i != pair2]
+                newCards = [i for i in cards if i not in twowee]
                 card5 = max(newCards)
             
             
@@ -394,7 +365,7 @@ class Game:
                 (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6] and 
                 suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6] and cards[6] == 14)):
                 
-                i.setCurrentBet(10000)
+                i.setCurrentBet(10000000000000000000)
             
             # straight flush check
             elif ((cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and 
@@ -405,23 +376,23 @@ class Game:
                 suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6])):
                 
                 if cards[4]-cards[0] == 4:
-                    x = 9000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
+                    x = 9000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
                     i.setCurrentBet(x)
                 elif cards[5]-cards[1] == 4:
-                    x = 9000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
+                    x = 9000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
                     i.setCurrentBet(x)
                 elif cards[6]-cards[2] == 4:
-                    x = 9000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
+                    x = 9000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
                     i.setCurrentBet(x)
 
             # quads check
             elif quads != 0:
-                x = 8000+(quads*4)
+                x = 8000000+(quads*4)
                 i.setCurrentBet(x)
             
             # full house check
             elif len(fullHouse) != 0:
-                x = 7000+(fullHouse[0]*30)+(fullHouse[1]*2)
+                x = 7000000+(fullHouse[0]*10000)+(fullHouse[1]*100)
                 i.setCurrentBet(x)
             
             # flush check
@@ -430,19 +401,19 @@ class Game:
                 if suits.count("Hearts") == 5:
                     flush = [i for i in card if i[1] == "Hearts"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000+max(flushCount)
+                    x = 6000000+max(flushCount)
                 elif suits.count("Spades") == 5:
                     flush = [i for i in card if i[1] == "Spades"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000+max(flushCount)
+                    x = 6000000+max(flushCount)
                 elif suits.count("Diamonds") == 5:
                     flush = [i for i in card if i[1] == "Diamonds"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000+max(flushCount)
+                    x = 6000000+max(flushCount)
                 elif suits.count("Clubs") == 5:
                     flush = [i for i in card if i[1] == "Clubs"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000+max(flushCount)
+                    x = 6000000+max(flushCount)
                 i.setCurrentBet(x)
             
             # straight check
@@ -450,34 +421,40 @@ class Game:
                 (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5]) or
                 (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6])):
                 if cards[4]-cards[0] == 4:
-                    x = 5000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
+                    x = 5000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
                     i.setCurrentBet(x)
                 elif cards[5]-cards[1] == 4:
-                    x = 5000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
+                    x = 5000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
                     i.setCurrentBet(x)
                 elif cards[6]-cards[2] == 4:
-                    x = 5000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
+                    x = 5000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
                     i.setCurrentBet(x)
             
             # trips check
             elif trips != 0:
-                x = 4000 + (trips*30) + one + two
+                x = 4000000 + (trips*10000) + one*100 + two*10
                 i.setCurrentBet(x)
             
             # two pair check
             elif len(twoPair) != 0:
-                x = 3000 + (twoPair[0]*2) + (twoPair[1]*20) + card5
+                x = 3000000 + (twoPair[0]*10000) + (twoPair[1]*100) + card5
                 i.setCurrentBet(x)
             
             # pair check
             elif pair != 0:
-                x = 2000 + pair*40 + otherCards[0]*15 + otherCards[1]*10 + otherCards[2]*5
+                x = 2000000 + pair*10000 + otherCards[0]*1000 + otherCards[1]*100 + otherCards[2]*10
                 i.setCurrentBet(x)
                 
             # high card check
             else:
-                x = highCards[0]*50 + highCards[1]*40 + highCards[2]*30 + highCards[3]*20 + highCards[4]*10
+                x = highCards[0]*10000 + highCards[1]*1000 + highCards[2]*100 + highCards[3]*10 + highCards[4]*1
                 i.setCurrentBet(x)
+            
+            # print(i.getUser())
+            # print(i.getCurrentBet())
+            # print()
+            # print()
+            # print()
         
         
         # check who won the hand
@@ -495,16 +472,70 @@ class Game:
         for i in winner:
             winners.append([i, i.getCurrentBet()])
         self.newRound()
-        for i in winners:
-            print(i[0].getUser(), i[1])
-        return winners
-            
-                
-            
-                
-                    
-                
-                
-            
-player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Luke",None,None,1000,3,0)]
-game = Game(player, 10, 20)
+        return winners[0][1]
+
+    def gay(self):
+        self.newRound()
+        self.placeBetFold(20)
+        self.whoGoesNext()
+        self.placeBetFold(20)
+        self.whoGoesNext()
+        self.placeBetFold(20)
+        self.whoGoesNext()
+        self.placeBetFold(20)
+        self.whoGoesNext()
+        self.placeBetFold(20)
+        self.whoGoesNext()
+        self.placeBetFold(10)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        
+        # flop test
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        
+        # turn test
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        
+        # river test
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        self.whoGoesNext()
+        self.placeBetFold(0)
+        result = self.whoGoesNext()
+        print(result)
