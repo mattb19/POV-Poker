@@ -1,5 +1,6 @@
 import random
 from Card import Card
+import time
 
 class Game:
     def __init__(self, players, smallBlind, bigBlind) -> None:
@@ -189,6 +190,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
+                        i.setColor("white")
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -224,6 +226,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
+                        i.setColor("white")
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -252,6 +255,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
+                        i.setColor("white")
                 return self.currentPlayer
             counter = self.currentPlayer
             while True:
@@ -274,6 +278,7 @@ class Game:
                 for i in self.players:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
+                        i.setColor("white")
                 return self.endRound()
             counter = self.currentPlayer
             while True:
@@ -493,6 +498,10 @@ class Game:
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         self.lastWinners = winners
+        for i in range(len(self.players)):
+            if winners[i][0] != self.players[i]:
+                self.players[i].setColor("black")
+        
         self.newRound()
 
 
