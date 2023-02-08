@@ -60,11 +60,6 @@
       font-family: "Lucida Console", "Monaco", monospace;
       color: white;
     }
-    .form
-    {
-        position:absolute;
-        right:0%;bottom:2%
-    }
 
     .chips {
         font-size: 13px;
@@ -157,7 +152,7 @@
 
 <html>
     <div class="slots" id="load">
-      
+        <body>{{ game.getPlayerNames().index(name) != game.getCurrentPlayer() }}</body>
         <div class="pot">
           <body>{{ game.getPot() }}</body>
         </div>
@@ -182,62 +177,82 @@
         <div class="river">
           <img src={{ game.getRiver() }} width="70" height="110">
         </div>
+        {% if game.getPlayerCount() > 0  %}
         <div class="slot-1" style="color:{{ game.getPlayers()[0].getColor() }}">
-            <body>{{ game.getPlayers()[0].getUser() }}</body>
-            <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[0].getChipCount() }}     </body></div>
+          <body>{{ game.getPlayers()[0].getUser() }}</body>
+          <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[0].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 1  %}
         <div class="slot-2" style="color:{{ game.getPlayers()[1].getColor() }}">
             <body>{{ game.getPlayers()[1].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[1].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 2  %}
         <div class="slot-3" style="color:{{ game.getPlayers()[2].getColor() }}">
             <body>{{ game.getPlayers()[2].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[2].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 3  %}
         <div class="slot-4" style="color:{{ game.getPlayers()[3].getColor() }}">
             <body>{{ game.getPlayers()[3].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[3].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 4  %}
         <div class="slot-5" style="color:{{ game.getPlayers()[4].getColor() }}">
             <body>{{ game.getPlayers()[4].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[4].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 5  %}
         <div class="slot-6" style="color:{{ game.getPlayers()[5].getColor() }}">
             <body>{{ game.getPlayers()[5].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[5].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 6  %}
         <div class="slot-7" style="color:{{ game.getPlayers()[6].getColor() }}">
             <body>{{ game.getPlayers()[6].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[6].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 7  %}
         <div class="slot-8" style="color:{{ game.getPlayers()[7].getColor() }}">
             <body>{{ game.getPlayers()[7].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[7].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 8  %}
         <div class="slot-9" style="color:{{ game.getPlayers()[8].getColor() }}">
             <body>{{ game.getPlayers()[8].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[8].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
+        {% if game.getPlayerCount() > 9  %}
         <div class="slot-10" style="color:{{ game.getPlayers()[9].getColor() }}">
             <body>{{ game.getPlayers()[9].getUser() }}</body>
             <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[9].getChipCount() }}     </body></div>
         </div>
+        {%endif%}
 
 
         <div class="form">
             <form action="/bet/" method="post">
               <div class="check">
-                <button type="submit" id="bet" name="bet" value="0">CHECK</button>
+                <button type="submit" id="bet" {% if not game.getPlayerNames().index(name) == game.getCurrentPlayer() %}disabled{%endif%} name="bet" value="0">CHECK</button>
               </div>
             </form>
             <form action="/bet/" method="post">
               <div class="check">
-                <button type="submit" id="bet" name="bet" value={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}>CALL</button>
+                <button type="submit" id="bet" {% if not game.getPlayerNames().index(name) == game.getCurrentPlayer() %}disabled{%endif%} name="bet" value={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}>CALL</button>
               </div>
             </form>
             <form action="/bet/" method="post">
               <div class="check">
-                <button type="submit" id="bet" name="bet" value="-1">FOLD</button>
+                <button type="submit" id="bet" {% if not game.getPlayerNames().index(name) == game.getCurrentPlayer() %}disabled{%endif%} name="bet" value="-1">FOLD</button>
               </div>
             </form>
             <form action="/bet/" method="post">
@@ -245,7 +260,7 @@
                   <input type="range" id="bet" name="bet" min={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }} max={{ game.getPlayers()[0].getChipCount() }} value="10"   oninput="rangeValue.innerText = this.value">
                   <p id="rangeValue">{{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}</p>
               </div>
-              <button type="submit">BET</button>
+              <button type="submit" {% if not game.getPlayerNames().index(name) == game.getCurrentPlayer() %}disabled{%endif%}>BET</button>
             </form>
         </div>
     </div>

@@ -12,7 +12,8 @@ class Game:
         self.currentPlayer = 0
         self.tableCards = []
         self.lastWinners = []
-        self.playerNames= [i.getUser() for i in self.players]
+        self.playerNames = [i.getUser() for i in self.players]
+        self.playerCount = len(self.players)
         
         self.flop1 = Card("None","None",0)
         self.flop2 = Card("None","None",0)
@@ -608,3 +609,5 @@ class Game:
     def getPlayerNames(self):
         return self.playerNames
     
+    def getPlayerCount(self):
+        return self.playerCount
