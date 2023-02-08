@@ -56,7 +56,8 @@ class Game:
         self.shuffleDeck()
         
         # rotates player list by 1
-        self.players = self.players[:1] + self.players[1:]
+        yes = self.players[:1] + self.players[1:]
+        self.players = yes
         
         # set everyones bet count to zero and turn to true
         for i in self.players:
@@ -498,10 +499,6 @@ class Game:
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         self.lastWinners = winners
-        for i in range(len(self.players)):
-            if winners[i][0] != self.players[i]:
-                self.players[i].setColor("black")
-        
         self.newRound()
 
 

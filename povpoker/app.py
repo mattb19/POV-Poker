@@ -5,10 +5,14 @@ from main import Game
 from Player import Player
 from User import User
 from flask_session import Session
+import requests
+from bs4 import BeautifulSoup
+from turbo_flask import turbo
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SECRET_KEY'] = 'secret!'
 Session(app)
 
 player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,6,0), Player("Ethan",None,None,1000,6,0), Player("Jack",None,None,1000,6,0)]
@@ -33,20 +37,17 @@ def logout():
     session["name"] = None
     return redirect("/")
 
-
-
-
-
-
 @app.route('/poker', methods=["GET", "POST"])
 def pokerTable():
     return render_template("table.html", game=game)
+
 
 
 @app.route('/bet/', methods=["GET", "POST"])
 def getBets():
     if request.method == "POST":
         bet = request.form.get("bet")
+        bet = 20
         bet = int(bet)
         if bet == -1:
             bet = None
@@ -55,4 +56,4 @@ def getBets():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
