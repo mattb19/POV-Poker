@@ -158,15 +158,14 @@
 <html>
     <div class="slots" id="load">
       
-        <body>helllooooooo</body>
         <div class="pot">
           <body>{{ game.getPot() }}</body>
         </div>
         <div class="card1">
-          <img src={{ game.getPlayers()[game.getPlayerNames().index("Matt")].getCard1() }} width="70" height="110">
+          <img src={{ game.getPlayers()[game.getPlayerNames().index(name)].getCard1() }} width="70" height="110">
         </div>
         <div class="card2">
-          <img src={{ game.getPlayers()[game.getPlayerNames().index("Matt")].getCard2() }} width="70" height="110">
+          <img src={{ game.getPlayers()[game.getPlayerNames().index(name)].getCard2() }} width="70" height="110">
         </div>
         <div class="flop1">
           <img src={{ game.getFlop1() }} width="70" height="110">
