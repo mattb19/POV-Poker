@@ -5,15 +5,23 @@ from main import Game
 from Player import Player
 from User import User
 from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///Users/yttfk/desktop/POV-Poker/povpoker/user.db'
+db = SQLAlchemy(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), nullable=False)
+    password = db.Column(db.String(15), nullable=False)
 player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,6,0), Player("Ethan",None,None,1000,6,0), Player("Jack",None,None,1000,6,0)]
 game = Game(player, 10, 20)
 game.newRound()
+
 
 @app.route("/")
 def index():
