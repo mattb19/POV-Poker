@@ -1,30 +1,27 @@
 class User:
-    def __init__(self, userID, userName, userEmail, userPassword, winCount, straightCount, 
-                 flushCount, fullHouseCount, quadCount, straightFlushCount, royalFlushCount,
-                 muckCount, blind2Count, blind4Count, tenFlopCount, tenCount, tenPreFlopCount, 
-                 challengeCount, challengeDenyCount, flopPeekCount, playerPeekCount) -> None:
+    def __init__(self, userID, userName, userEmail, userPassword) -> None:
         
         self.userID = userID
         self.userName = userName
         self.userEmail = userEmail
         self.userPassword = userPassword
-        self.winCount = winCount
-        self.straightCount = straightCount
-        self.flushCount = flushCount
-        self.fullHouseCount = fullHouseCount
-        self.quadCount = quadCount
-        self.straightFlushCount = straightFlushCount
-        self.royalFlushCount = royalFlushCount
-        self.muckCount = muckCount
-        self.blind2Count = blind2Count
-        self.blind4Count = blind4Count
-        self.tenFlopCount = tenFlopCount
-        self.tenCount = tenCount
-        self.tenPreFlopCount = tenPreFlopCount
-        self.challengeCount = challengeCount
-        self.challengeDenyCount = challengeDenyCount
-        self.flopPeekCount = flopPeekCount
-        self.playerPeekCount = playerPeekCount
+        self.winCount = 0
+        self.straightCount = 0
+        self.flushCount = 0
+        self.fullHouseCount = 0
+        self.quadCount = 0
+        self.straightFlushCount = 0
+        self.royalFlushCount = 0
+        self.muckCount = 0
+        self.blind2Count = 0
+        self.blind4Count = 0
+        self.tenFlopCount = 0
+        self.tenCount = 0
+        self.tenPreFlopCount = 0
+        self.challengeCount = 0
+        self.challengeDenyCount = 0
+        self.flopPeekCount = 0
+        self.playerPeekCount = 0
         
     def getUserID(self):
         return self.userID
@@ -84,7 +81,7 @@ class User:
         return self.straightFlushCount
     
     def setStraightFlushCount(self, value):
-        self.straight
+        self.straightFlushCount = value
 
     def setRoyalFlushCount(self, royalFlushCount):
         self.royalFlushCount = royalFlushCount
