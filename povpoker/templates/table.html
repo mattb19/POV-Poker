@@ -191,11 +191,11 @@
       {%endif%}
       {% if game.getPlayerCount() > 1  %}
       <div class="slot-2" style="color:{{ game.getPlayers()[1].getColor() }}">
-          <body>{{ game.getPlayers()[1].getUser() }}</body>
-          <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[1].getChipCount() }}     </body></div>
           {% if game.getCurrentPlayer() == 1 %}
           <img src="../static/chips.png" width="25" height="25">
           {% endif %}
+          <body>{{ game.getPlayers()[1].getUser() }}</body>
+          <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[1].getChipCount() }}     </body></div>
       </div>
       {%endif%}
       {% if game.getPlayerCount() > 2  %}
@@ -203,7 +203,7 @@
           <body>{{ game.getPlayers()[2].getUser() }}</body>
           <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[2].getChipCount() }}     </body></div>
           {% if game.getCurrentPlayer() == 2 %}
-          <img src="../static/chips.png" width="25" height="25">
+          <img src="../static/chips.png" width="40" height="40">
           {% endif %}
       </div>
       {%endif%}
