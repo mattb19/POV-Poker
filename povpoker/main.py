@@ -1,9 +1,10 @@
 import random
 from Card import Card
 import time
+import Player
 
 class Game:
-    def __init__(self, players, smallBlind, bigBlind) -> None:
+    def __init__(self, players, smallBlind, bigBlind, active) -> None:
         self.players = players
         self.deck = []
         self.pot = 0
@@ -12,7 +13,10 @@ class Game:
         self.currentPlayer = 0
         self.tableCards = []
         self.lastWinners = []
-        self.playerNames= [i.getUser() for i in self.players]
+        self.playerNames = [i.getUser() for i in self.players]
+        self.playerCount = len(self.players)
+        self.playerQueue = []
+        self.active = active
         
         self.flop1 = Card("None","None",0)
         self.flop2 = Card("None","None",0)
@@ -55,14 +59,17 @@ class Game:
         # generate a new deck
         self.shuffleDeck()
         
+        self.players + self.playerQueue
+        self.playerQueue = []
+        self.round = 0
         # rotates player list by 1
-        self.players = self.players[:1] + self.players[1:]
+        
         
         # set everyones bet count to zero and turn to true
         for i in self.players:
             i.setCurrentBetZero()
-        for i in self.players:
             i.setTurn(True)
+            i.setColor("white")
         
         # set blinds bet count
         self.players[0].setCurrentBet(self.smallBlind)
@@ -114,7 +121,6 @@ class Game:
         # if they check
         elif value == 0 and player.getCurrentBet() == self.currentBet:
             player.setTurn(False)
-            player.setColor("#00FF00")
             self.players[x] = player
             final = player.getUser()+" Checks."
         
@@ -123,7 +129,6 @@ class Game:
             player.setCurrentBet(value)
             player.setChipCount(0-value)
             player.setTurn(False)
-            player.setColor("#A020F0")
             self.pot += value
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
@@ -133,7 +138,6 @@ class Game:
             player.setCurrentBet(value)
             player.setChipCount(0-value)
             player.setTurn(False)
-            player.setColor("#A020F0")
             self.currentBet = value
             self.pot += value
             self.players[x] = player
@@ -494,7 +498,6 @@ class Game:
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
-        print(winners[0][1])
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         self.lastWinners = winners
@@ -612,3 +615,33 @@ class Game:
     def getPlayerNames(self):
         return self.playerNames
     
+    def getPlayerCount(self):
+        return self.playerCount
+    
+    def addPlayers(self, name, chipCount):
+        self.playerQueue.append(Player(name, None, None, chipCount, len(self.players)+len(self.playerQueue)-1, None))
+    
+    def isActive(self):
+        return self.active
+    
+    def reset(self, big, small, player1, player2, player3):
+        self.bigBlind = big
+        self.smallBlind = small
+        self.players = []
+        self.deck = []
+        self.pot = 0
+        self.currentBet = 0
+        self.round = 0
+        self.currentPlayer = 0
+        self.tableCards = []
+        self.lastWinners = []
+        self.playerNames = [i.getUser() for i in self.players]
+        self.playerCount = len(self.players)
+        self.playerQueue = []
+        self.active = True
+        self.flop1 = Card("None","None",0)
+        self.flop2 = Card("None","None",0)
+        self.flop3 = Card("None","None",0)
+        self.turn = Card("None","None",0)
+        self.river = Card("None","None",0)
+        

@@ -4,7 +4,7 @@
 {% block y %}
  
    {% if session.name %}
-      You are Register {{ session.name }} <a href="/logout">logout</a>. <a href="/poker">Poker Table</a>
+      You are Register {{ session.name }}</br> <a href="/logout">logout</a>. </br><a href="/poker">Join Current Table</a>.  </br>      <a href="/create">Create New Table</a>
    {% else %}
       You are not Register. <a href="/login">login</a>.
    {% endif %}
