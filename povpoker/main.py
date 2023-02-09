@@ -501,10 +501,11 @@ class Game:
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         self.lastWinners = winners
-        print(self.players)
-        print(self.round)
-        print(self.lastWinners)
-        print(self.currentPlayer)
+        winnersList = [i[0] for i in winners]
+        for i in range(len(self.players)):
+            if self.players[i] not in winnersList:
+                self.players[i].setColor("black")
+        
         self.newRound()
 
 
