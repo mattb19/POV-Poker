@@ -13,10 +13,9 @@ app.config['SECRET_KEY'] = 'secret!'
 Session(app)
 turbo = Turbo(app)
 
-player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,6,0), Player("Jack",None,None,1000,6,0)]
-game = Game(player, 10, 20)
+player = [Player("Ryan",None,None,1000,2,0), Player("Jack",None,None,1000,0,0), Player("Matt",None,None,1000,1,0)]
+game = Game(player, 10, 20, True)
 game.newRound()
-name = "Matt"
 
 @app.before_first_request
 def before_first_request():
@@ -24,9 +23,11 @@ def before_first_request():
 
 def update_load():
     with app.app_context():
-        while True:
-            time.sleep(1)
-            turbo.push(turbo.replace(render_template('table.html'), 'load'))
+        turbo.push(turbo.replace(render_template('table.html'), 'load'))
+        redirect("/poker")
+
+def printCurrent():
+    print(game.getPlayers()[game.getCurrentPlayer()].getUser())
 
 @app.route("/")
 def index2():
@@ -38,9 +39,23 @@ def index2():
 def login():
     if request.method == "POST":
         session["name"] = request.form.get("name")
-        name = session["name"]
         return redirect("/")
     return render_template("login.html")
+
+@app.route('/create', methods=["GET", "POST"])
+def create():
+    if request.method == "POST":
+        big = request.form.get("bigBlind")
+        small = request.form.get("smallBlind")
+        buy = request.form.get("buy")
+        p1 = Player(request.form.get("player1"), None, None, buy, 0, "small")
+        p2 = Player(request.form.get("player2"), None, None, buy, 1, "big")
+        p3 = Player(request.form.get("player3"), None, None, buy, 2, None)
+        if not game.isActive():
+            game.reset(big, small, p1, p2, p3)
+            return redirect("/poker")
+        return redirect("/")
+    return render_template("create.html")
 
 @app.route("/logout")
 def logout():
@@ -57,18 +72,19 @@ def page2():
 
 @app.context_processor
 def inject_load():
-    return {'load1': game.getPot(), 'name': name, 'game' : game}
+    return {'game' : game, 'player0' : game.getPlayers()[1].getUser()}
 
 @app.route('/bet/', methods=["GET", "POST"])
 def getBets():
     if request.method == "POST":
         bet = request.form.get("bet")
-        bet = 20
         bet = int(bet)
         if bet == -1:
             bet = None
+        printCurrent()
         game.placeBetFold(bet)
-        return render_template("table.html", game=game)
+        update_load()
+    return redirect("/poker")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

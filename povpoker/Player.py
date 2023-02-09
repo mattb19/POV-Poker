@@ -9,6 +9,7 @@ class Player:
         self.blind = blind
         self.turn = False
         self.color = "white"
+        self.currentBetStr = ""
     
     def getBlind(self):
         return self.blind
@@ -69,3 +70,8 @@ class Player:
 
     def setPlayerNum(self, playerNum):
         self.playerNum = playerNum
+    
+    def getCurrentBetStr(self):
+        if self.currentBet == None or self.currentBet == "0":
+            return ""
+        return str(self.currentBetStr)
