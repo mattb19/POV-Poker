@@ -1,17 +1,58 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, flash
 from turbo_flask import Turbo
+from flask_wtf import FlaskForm
 import threading
 import time
+from wtforms import StringField, SubmitField, validators
 from Player import Player
 from main import Game
 from flask_session import Session
+from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
+from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://////Users/mattbryan/POV-Poker/povpoker/user.db'
+db = SQLAlchemy(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['SECRET_KEY'] = 'secret!'
 Session(app)
 turbo = Turbo(app)
+
+player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,6,0), Player("Ethan",None,None,1000,6,0), Player("Jack",None,None,1000,6,0)]
+game = Game(player, 10, 20, True)
+game.newRound()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), nullable=False)
+    password = db.Column(db.String(15), nullable=False)
+
+
+class UserForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    password = StringField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+@app.route('/addUser', methods=['GET', 'POST'])
+def add_user():
+    username = None
+    form = UserForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            user = User(username=form.username.data, password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
+        username = form.username.data
+        form.username.data = ''
+        form.password.data = ''
+        flash("User added Succesfully!")
+    our_users = User.query.all()
+    return render_template('addUser.html', form=form, username=username, our_users=our_users)
+
+
 
 player = [Player("Ryan",None,None,1000,2,0), Player("Jack",None,None,1000,0,0), Player("Matt",None,None,1000,1,0)]
 game = Game(player, 10, 20, True)
