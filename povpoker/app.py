@@ -21,7 +21,7 @@ class User(db.Model):
     username = db.Column(db.String(15), nullable=False)
     password = db.Column(db.String(15), nullable=False)
 player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,6,0), Player("Ethan",None,None,1000,6,0), Player("Jack",None,None,1000,6,0)]
-game = Game(player, 10, 20)
+game = Game(player, 10, 20, True)
 game.newRound()
 
 class UserForm(FlaskForm):

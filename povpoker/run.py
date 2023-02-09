@@ -10,6 +10,8 @@ from flask_session import Session
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from wtforms.validators import DataRequired, Length, Email, EqualTo
+from .models import User
+from .forms import UserForm
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://////Users/mattbryan/POV-Poker/povpoker/user.db'
@@ -24,16 +26,6 @@ player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0)
 game = Game(player, 10, 20, True)
 game.newRound()
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(15), nullable=False)
-    password = db.Column(db.String(15), nullable=False)
-
-
-class UserForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired()])
-    password = StringField("Password", validators=[DataRequired()])
-    submit = SubmitField("Submit")
 
 @app.route('/addUser', methods=['GET', 'POST'])
 def add_user():
