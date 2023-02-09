@@ -70,6 +70,10 @@ def index():
 def page2():
     return render_template('page2.html')
 
+@app.route('/help')
+def help():
+    return render_template('help.html')
+
 @app.context_processor
 def inject_load():
     return {'game' : game, 'player0' : game.getPlayers()[1].getUser()}
