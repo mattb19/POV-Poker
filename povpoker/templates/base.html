@@ -1,0 +1,194 @@
+<!doctype html>
+<style type="text/css">
+    .slot-1
+    {
+      position:absolute;
+      right:77%;bottom:21%;
+    }
+    .slot-6
+    {
+      position:absolute;
+      right:22%;bottom:74%;
+    }
+    .slot-3
+    {
+      position:absolute;
+      right:78%;bottom:74%;
+    }
+    .slot-8
+    {
+      position:absolute;
+      right:22%;bottom:22%;
+    }
+    .slot-2
+    {
+      position:absolute;
+      right:83%;bottom:50%;
+    }
+    .slot-7
+    {
+      position:absolute;
+      right:13%;bottom:50%;
+    }
+    .slot-10
+    {
+      position:absolute;
+      right:59%;bottom:12%;
+    }
+    .slot-9
+    {
+      position:absolute;
+      right:39%;bottom:12%;
+    }
+    .slot-5
+    {
+      position:absolute;
+      right:39%;bottom:82%;
+    }
+    .slot-4
+    {
+      position:absolute;
+      right:59%;bottom:82%;
+    }
+    .table
+    {
+      position:absolute;
+      right:5%;
+    }
+    .slots
+    {
+      font-size: 26px;
+      font-family: "Lucida Console", "Monaco", monospace;
+      color: white;
+    }
+    .form
+    {
+        position:absolute;
+        right:0%;bottom:2%
+    }
+
+    .chips {
+        font-size: 13px;
+    
+      }
+    .pot {
+      position:absolute;
+      right:49%;bottom:49%;
+      font-size:30px
+    }
+
+    .card1 {
+      position:absolute;
+      right:50.5%;bottom:34%;
+    }
+    .card2 {
+      position:absolute;
+      right:45%;bottom:34%;
+    }
+    .flop1 {
+      position:absolute;
+      right:59.5%;bottom:55%;
+    }
+    .flop2 {
+      position:absolute;
+      right:53.5%;bottom:55%;
+    }
+    .flop3 {
+      position:absolute;
+      right:47.5%;bottom:55%;
+    }
+    .turn {
+      position:absolute;
+      right:41.5%;bottom:55%;
+    }
+    .river {
+      position:absolute;
+      right:35.5%;bottom:55%;
+    }
+
+
+    body {
+        background: #EFCDA4;
+       }
+       .slider {
+        position:absolute;
+        top:-50%;
+        right:-20%;
+        transform:translate(-50%,-50%);
+        width:225px;
+        height:20px;
+        padding:30px;
+        background:#fcfcfc;
+        border-radius:20px;
+        display:flex;
+        align-items:center;
+        box-shadow:0px 15px 40px #7E6D5766;
+       }
+       .slider p {
+        font-size:26px;
+        font-weight:600;
+        padding-left:30px;
+        color:green;
+       }
+       .slider input[type=”range”] {
+        -webkit-appearance:none !important;
+        width:500px;
+        height:2px;
+        background:#7E6D57;
+        border:none;
+        outline:none;
+       }
+       .slider input[type=”range”]::-webkit-slider-thumb {
+        -webkit-appearance:none !important;
+        width:30px;
+        height:30px;
+        background:#fcfcfc;
+        border:2px solid #7E6D57;
+        border-radius:50%;
+        cursor:pointer;
+       }
+       .slider input[type=”range”]::-webkit-slider-thumb:hover {
+        background:#7E6D57;
+       }
+       
+       
+       
+  
+</style>
+
+
+<html>
+  <head>
+    <title>POV Poker</title>
+    <a href="/" target="_blank"><img src="../static/whit.png" width="50" height="50" /></a>
+    <a href="/help" target="_blank"><img src="../static/qe.png" width="50" height="50" /></a>
+    <body class="slots">{{ session.name }}</body>
+    <div class="card1">
+      <img src={{ game.getPlayers()[game.getPlayerNames().index(session.name)].getCard1() }} width="70" height="110">
+    </div>
+    <div class="card2">
+      <img src={{ game.getPlayers()[game.getPlayerNames().index(session.name)].getCard2() }} width="70" height="110">
+    </div>
+    <style>
+      .load {
+        float: right;
+        width: 300px;
+        border: 1px solid black;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+      }
+      .load th, .load td {
+        padding: 6px;
+        text-align: center;
+      }
+    </style>
+    {{ turbo() }}
+  </head>
+  <body>
+    {% include "table.html" %}
+    {% block content %}{% endblock %}
+  </body>
+  <body>
+    {% include "buttons.html" %}
+</html>
