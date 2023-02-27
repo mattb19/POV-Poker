@@ -6,8 +6,8 @@ from main import Game
 from flask_session import Session
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from .models import User
-from .forms import UserForm
+# from .models import User
+# from .forms import UserForm
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://////Users/mattbryan/POV-Poker/povpoker/user.db'
