@@ -5,6 +5,7 @@ As of right now, POV Poker is still in early development. Some features do not w
 
 ## Classes
 * main.py: This is the game file. All attributes for the game are stored in this class, and all actions carried out by the users are passed through this class. All poker logic is present in this file.
+* Card.py: This is where card objects are created and called upon by the Game
 * Player.py: This class contains all individual player attributes, for use by main.py - Each player contains a User
 * User.py: This class has not yet been implemented, it will be used for database storage of player account attributes
 * run.py: This is where the flask server is ran
