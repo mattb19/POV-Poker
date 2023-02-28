@@ -1,5 +1,5 @@
 # POV-Poker
-POV Poker is a work in progress. The end goal of this project is for users to be able to player poker with eachother online, and for special abilities to be added.
+POV Poker is a work in progress. The end goal of this project is for users to be able to play poker with friends online, and for special abilities to be added.
 
 As of right now, POV Poker is still in early development. Some features do not work as expected while others have not been implemented yet. 
 
