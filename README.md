@@ -21,6 +21,7 @@ pip install sqlite
 pip install turbo-flask
 pip install Flask-Sessions
 pip install Flask-SQLAlchemy
+pip install flask_wtf
 ```
 
 ## How to Run
