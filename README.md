@@ -27,10 +27,9 @@ pip install flask_wtf
 ## How to Run
 Run it using the following command:
 ```console
-cd POV-Poker
-python3 run.py
+cd povpoker
+flask run
 ```
-app.py is a test flask server, please ignore
 
 ## How to play
 1. Enter your name and hit register
