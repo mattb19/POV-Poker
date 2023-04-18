@@ -13,6 +13,9 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        next_page = url_for('home')
+        return redirect(next_page)
     return render_template('login.html', title='Login', form=form)
 
 @app.route('/table')
