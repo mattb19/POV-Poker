@@ -1,8 +1,11 @@
-from flask import Flask, render_template, redirect, request, session, url_for
+from flask import Flask, render_template, redirect, request, session, url_for, Response
 from flask_session import Session
 from forms import *
 from Game import Game
 from Player import Player
+import cv2
+import random
+import json
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -38,9 +41,15 @@ def bet():
         bet = int(bet)
         if bet == -1:
             bet = None
+        print(game.players)
         game.placeBetFold(bet)
     return redirect("/table")
     
+@app.route('/getGame')
+def getGame():
+    return game.json()
+
+
 
 @app.route('/table')
 def table():
