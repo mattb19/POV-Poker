@@ -1,0 +1,343 @@
+<style type="text/css">
+    .slot-form {
+    position:absolute;
+    right:76.5%;bottom:0%;
+    }
+    .slot-1
+    {
+    position:absolute;
+    right:77%;bottom:21%;
+    }
+    .slot-2
+    {
+    position:absolute;
+    right:83%;bottom:50%;
+    }
+    .slot-3
+    {
+    position:absolute;
+    right:78%;bottom:74%;
+    }
+    .slot-4
+    {
+    position:absolute;
+    right:59%;bottom:82%;
+    }
+    .slot-5
+    {
+    position:absolute;
+    right:39%;bottom:82%;
+    }
+    .slot-6
+    {
+    position:absolute;
+    right:22%;bottom:74%;
+    }
+    .slot-7
+    {
+    position:absolute;
+    right:13%;bottom:50%;
+    }
+    .slot-8
+    {
+    position:absolute;
+    right:22%;bottom:22%;
+    }
+    .slot-9
+    {
+    position:absolute;
+    right:39%;bottom:12%;
+    }
+    .slot-10
+    {
+    position:absolute;
+    right:59%;bottom:12%;
+    }
+    .table
+    {
+    position:absolute;
+    right:5%;
+    }
+    .playChips1{
+    position:absolute;
+    right:50%:bottom:10%
+    }
+    .slots
+    {
+    font-size: 26px;
+    font-family: "Lucida Console", "Monaco", monospace;
+    color: white;
+    }
+
+    .chips {
+        font-size: 13px;
+    
+    }
+    .pot {
+    position:absolute;
+    right:49%;bottom:49%;
+    font-size:30px
+    }
+
+    .card1 {
+    position:absolute;
+    right:50.5%;bottom:34%;
+    }
+    .card2 {
+    position:absolute;
+    right:45%;bottom:34%;
+    }
+    .flop1 {
+    position:absolute;
+    right:59.5%;bottom:55%;
+    }
+    .flop2 {
+    position:absolute;
+    right:53.5%;bottom:55%;
+    }
+    .flop3 {
+    position:absolute;
+    right:47.5%;bottom:55%;
+    }
+    .turn {
+    position:absolute;
+    right:41.5%;bottom:55%;
+    }
+    .river {
+    position:absolute;
+    right:35.5%;bottom:55%;
+    }
+
+
+    body {
+        background: #EFCDA4;
+    }
+    .slider {
+        position:absolute;
+        bottom:5%;
+        right:0%;
+        transform:translate(-50%,-50%);
+        width:225px;
+        height:20px;
+        padding:30px;
+        background:#fcfcfc;
+        border-radius:20px;
+        display:flex;
+        align-items:center;
+        box-shadow:0px 15px 40px #7E6D5766;
+    }
+    .slider p {
+        font-size:26px;
+        font-weight:600;
+        padding-left:30px;
+        color:green;
+    }
+    .slider input[type=”range”] {
+        -webkit-appearance:none !important;
+        width:500px;
+        height:2px;
+        background:#7E6D57;
+        border:none;
+        outline:none;
+    }
+    .slider input[type=”range”]::-webkit-slider-thumb {
+        -webkit-appearance:none !important;
+        width:30px;
+        height:30px;
+        background:#fcfcfc;
+        border:2px solid #7E6D57;
+        border-radius:50%;
+        cursor:pointer;
+    }
+    .slider input[type=”range”]::-webkit-slider-thumb:hover {
+        background:#7E6D57;
+    }
+</style>
+
+
+
+
+<html>
+    <div class="slots" id="load">
+        <body>{{ session.name }}</body>
+
+        <!-- Table Cards -->
+        <div class="tableCards">
+            <div class="pot">
+                <body>{{ game.getPot() }}</body>
+            </div>
+            <div class="flop1">
+                <img src={{ game.getFlop1() }} width="70" height="110">
+            </div>
+            <div class="flop2">
+                <img src={{ game.getFlop2() }} width="70" height="110">
+            </div>
+            <div class="flop3">
+                <img src={{ game.getFlop3() }} width="70" height="110">
+            </div>
+            <div class="turn">
+                <img src={{ game.getTurn() }} width="70" height="110">
+            </div>
+            <div class="river">
+                <img src={{ game.getRiver() }} width="70" height="110">
+            </div>
+        </div>
+
+        <!-- Player Slots -->
+        <div class="players">
+            {% if game.getPlayerCount() > 0  %}
+            <div class="slot-1" style="color:{{ game.getPlayers()[0].getColor() }}">
+            <body>{{ game.getPlayers()[0].getUser() }}</body>
+            <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[0].getChipCount() }}     </body></div>
+            {% if game.getCurrentPlayer() == 0 %}
+            <img src="../static/chips.png" width="25" height="25">
+            {% endif %}
+            </div>
+            <div class="playChips1"> {{ game.getPlayers()[0].getCurrentBetStr() }}</div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 1  %}
+            <div class="slot-2" style="color:{{ game.getPlayers()[1].getColor() }}">
+                {% if game.getCurrentPlayer() == 1 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+                <body>{{ game.getPlayers()[1].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[1].getChipCount() }}     </body></div>
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 2  %}
+            <div class="slot-3" style="color:{{ game.getPlayers()[2].getColor() }}">
+                <body>{{ game.getPlayers()[2].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[2].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 2 %}
+                <img src="../static/chips.png" width="40" height="40">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 3  %}
+            <div class="slot-4" style="color:{{ game.getPlayers()[3].getColor() }}">
+                <body>{{ game.getPlayers()[3].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[3].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 3 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 4  %}
+            <div class="slot-5" style="color:{{ game.getPlayers()[4].getColor() }}">
+                <body>{{ game.getPlayers()[4].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[4].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 4 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 5  %}
+            <div class="slot-6" style="color:{{ game.getPlayers()[5].getColor() }}">
+                <body>{{ game.getPlayers()[5].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[5].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 5 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 6  %}
+            <div class="slot-7" style="color:{{ game.getPlayers()[6].getColor() }}">
+                <body>{{ game.getPlayers()[6].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[6].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 6 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 7  %}
+            <div class="slot-8" style="color:{{ game.getPlayers()[7].getColor() }}">
+                <body>{{ game.getPlayers()[7].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[7].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 7 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 8  %}
+            <div class="slot-9" style="color:{{ game.getPlayers()[8].getColor() }}">
+                <body>{{ game.getPlayers()[8].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[8].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 8 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+    
+    
+            {% if game.getPlayerCount() > 9  %}
+            <div class="slot-10" style="color:{{ game.getPlayers()[9].getColor() }}">
+                <body>{{ game.getPlayers()[9].getUser() }}</body>
+                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[9].getChipCount() }}     </body></div>
+                {% if game.getCurrentPlayer() == 9 %}
+                <img src="../static/chips.png" width="25" height="25">
+                {% endif %}
+            </div>
+            {%endif%}
+        </div>
+
+        <!-- Check, Bet, Fold buttons -->
+        <div class="form">
+            <div class="container">
+                <form action="/bet" method="post">
+                    <div class="check">
+                        <button class="button3" type="submit" id="bet" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabledd{%endif%} name="bet" value="0">CHECK</button>
+                    </div>
+                </form>
+                <form action="/bet" method="post">
+                    <div class="check">
+                        <button class="button2" type="submit" id="bet" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabledd{%endif%} name="bet" value={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}>CALL</button>
+                    </div>
+                </form>
+                <form action="/bet" method="post">
+                    <div class="check">
+                        <button class="button1" type="submit" id="bet" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabledd{%endif%} name="bet" value="-1">FOLD</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="slot-form">
+        <form action="/bet" method="post">
+            <div class="slider">
+                <input type="range" id="bet" name="bet" min={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }} max={{ game.getPlayers()[0].getChipCount() }} value="10"   oninput="rangeValue.innerText = this.value">
+                <p id="rangeValue">{{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}</p>
+            </div>
+            <button type="submit" class="button4" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabled{%endif%}>BET</button>
+        </form>
+        </div>
+    </div>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+        </style>
+    </head>
+    <div class="table">
+        <body style="background: url(../static/thetable.jpeg) no-repeat center center fixed; background-size: 100%;">
+        </body>
+    </div>
+</html>
+
+
