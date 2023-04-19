@@ -22,6 +22,7 @@ pip install turbo-flask
 pip install Flask-Sessions
 pip install Flask-SQLAlchemy
 pip install flask_wtf
+pip install opencv-python
 ```
 
 ## How to Run
