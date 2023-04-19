@@ -206,7 +206,26 @@
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
                             console.log(data);
-                            $("#c1").text(data.players[0].chipCount)
+
+
+                            // Change each players chip count
+                            for (let i=0; i < data.players.length; i++) {
+                                $(".c"+i.toString()).text(data.players[i].chipCount);
+                            }
+
+
+                            // Change current player marker
+                            for (let i=0; i < 10; i++) {
+                                if (i == data.currentPlayer) {
+                                    console.log(document.getElementsByClassName("user0"))
+                                    document.getElementById("user"+i.toString()).style.visibility='visible';
+                                } else {
+                                    document.getElementById("user"+i.toString()).style.visibility='hidden';
+                                }
+                            }
+
+
+                            // Call the function 5 times every second
                             setTimeout(update_values, 200);
                         });
                 }
@@ -222,20 +241,16 @@
                 {% if game.players|length > 0  %}
                 <div class="slot-1" style="color:{{ game.players[0].color }}">
                     <body>{{ game.players[0].user }}</body>
-                    <div id="c1" style="font-size:13px"></div>
-                    {% if game.currentPlayer == 0 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c0" style="font-size:13px"></div>
+                    <img id="user0" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
                 {% if game.players|length > 1  %}
                 <div class="slot-2" style="color:{{ game.players[1].color }}">
                     <body>{{ game.players[1].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[1].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 1 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c1" style="font-size:13px"></div>
+                    <img id="user1" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
@@ -243,10 +258,8 @@
                 {% if game.players|length > 2  %}
                 <div class="slot-3" style="color:{{ game.players[2].color }}">
                     <body>{{ game.players[2].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[2].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 2 %}
-                    <img src="../static/chips.png" width="40" height="40">
-                    {% endif %}
+                    <div class="c2" style="font-size:13px"></div>
+                    <img id="user2" src="../static/chips.png" width="40" height="40">
                 </div>
                 {%endif%}
             
@@ -254,10 +267,8 @@
                 {% if game.players|length > 3  %}
                 <div class="slot-4" style="color:{{ game.players[3].color }}">
                     <body>{{ game.players[3].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[3].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 3 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c3" style="font-size:13px"></div>
+                    <img id="user3" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
@@ -265,10 +276,8 @@
                 {% if game.players|length > 4  %}
                 <div class="slot-5" style="color:{{ game.players[4].color }}">
                     <body>{{ game.players[4].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[4].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 4 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c4" style="font-size:13px"></div>
+                    <img id="user4" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
@@ -276,21 +285,17 @@
                 {% if game.players|length > 5  %}
                 <div class="slot-6" style="color:{{ game.players[5].color }}">
                     <body>{{ game.players[5].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[5].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 5 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c5" style="font-size:13px"></div>
+                    <img id="user5" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
-            
-            
-                {% if game.player|length > 6  %}
+
+
+                {% if game.players|length > 6  %}
                 <div class="slot-7" style="color:{{ game.players[6].color }}">
                     <body>{{ game.players[6].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[6].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 6 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c6" style="font-size:13px"></div>
+                    <img id="user6" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
@@ -298,10 +303,8 @@
                 {% if game.players|length > 7  %}
                 <div class="slot-8" style="color:{{ game.players[7].color }}">
                     <body>{{ game.players[7].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[7].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 7 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c7" style="font-size:13px"></div>
+                    <img id="user7" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
@@ -309,10 +312,8 @@
                 {% if game.players|length > 8  %}
                 <div class="slot-9" style="color:{{ game.players[8].color }}">
                     <body>{{ game.players[8].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[8].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 8 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c8" style="font-size:13px"></div>
+                    <img id="user8" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             
@@ -320,10 +321,8 @@
                 {% if game.players|length > 9  %}
                 <div class="slot-10" style="color:{{ game.players[9].color }}">
                     <body>{{ game.players[9].user }}</body>
-                    <div class="chips" position="relative"><body class="chips">{{ game.players[9].chipCount }}     </body></div>
-                    {% if game.currentPlayer == 9 %}
-                    <img src="../static/chips.png" width="25" height="25">
-                    {% endif %}
+                    <div class="c9" style="font-size:13px"></div>
+                    <img id="user9" src="../static/chips.png" width="25" height="25">
                 </div>
                 {%endif%}
             </div>
@@ -334,17 +333,17 @@
                 <div class="container">
                     <form action="/bet" method="post">
                         <div class="check">
-                            <button class="button3" type="submit" id="bet" {% if not game.playerNames.index(session.name) == game.currentPlayer %}disabledd{%endif%} name="bet" value="0">CHECK</button>
+                            <button class="button3" type="submit" id="bet"  name="bet" value="0">CHECK</button>
                         </div>
                     </form>
                     <form action="/bet" method="post">
                         <div class="check">
-                            <button class="button2" type="submit" id="bet" {% if not game.playerNames.index(session.name) == game.currentPlayer %}disabledd{%endif%} name="bet" value={{ game.currentBet - game.players[game.currentPlayer].currentBet }}>CALL</button>
+                            <button class="button2" type="submit" id="bet"  name="bet" value={{ game.currentBet - game.players[game.currentPlayer].currentBet }}>CALL</button>
                         </div>
                     </form>
                     <form action="/bet" method="post">
                         <div class="check">
-                            <button class="button1" type="submit" id="bet" {% if not game.playerNames.index(session.name) == game.currentPlayer %}disabledd{%endif%} name="bet" value="-1">FOLD</button>
+                            <button class="button1" type="submit" id="bet"  name="bet" value="-1">FOLD</button>
                         </div>
                     </form>
                 </div>
@@ -353,11 +352,11 @@
             <div class="slot-form">
                 <form action="/bet" method="post">
                     <div class="slider">
-                        <input type="range" id="bet" name="bet" min={{ game.currentBet - game.players[game.currentPlayer].currentBet }} max={{ game.players[game.playerNames.index(session.name)].chipCount }} value="10"   
+                        <input type="range" id="bet" name="bet" min={{ game.currentBet - game.players[game.currentPlayer].currentBet }} value="10"   
                         oninput="rangeValue.innerText = this.value">
                         <p id="rangeValue">{{ game.currentBet - game.players[game.currentPlayer].currentBet }}</p>
                     </div>
-                    <button type="submit" class="button4" {% if not game.playerNames.index(session.name) == game.currentPlayer %}disabled{%endif%}>BET</button>
+                    <button type="submit" class="button4">BET</button>
                 </form>
             </div>
         </div>
