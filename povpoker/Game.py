@@ -2,6 +2,8 @@ import random
 from Card import Card
 import time
 import Player
+import json
+from copy import deepcopy
 
 class Game:
     def __init__(self, players, smallBlind, bigBlind, active) -> None:
@@ -28,8 +30,6 @@ class Game:
         self.bigBlind = bigBlind
        
         
-        
-    
     def shuffleDeck(self):
         # generate a new deck
         suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
@@ -533,7 +533,22 @@ class Game:
     
     def getRiver(self):
         return self.river
-    
+
+    def setFlop1(self, card):
+        self.flop1 = card
+        
+    def setFlop2(self, card):
+        self.flop2 = card
+        
+    def setFlop3(self, card):
+        self.flop3 = card
+        
+    def setTurn(self, card):
+        self.turn = card
+        
+    def setRiver(self, card):
+        self.river = card
+
     def getCurrentPlayer(self):
         return self.currentPlayer
     
@@ -543,11 +558,31 @@ class Game:
     def getPlayerCount(self):
         return self.playerCount
     
+    def setTableCards(self):
+        self.tableCards = [i.__dict__ for i in self.tableCards]
+
+    def setPlayers(self, players):
+        self.players = players
+    
     def addPlayers(self, name, chipCount):
         self.playerQueue.append(Player(name, None, None, chipCount, len(self.players)+len(self.playerQueue)-1, None))
     
     def isActive(self):
         return self.active
+    
+    def json(self):
+        game = deepcopy(self)
+        game.setFlop1(game.getFlop1().__dict__)
+        game.setFlop2(game.getFlop2().__dict__)
+        game.setFlop3(game.getFlop3().__dict__)
+        game.setTurn(game.getTurn().__dict__)
+        game.setRiver(game.getRiver().__dict__)
+        game.setTableCards()
+        for i in game.players:
+            i.setCard1(str(i.getCard1()))
+            i.setCard2(str(i.getCard2()))
+        game.setPlayers([i.__dict__ for i in game.getPlayers()])
+        return json.dumps(game.__dict__, indent=4)
     
     def reset(self, big, small, player1, player2, player3):
         self.bigBlind = big
