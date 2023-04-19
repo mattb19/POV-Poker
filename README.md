@@ -26,20 +26,18 @@ pip install opencv-python
 ```
 
 ## How to Run
-Run it using the following command:
+Navigate to the povpoker folder:
 ```console
 cd povpoker
-flask run
 ```
 
-## How to play
+Run it using the following command:
+```console
+flask run
+```
+Click the link and type in any extension you want to view
+
+## How to play (In Progress)
 1. Enter your name and hit register
 2. Hit join table
 3. Start playing around with the betting, folding and such
-
-## Fixes in progress
-* Minor tweaks to poker logic
-* ALL-IN capability
-* Joining mid game
-* Leaving mid game
-* Session management/correct data being presented to the correct players
