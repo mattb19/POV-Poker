@@ -43,8 +43,7 @@ class Game:
         random.shuffle(self.deck)
         random.shuffle(self.deck)
         random.shuffle(self.deck)
-
-
+        
     def dealCards(self):
         # deal cards to players from a pre shuffled deck
         for i in range(0, len(self.players)):

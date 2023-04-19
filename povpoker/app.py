@@ -21,6 +21,10 @@ game.newRound()
 def home():
     return render_template('home.html')
 
+
+@app.route('/help')
+def help():
+    return render_template('help.html')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
