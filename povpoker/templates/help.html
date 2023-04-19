@@ -2,16 +2,21 @@
     .title{
         color: green;
         text-align:center;
-        font-size:40px;
+        font-size:35px;
         margin-top:5%;
+        font-family: "Lucida Console", "Courier New", monospace;
+        
 
     }
     .body{
-        
+       margin-top:0%;
+       font-family: "Lucida Console", "Courier New", monospace; 
     }
     .whatIsTitle{
         font-size:25px;
         text-align:center;
+        color:#800020;
+        
         
         
     }
@@ -26,6 +31,7 @@
     .gameRulesTitle{
         font-size:25px;
         text-align:center;
+        color:#800020;
     }
     .gameRulesParagraph{
         margin-right:15%;
@@ -42,6 +48,8 @@
     .howToPlayTitle{
         font-size:25px;
         text-align:center;
+        color:#800020;
+        margin-top:2%;
     }
     .howToPlayParagraph{
         margin-right:0%;
@@ -52,98 +60,202 @@
     .orderTitle{
         text-align:center;
         font-size:30;
-        color:red;
+        color:black;
     }
     .orderList{
         margin-left: 33.5%;
         margin-top:0%;
 
     }
+    .blindTitle{
+        font-size:25px;
+        text-align:center;
+        color:#800020;
+        margin-top:2%;
+    }
+    
+    .blindParagraph{
+        margin-right:0%;
+        margin-left:0%;
+        margin-top:1%;
+        text-indent:30px; 
+    }
+    .blindsIMG{
+        margin-top:1%;
+        text-align:center; 
+    }
+    .fullScreen{
+        background-image: url(../static/help_background.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin-top:-5%;
+        
+        
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 50%%;
+        vertical-align: baseline;
+        background: transparent;
+    }
+    .handTitle{
+        font-size:25px;
+        text-align:center;
+        color:#800020;
+        margin-top:2%;
+    }
+    .handsParagraph{
+        margin-right:0%;
+        margin-left:0%;
+        margin-top:1%;
+        text-indent:30px;
+    }
+    .handsIMG{
+        margin-top:1%;
+        text-align:center;
+    }
+    .conclusionTitle{
+        font-size:25px;
+        text-align:center;
+        color:#800020;
+        margin-top:2%;
+    }
+    .conclusionParagraph{
+        margin-right:0%;
+        margin-left:0%;
+        margin-top:1%;
+        
+        text-indent:30px;
+    }
 
 </style>
     
-
-<div class="title">
-    <h1>Texas Hold'em</h1>
-    
-</div>
-
-<div class="body">
-    <div class="whatIsTitle">
-        What is Texas Hold'em?
-    </div>
-    <div class="whatIsParagraph">
-        Texas Hold'em is the most popular of all poker variations. Discovering how to play Texas hold'em poker is not difficult and the simplicity of its rules, gameplay, and hand-ranking all contribute to the popularity of the game.
-        The number of possible situations and combinations is so vast that Texas hold'em can be an extremely complex game when you play at the highest levels.
-        If you are approaching the game of Texas hold'em for the first time, starting from the basic rules of the game is key. Not only these are the easiest ones to learn, but they are also essential to understand the gameplay and, later on, the game's basic strategy.
-
+<div class="fullScreen">
+    <div class="title">
+        <h1>Texas Hold'em</h1>
+        <h2></h2>
     </div>
     
-    <div class="gameRulesTitle">
-        Rules of the Game
-    </div>
-    
-    <div class="gameRulesParagraph">
-        <p1>
-            At the beginning of eveyr round, you will be dealt 2 cards, face down. These cards are called your "hole". The goal of a Texas hold'em game is to use the cards in your "hole" along with the community cards to make the best five-card poker hand on the table.
-
-        </p1>
-        
-        <br></br>
-        
-        <p2>
-            Over several betting rounds, five more cards will be dealt face up in the middle of the table. These are called your "Community" cards. Once the community cards are dealt.
-            It is your turn to find the best combination between "hole" and "community" cards.  
-        </p2>
-        
-        <br></br>
-        
-        <p3>
-            If the 5 cards on the table lead to a combination better than one that involves your "hole", you can play all five community cards and disregard yours.
-            In this version of poker, you can use whatever combination you would like to make the best hand.
-            If the betting causes all but one player to fold, the final active player wins the pot. This also means that you don't have to show your "hole" to other players.
-            This shows that you don't need the best cards in the deck to win a game. It is possible for a player to "bluff" and make opponents fold a hand that is actually better than yours
-            Below shows a diagram of the "Community" cards.
-        </p3>
-        
-        <div class="FlopTurnRiverIMG">
-            <img src="../static/FlopTurnRiver.png" length="200" height="200">
+    <div class="body">
+        <div class="whatIsTitle">
+            What is Texas Hold'em?
         </div>
-        <br></br>
-        <p4>
-            If two or more players make it all of the way to the end after the last community card is dealt and all betting is complete, the only way to win the pot is to have the highest-ranking poker hand.
-        </p4>
-        <div class="howToPlayTitle">
-            How to Play a Round
+        <div class="whatIsParagraph">
+            Texas Hold'em is the most popular of all poker variations. Discovering how to play Texas hold'em poker is not difficult and the simplicity of its rules, gameplay, and hand-ranking all contribute to the popularity of the game.
+            The number of possible situations and combinations is so vast that Texas hold'em can be an extremely complex game when you play at the highest levels.
+            If you are approaching the game of Texas hold'em for the first time, starting from the basic rules of the game is key. Not only these are the easiest ones to learn, but they are also essential to understand the gameplay and, later on, the game's basic strategy.
+    
         </div>
-    <div class="howToPlayParagraph">
-        <p1>
-            <div class="orderTitle">
-                Steps:
-            </div> 
+        
+        <div class="gameRulesTitle">
+            Rules of the Game
+        </div>
+        
+        <div class="gameRulesParagraph">
+            <p1>
+                At the beginning of eveyr round, you will be dealt 2 cards, face down. These cards are called your "hole". The goal of a Texas hold'em game is to use the cards in your "hole" along with the community cards to make the best five-card poker hand on the table.
+    
+            </p1>
             
-        </p1>
-        
-        
-        <p2>
-            <div class="orderList">
-                <ol>
-                    <li>Players enter round 1 of betting.</li>
-                
-                    <li>Betting ends, players are dealt 2 cards each face down.</li>
-                    <li>Players enter round 2 of betting.</li> 
-                    <li>Betting ends, first community card is shown. </li>
-                    <li>Players enter round 2 of betting.</li>
-                    <li>Betting ends, second community card is shown.</li>
-                    <li>Players enter round 3 of betting.</li>
-                    <li>Betting ends, final community card is shown.</li>
-                    <li>Players enter final round of betting.</li>
-                    <li>Betting ends, winner is revealed.</li>
-                </ol>
-                
+            <br></br>
+            
+            <p2>
+                Over several betting rounds, five more cards will be dealt face up in the middle of the table. These are called your "Community" cards. Once the community cards are dealt.
+                It is your turn to find the best combination between "hole" and "community" cards.  
+            </p2>
+            
+            <br></br>
+            
+            <p3>
+                If the 5 cards on the table lead to a combination better than one that involves your "hole", you can play all five community cards and disregard yours.
+                In this version of poker, you can use whatever combination you would like to make the best hand.
+                If the betting causes all but one player to fold, the final active player wins the pot. This also means that you don't have to show your "hole" to other players.
+                This shows that you don't need the best cards in the deck to win a game. It is possible for a player to "bluff" and make opponents fold a hand that is actually better than yours
+                Below shows a diagram of the "Community" cards.
+            </p3>
+            
+            <div class="FlopTurnRiverIMG">
+                <img src="../static/FlopTurnRiver.png" length="200" height="200">
             </div>
-        </p2>
-    </div>    
-    
+            <br></br>
+            <p4>
+                If two or more players make it all of the way to the end after the last community card is dealt and all betting is complete, the only way to win the pot is to have the highest-ranking poker hand.
+            </p4>
+            <div class="howToPlayTitle">
+                How to Play a Round
+            </div>
+        <div class="howToPlayParagraph">
+            <p1>
+                <div class="orderTitle">
+                    Steps:
+                </div> 
+                
+            </p1>
+            
+            
+            <p2>
+                <div class="orderList">
+                    <ol>
+                        <li>Players enter round 1 of betting.</li>
+                    
+                        <li>Betting ends, players are dealt 2 cards each face down.</li>
+                        <li>Players enter round 2 of betting.</li> 
+                        <li>Betting ends, first community card is shown. </li>
+                        <li>Players enter round 3 of betting.</li>
+                        <li>Betting ends, second community card is shown.</li>
+                        <li>Players enter round 4 of betting.</li>
+                        <li>Betting ends, final community card is shown.</li>
+                        <li>Players enter final round of betting.</li>
+                        <li>Betting ends, cards are shown, and winner is revealed.</li>
+                    </ol>
+                    
+                </div>
+            </p2>
+        
+        </div>    
+        <div class="blindTitle">
+            Blinds
+        </div>
+        <div class="blindParagraph">
+            <p1>
+                Poker blinds are mandatory bets that are placed into the pot before any of the cards are dealt. The blinds are paid each hand by the players who are in the “small blind” and “big blind” spots at the table. 
+                Poker blinds help prevent players from simply folding until they are dealt premium cards.
+            </p1>
+        </div>
+        <div class="blindsIMG">
+            <img src="../static/blinds_in_poker.png" length="200" height="200">
+        </div>
+        <div class="handTitle">
+            Hands
+        </div>
+        
+        <div class="handsParagraph">
+            In poker, there is a multitude of hands that must be learned to better familiarize yourself with your chance of winning.
+            It is important to know your hand's ranking so that you can base your betting off of it. 
+            Below shows the 10 different types of hands in a game of poker.
+            
+        </div>
+
+        <div class="handsIMG">
+            <img src="../static/poker_hands.jpg" length="400" height="400">
+        </div>
+        
+        <div class="conclusionTitle">
+            How Will You Master Poker?
+        </div>
+        <div class="conclusionParagraph">
+            <p1>
+                Repetition is the best way to become a master at poker. It is important to be curious in your learning stages and try different strategies.
+                Every game you play will improve your skills and if you are lucky, you might get a little bit richer. Have fun playing POV poker!
+            </p1>
+        </div>
+        <br></br>
+        <br></br>
+    </div>
+
 </div>
+
  
