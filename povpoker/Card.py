@@ -18,6 +18,7 @@ class Card:
         return self._id
     
     def __str__(self) -> str:
+        '''gfgg'''
         return "../static/PNG-cards-1.3/"+self._num+"_of_"+self._suit+".png"
-    
+
     
