@@ -1,3 +1,37 @@
+<style>
+.table {
+    background-image: url(../static/thetable.jpeg);
+    background-color: black;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 110%;
+}
+
+.player {
+    font-size: 26px;
+    font-family: "Lucida Console", "Monaco", monospace;
+    color: white;
+}
+</style>
+<html>
+    <head></head>
+    <body class="table">
+        <div class="player">
+            <div>Ryan</div>
+            <div>Jack</div>
+            <div>Matt</div>
+            <div></div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+        </div>
+    </body>
+</html>
+<!--
 <style type="text/css">
     .slot-form {
     position:absolute;
@@ -171,12 +205,11 @@
     <body>
         <div class="slots" id="load">
             <body>{{ session.name }}</body>
-
-
-
+-->
 
 
             <!-- Table Cards -->
+<!--
             <div class="tableCards">
                 <div class="pot">
                     <body>{{ game.getPot() }}</body>
@@ -235,8 +268,9 @@
 
 
 
-
+-->
             <!-- Player Slots -->
+<!--
             <div id="playy" class="players">
                 {% if game.players|length > 0  %}
                 <div class="slot-1" style="color:{{ game.players[0].color }}">
@@ -327,8 +361,9 @@
                 {%endif%}
             </div>
             
-
+-->
             <!-- Check, Bet, Fold buttons -->
+<!--
             <div class="form">
                 <div class="container">
                     <form action="/bet" method="post">
@@ -366,9 +401,7 @@
             </body>
         </div>
     </body>
-
-
-
+-->
 </html>
 
 
