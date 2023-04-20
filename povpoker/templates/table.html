@@ -1,33 +1,109 @@
 <style>
-.table {
+.slot-1 {
+    position:absolute;
+    right:77%;bottom:21%;
+}
+.slot-2 {
+    position:absolute;
+    right:83%;bottom:50%;
+}
+.slot-3 {
+    position:absolute;
+    right:78%;bottom:74%;
+}
+.slot-4 {
+    position:absolute;
+    right:59%;bottom:82%;
+}
+.slot-5 {
+    position:absolute;
+    right:39%;bottom:82%;
+}
+.slot-6 {
+    position:absolute;
+    right:22%;bottom:74%;
+}
+.slot-7 {
+    position:absolute;
+    right:13%;bottom:50%;
+}
+.slot-8 {
+    position:absolute;
+    right:22%;bottom:22%;
+}
+.slot-9 {
+    position:absolute;
+    right:39%;bottom:12%;
+}
+.slot-10 {
+    position:absolute;
+    right:59%;bottom:12%;
+}
+
+#table {
     background-image: url(../static/thetable.jpeg);
     background-color: black;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 110%;
+    background-size: 105%;
 }
 
-.player {
+.players {
     font-size: 26px;
     font-family: "Lucida Console", "Monaco", monospace;
     color: white;
 }
+
+#pot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size:30px;
+    font-family: "Lucida Console", "Monaco", monospace;
+    color: white;
+}
+
+#tablecards {
+    width: 33%;
+    margin: 11% auto 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card {
+    max-width: 70px;
+    min-width: 70px;
+    min-height: 110px;
+    height: auto;
+} 
 </style>
 <html>
-    <head></head>
-    <body class="table">
-        <div class="player">
-            <div>Ryan</div>
-            <div>Jack</div>
-            <div>Matt</div>
-            <div></div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>10</div>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body id="table">
+        <div class="players">
+            {{ session.name }}
+            <div class="slot-1">Jeremy</div>
+            <div class="slot-2">Matt</div>
+            <div class="slot-3">Trent</div>
+            <div class="slot-4">Ryan</div>
+            <div class="slot-5">Jackson</div>
+            <div class="slot-6">Luke</div>
+            <div class="slot-7">David</div>
+            <div class="slot-8">Max</div>
+            <div class="slot-9">Ethan</div>
+            <div class="slot-10">Jack</div>
+        </div>
+        <div id="pot">{{ game.getPot() }}</div>
+        <div id="tableCards">
+            <img class="card" src={{ game.getFlop1() }}>
+            <img class="card" src={{ game.getFlop2() }}>
+            <img class="card" src={{ game.getFlop3() }}>
+            <img class="card" src={{ game.getTurn() }}>
+            <img class="card" src={{ game.getRiver() }}>
         </div>
     </body>
 </html>
