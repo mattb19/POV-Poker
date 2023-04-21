@@ -3,52 +3,52 @@
     position:absolute;
     right:76.5%;bottom:0%;
     }
-    .slot-1
+    .slot-0
     {
     position:absolute;
     right:77%;bottom:21%;
     }
-    .slot-2
+    .slot-1
     {
     position:absolute;
     right:83%;bottom:50%;
     }
-    .slot-3
+    .slot-2
     {
     position:absolute;
     right:78%;bottom:74%;
     }
-    .slot-4
+    .slot-3
     {
     position:absolute;
     right:59%;bottom:82%;
     }
-    .slot-5
+    .slot-4
     {
     position:absolute;
     right:39%;bottom:82%;
     }
-    .slot-6
+    .slot-5
     {
     position:absolute;
     right:22%;bottom:74%;
     }
-    .slot-7
+    .slot-6
     {
     position:absolute;
     right:13%;bottom:50%;
     }
-    .slot-8
+    .slot-7
     {
     position:absolute;
     right:22%;bottom:22%;
     }
-    .slot-9
+    .slot-8
     {
     position:absolute;
     right:39%;bottom:12%;
     }
-    .slot-10
+    .slot-9
     {
     position:absolute;
     right:59%;bottom:12%;
@@ -205,7 +205,6 @@
                     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
-                            console.log(data);
 
 
                             // Change each players chip count
@@ -214,15 +213,34 @@
                             }
 
 
+                            // Display each players name with the correct color
+                            for (let i=0; i < data.players.length; i++) {
+                                $(".playerName"+i.toString()).text(data.players[i].user);
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.color=data.players[i].color;
+                            }
+
+                            
                             // Change current player marker
                             for (let i=0; i < 10; i++) {
                                 if (i == data.currentPlayer) {
-                                    console.log(document.getElementsByClassName("user0"))
                                     document.getElementById("user"+i.toString()).style.visibility='visible';
                                 } else {
                                     document.getElementById("user"+i.toString()).style.visibility='hidden';
                                 }
                             }
+
+
+                            // Only display slots which contain a currently active player
+                            for (let i=0; i < 10; i++) {
+                                if (i < data.players.length) {
+                                    document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='visible';
+                                } else {
+                                    document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='hidden';
+                                }
+                            }
+
+
+                            
 
 
                             // Call the function 5 times every second
@@ -238,93 +256,73 @@
 
             <!-- Player Slots -->
             <div id="playy" class="players">
-                {% if game.players|length > 0  %}
-                <div class="slot-1" style="color:{{ game.players[0].color }}">
-                    <body>{{ game.players[0].user }}</body>
+                <div class="slot-0">
+                    <div class="playerName0"></div>
                     <div class="c0" style="font-size:13px"></div>
                     <img id="user0" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
-            
-                {% if game.players|length > 1  %}
-                <div class="slot-2" style="color:{{ game.players[1].color }}">
-                    <body>{{ game.players[1].user }}</body>
+        
+                <div class="slot-1">
+                    <div class="playerName1"></div>
                     <div class="c1" style="font-size:13px"></div>
                     <img id="user1" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 2  %}
-                <div class="slot-3" style="color:{{ game.players[2].color }}">
-                    <body>{{ game.players[2].user }}</body>
+                <div class="slot-2">
+                    <div class="playerName2"></div>
                     <div class="c2" style="font-size:13px"></div>
                     <img id="user2" src="../static/chips.png" width="40" height="40">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 3  %}
-                <div class="slot-4" style="color:{{ game.players[3].color }}">
-                    <body>{{ game.players[3].user }}</body>
+                <div class="slot-3">
+                    <div class="playerName3"></div>
                     <div class="c3" style="font-size:13px"></div>
                     <img id="user3" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 4  %}
-                <div class="slot-5" style="color:{{ game.players[4].color }}">
-                    <body>{{ game.players[4].user }}</body>
+                <div class="slot-4">
+                    <div class="playerName4"></div>
                     <div class="c4" style="font-size:13px"></div>
                     <img id="user4" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 5  %}
-                <div class="slot-6" style="color:{{ game.players[5].color }}">
-                    <body>{{ game.players[5].user }}</body>
+                <div class="slot-5">
+                    <div class="playerName5"></div>
                     <div class="c5" style="font-size:13px"></div>
                     <img id="user5" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
 
 
-                {% if game.players|length > 6  %}
-                <div class="slot-7" style="color:{{ game.players[6].color }}">
-                    <body>{{ game.players[6].user }}</body>
+                <div class="slot-6">
+                    <div class="playerName6"></div>
                     <div class="c6" style="font-size:13px"></div>
                     <img id="user6" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 7  %}
-                <div class="slot-8" style="color:{{ game.players[7].color }}">
-                    <body>{{ game.players[7].user }}</body>
+                <div class="slot-7">
+                    <div class="playerName7"></div>
                     <div class="c7" style="font-size:13px"></div>
                     <img id="user7" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 8  %}
-                <div class="slot-9" style="color:{{ game.players[8].color }}">
-                    <body>{{ game.players[8].user }}</body>
+                <div class="slot-8">
+                    <div class="playerName8"></div>
                     <div class="c8" style="font-size:13px"></div>
                     <img id="user8" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 9  %}
-                <div class="slot-10" style="color:{{ game.players[9].color }}">
-                    <body>{{ game.players[9].user }}</body>
+                <div class="slot-9">
+                    <div class="playerName9"></div>
                     <div class="c9" style="font-size:13px"></div>
                     <img id="user9" src="../static/chips.png" width="25" height="25">
                 </div>
-                {%endif%}
             </div>
             
 
