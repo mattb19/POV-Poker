@@ -14,12 +14,9 @@ As of right now, POV Poker is still in early development. Some features do not w
 ## Dependencies
 ```console
 pip install bs4
-pip install selenium
 pip install webdriver-manager
 pip install flask-cors
 pip install sqlite
-pip install turbo-flask
-pip install Flask-Sessions
 pip install flask_sessions
 pip install Flask-SQLAlchemy
 pip install flask_wtf
