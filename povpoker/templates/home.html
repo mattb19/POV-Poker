@@ -7,9 +7,8 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body >
-<div class="container">
-    <button data-id='1' class="userinfo btn btn-success">Info</button>
-   <br />
+<div class="container" style="margin-left: 1760px; margin-top: 1px">
+    <button data-id='1' class="userinfo btn btn-success"><img height="50px" src="../static/chippy.png" width="50px" alt="buttonpng" border="0" /></button>
 </div>    
             <script type='text/javascript'>
             $(document).ready(function(){
@@ -33,7 +32,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">User Info</h4>
+                        <h4 class="modal-title">{{theUser.userName}}'s Profile</h4>
                       <button type="button" class="close" data-dismiss="modal">×</button>
                     </div>
                     <div class="modal-body">
