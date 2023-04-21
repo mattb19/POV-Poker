@@ -18,6 +18,7 @@ pip install webdriver-manager
 pip install flask-cors
 pip install sqlite
 pip install flask_sessions
+pip3 install flask-session
 pip install Flask-SQLAlchemy
 pip install flask_wtf
 pip install opencv-python
