@@ -6,7 +6,7 @@ import json
 from copy import deepcopy
 
 class Game:
-    def __init__(self, players, smallBlind, bigBlind, active) -> None:
+    def __init__(self, players, smallBlind, bigBlind) -> None:
         self.players = players
         self.deck = []
         self.pot = 0
@@ -18,7 +18,8 @@ class Game:
         self.playerNames = [i.getUser() for i in self.players]
         self.playerCount = len(self.players)
         self.playerQueue = []
-        self.active = active
+        self.active = False
+        self.blinds = []
         
         self.flop1 = Card("None","None",0)
         self.flop2 = Card("None","None",0)
@@ -54,15 +55,43 @@ class Game:
             self.players[i].setCard2(self.deck[-1])
             self.deck.pop()
         
-        
+    
     def newRound(self):
         # generate a new deck
         self.shuffleDeck()
         
-        self.players + self.playerQueue
+        # add any waiting players
+        self.players += self.playerQueue
         self.playerQueue = []
         self.round = 0
-        # rotates player list by 1
+        
+        # initialize blinds if its a new game
+        if not self.active:
+            self.players[0].setBlind(1)
+            self.players[1].setBlind(2)
+            self.active = True
+            
+        
+        # rotate blinds
+        for i in range(len(self.players)):
+            if self.players[i].getBlind() == 0:
+                continue
+            elif self.players[i].getBlind() == 1 and i == len(self.players)-1:
+                self.players[len(self.players)-1].setBlind(0)
+                self.players[0].setBlind(1)
+                self.players[1].setBlind(2)
+            elif self.players[i].getBlind() == 1 and i == len(self.players)-2:
+                self.players[len(self.players)-2].setBlind(0)
+                self.players[len(self.players)-1].setBlind(1)
+                self.players[0].setBlind(2)
+            else:
+                self.players[i].setBlind(0)
+                self.players[i+1].setBlind(1)
+                self.players[i+2].setBlind(2)
+                
+
+            
+        
         
         
         # set everyones bet count to zero and turn to true
