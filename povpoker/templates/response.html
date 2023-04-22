@@ -1,0 +1,31 @@
+<table border='0' width='100%'>
+    <tr>
+        <p style="text-align: center">Name : {{theUser.userName}}</p>
+        <p style="text-align: center">Email : {{theUser.userEmail}}</p>
+        <p style="text-align: center">Bio : {{theUser.bio}}</p>
+    </br>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Wins</th>
+                    <th>Straights</th>
+                    <th>Flushes</th>
+                    <th>Full Houses</th>
+                    <th>Four of a Kinds</th>
+                    <th>Straight Flushes</th>
+                    <th>Royal Flushes</th>
+                </tr>
+                </thead>
+                    <tr>
+                        <td>{{theUser.winCount}}</td>
+                        <td>{{theUser.straightCount}}</td>
+                        <td>{{theUser.flushCount}}</td>
+                        <td>{{theUser.fullHouseCount}}</td>
+                        <td>{{theUser.quadCount}}</td>
+                        <td>{{theUser.straightFlushCount}}</td>
+                        <td>{{theUser.royalFlushCount}}</td>
+                    </tr>
+        </table>
+        </td>
+    </tr>
+</table>

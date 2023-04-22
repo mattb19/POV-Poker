@@ -4,6 +4,7 @@ class User:
         self.userName = userName
         self.userEmail = userEmail
         self.userPassword = userPassword
+        self.bio = ""
         self.winCount = 0
         self.straightCount = 0
         self.flushCount = 0
@@ -45,6 +46,12 @@ class User:
     
     def setUserPassword(self, value):
         self.userPassword = value
+
+    def getBio(self):
+        return self.bio
+
+    def setBio(self, value):
+        self.bio = value
         
     def getWinCount(self):
         return self.winCount
