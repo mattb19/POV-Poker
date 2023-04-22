@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <body >
+            <div class="container" style="margin-left: 95%">
+                <button data-id='1' class="userinfo btn btn-dark"><img height="50px" src="../static/userpp.png" width="50px" alt="buttonpng"/></button>
+            </div>    
+                        <script type='text/javascript'>
+                        $(document).ready(function(){
+                            $('.userinfo').click(function(){
+                                var userid = $(this).data('id');
+                                $.ajax({
+                                    url: '/ajaxfile',
+                                    type: 'post',
+                                    data: {userid: userid},
+                                    success: function(data){ 
+                                        $('.modal-body').html(data); 
+                                        $('.modal-body').append(data.htmlresponse);
+                                        $('#empModal').modal('show'); 
+                                    }
+                                });
+                            });
+                        });
+                        </script>
+                    </div>
+                    <div class="modal fade" id="empModal" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">{{theUser.userName}}'s Profile</h4>
+                                <button type="button" class="close" data-dismiss="modal">×</button>
+                                </div>
+                                <div class="modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </body>
+    </div>
+  </nav>
