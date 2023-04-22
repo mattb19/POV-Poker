@@ -142,7 +142,11 @@ class Game:
         self.tableCards = tableCards
         
         # get player 3, set him to bet first
-        self.currentPlayer = 2
+        for i in range(len(self.players)):
+            if self.players[i].getBlind() == 2 and i < len(self.players)-1:
+                self.currentPlayer = i+1
+            if self.players[i].getBlind() == 2 and i == len(self.players)-1:
+                self.currentPlayer = 0             
     
     
     def placeBetFold(self, value):

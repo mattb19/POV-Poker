@@ -520,9 +520,9 @@
             <div class="slot-form">
                 <form action="/bet" method="post">
                     <div class="slider">
-                        <input class="betbet" type="range" id="bet" name="bet" min={{ game.currentBet - game.players[game.currentPlayer].currentBet }} value="10"   
+                        <input class="betbet" type="range" id="bet" name="bet" min='' value="10"   
                         oninput="rangeValue.innerText = this.value">
-                        <p id="rangeValue">{{ game.currentBet - game.players[game.currentPlayer].currentBet }}</p>
+                        <p id="rangeValue"></p>
                     </div>
                     <button type="submit" class="button4">BET</button>
                 </form>
