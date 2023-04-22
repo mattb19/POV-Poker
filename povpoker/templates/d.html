@@ -1,0 +1,177 @@
+<style type="text/css">
+    .slot-form {
+    position:absolute;
+    right:73.5%;bottom:0%;
+    }
+    .slot-0
+    {
+    position:absolute;
+    right:74%;bottom:15%;
+    }
+    .slot-1
+    {
+    position:absolute;
+    right:79%;bottom:44%;
+    }
+    .slot-2
+    {
+    position:absolute;
+    right:74%;bottom:69%;
+    }
+    .slot-3
+    {
+    position:absolute;
+    right:55%;bottom:75%;
+    }
+    .slot-4
+    {
+    position:absolute;
+    right:35%;bottom:75%;
+    }
+    .slot-5
+    {
+    position:absolute;
+    right:14%;bottom:69%;
+    }
+    .slot-6
+    {
+    position:absolute;
+    right:8%;bottom:44%;
+    }
+    .slot-7
+    {
+    position:absolute;
+    right:14%;bottom:15%;
+    }
+    .slot-8
+    {
+    position:absolute;
+    right:35%;bottom:8%;
+    }
+    .slot-9
+    {
+    position:absolute;
+    right:55%;bottom:8%;
+    }
+    .table
+    {
+    position:absolute;
+    right:5%;
+    }
+    .playChips1{
+    position:absolute;
+    right:50%:bottom:10%
+    }
+    .slots
+    {
+    font-size: 26px;
+    font-family: "Lucida Console", "Monaco", monospace;
+    color: white;
+    }
+
+    .chips {
+        font-size: 13px;
+    
+    }
+    .tests {
+        position:absolute;
+        right:17%;
+    }
+
+    body {
+        background: #EFCDA4;
+    }
+    .slider {
+        position:absolute;
+        bottom:5%;
+        right:0%;
+        transform:translate(-50%,-50%);
+        width:225px;
+        height:20px;
+        padding:30px;
+        background:#fcfcfc;
+        border-radius:20px;
+        display:flex;
+        align-items:center;
+        box-shadow:0px 15px 40px #7E6D5766;
+    }
+    .slider p {
+        font-size:26px;
+        font-weight:600;
+        padding-left:30px;
+        color:green;
+    }
+    .slider input[type=”range”] {
+        -webkit-appearance:none !important;
+        width:500px;
+        height:2px;
+        background:#7E6D57;
+        border:none;
+        outline:none;
+    }
+    .slider input[type=”range”]::-webkit-slider-thumb {
+        -webkit-appearance:none !important;
+        width:30px;
+        height:30px;
+        background:#fcfcfc;
+        border:2px solid #7E6D57;
+        border-radius:50%;
+        cursor:pointer;
+    }
+    .slider input[type=”range”]::-webkit-slider-thumb:hover {
+        background:#7E6D57;
+    }
+    .ball {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #FF5722;
+        animation: bounce 0.5s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+    }
+      
+    @keyframes bounce {
+        from {
+            transform: translate3d(-32px, -50px, 10px);
+        }
+        to {
+            transform: translate3d(86px, -50px, 10px);
+        }
+    }
+    /* Prefix Support */
+      
+    ball {
+        -webkit-animation-name: bounce;
+        -webkit-animation-duration: 0.5s;
+        -webkit-animation-direction: alternate;
+        -webkit-animation-iteration-count: infinite;
+    }
+      
+    @-webkit-keyframes bounce {
+        from {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        to {
+            -webkit-transform: translate3d(0, 200px, 0);
+            transform: translate3d(0, 200px, 0);
+        }
+    }
+</style>
+
+<html>
+    {% for i in range(10) %}
+    <div class="slot-{{i}}" style="opacity:1.0">
+        <img src="../static/tagg.png" width="175" height="120">
+        <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+        <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+        <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
+        <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+        <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
+        <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
+        <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
+        <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
+    </div>
+    {% endfor %}
+</html>

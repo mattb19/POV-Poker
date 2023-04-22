@@ -113,6 +113,10 @@ def bet():
 def getGame():
     return game.json()
 
+@app.route('/d')
+def d():
+    return render_template('d.html')
+
 
 
 @app.route('/table')
