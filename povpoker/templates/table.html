@@ -362,6 +362,15 @@
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <meta charset="utf-8">
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="manifest" href="site.webmanifest">
+            <link rel="apple-touch-icon" href="icon.png">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+            <meta name="theme-color" content="#fafafa">
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        
             <script>
                 $(document).ready(function() {
                     $('form.cat').on('submit', function(event) {
@@ -451,11 +460,40 @@
                         event.preventDefault();
                     });
                 });
+                $(document).ready(function(){
+                    $('.userinfo').click(function(){
+                        var userid = $(this).data('id');
+                        console.log(document.getElementsByClassName("playerName"+userid.toString())[0].innerHTML);
+                        $.ajax({
+                            url: '/ajaxfile',
+                            type: 'post',
+                            data: {userid: userid},
+                            success: function(data){ 
+                                $('.modal-body').html(data); 
+                                $('.modal-body').append(data.htmlresponse);
+                                $('#empModal').modal('show'); 
+                            }
+                        });
+                    });
+                });
+            
             </script>
-
-
-
-
+                        
+                    
+                            
+                        
+                        <div class="modal fade" id="empModal" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">'s Profile</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
 
             <!-- Player Slots -->
             <div class="slots">
@@ -464,10 +502,8 @@
 
 
                 <div class="slot-0" style="opacity:1.0">
-                    <img src="../static/tagg.png" width="175" height="120">
-                    <a href="/">
-                        <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
-                    </a>
+                    <img src="../static/tagg.png" width="175" height="120" style="">
+                    <button  data-id='0' class="userinfo"><img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></button>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName0" style="position:absolute;left:45px;bottom:53px;"></div>
                     <div class="c0" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
@@ -479,7 +515,7 @@
         
                 <div class="slot-1" style="opacity:1.0">
                     <img src="../static/tagg.png" width="175" height="120">
-                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <a  class="userinfo"> <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></a>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName1" style="position:absolute;left:45px;bottom:53px"></div>
                     <div class="c1" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>

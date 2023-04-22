@@ -31,13 +31,14 @@
         <body >
             <div class="container">
                 <li class="nav-item" style="margin-bottom: 5px">
-                    <button data-id='1' class="userinfo btn btn-dark"><img height="50px" src="../static/yuhfar.png" width="50px" alt="buttonpng"/></button>
+                    <button data-id='45' class="userinfo btn btn-dark"><img height="50px" src="../static/yuhfar.png" width="50px" alt="buttonpng"/></button>
                 </li>
             </div>    
                         <script type='text/javascript'>
                         $(document).ready(function(){
                             $('.userinfo').click(function(){
                                 var userid = $(this).data('id');
+                                console.log(userid)
                                 $.ajax({
                                     url: '/ajaxfile',
                                     type: 'post',
@@ -57,12 +58,8 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h4 class="modal-title">{{theUser.userName}}'s Profile</h4>
-                                <button type="button" class="close" data-dismiss="modal">×</button>
                                 </div>
                                 <div class="modal-body">
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
