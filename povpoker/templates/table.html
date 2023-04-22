@@ -301,14 +301,19 @@
                             // Handle pot and current bet
                             $("#pot").text(data.pot.toString());
                             $("#curBet").text("Current Bet: "+data.currentBet.toString());
-
-
                             
                             // Disable button if its not the users turn
-                            if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML) {
-                                document.getElementsByClassName("button4")[0].disabled = 'false';
+                            if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML.toString()) {
+                                document.getElementsByClassName("button4")[0].disabled = false;
+                                document.getElementsByClassName("button2")[0].disabled = false;
+                                document.getElementsByClassName("button3")[0].disabled = false;
+                                document.getElementsByClassName("button1")[0].disabled = false;
+                                console.log("HHHHHHHHHH")
                             } else {
-                                document.getElementsByClassName("button4")[0].disabled = 'true';
+                                document.getElementsByClassName("button1")[0].disabled = true;
+                                document.getElementsByClassName("button2")[0].disabled = true;
+                                document.getElementsByClassName("button3")[0].disabled = true;
+                                document.getElementsByClassName("button4")[0].disabled = true;
                             }
 
 
