@@ -100,7 +100,7 @@ class Game:
         for i in self.players:
             i.setCurrentBetZero()
             i.setTurn(True)
-            i.setColor("white")
+            i.setColor("black")
         
         
         # set all players bet counts
@@ -196,6 +196,7 @@ class Game:
             self.pot += value
             self.currentBet = value
             self.players[x] = player
+            self.players[x].setAllIn(True)
             final = player.getUser()+" IS ALL IN! "
         
         # if they don't bet enough
@@ -224,6 +225,11 @@ class Game:
         if self.round == 0:
             turns = [i.getTurn() for i in self.players]
             
+            # if all players have folded except one
+            currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
+            if len(currentPlayers) == 1:
+                return self.endRound()
+            
             # if all players have called, checked or folded
             if True not in turns:
                 self.currentPlayer = 0
@@ -233,12 +239,12 @@ class Game:
                 self.flop2 = self.tableCards[1]
                 self.flop3 = self.tableCards[2]
                 
-                # set all players current bets to zero
+                # set all non-folded players current bets to zero
                 for i in self.players:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
-                        i.setColor("white")
+                        i.setColor("black")
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -274,7 +280,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
-                        i.setColor("white")
+                        i.setColor("black")
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -303,7 +309,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
-                        i.setColor("white")
+                        i.setColor("black")
                 return self.currentPlayer
             counter = self.currentPlayer
             while True:
@@ -326,7 +332,7 @@ class Game:
                 for i in self.players:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
-                        i.setColor("white")
+                        i.setColor("black")
                 return self.endRound()
             counter = self.currentPlayer
             while True:
@@ -545,15 +551,17 @@ class Game:
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
-        for i in winners:
-            i[0].setChipCount(self.pot//len(winners))
         winnersList = [i[0].getUser() for i in winners]
         self.lastWinners = winnersList
         for i in range(len(self.players)):
             if self.players[i] not in winnersList:
+                self.players[i].setColor("white")
+            else:
                 self.players[i].setColor("black")
         
         time.sleep(10)
+        for i in winners:
+            i[0].setChipCount(self.pot//len(winners))
         
         self.newRound()
 

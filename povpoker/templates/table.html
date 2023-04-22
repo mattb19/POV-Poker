@@ -6,52 +6,52 @@
     .slot-0
     {
     position:absolute;
-    right:71%;bottom:21%;
+    right:74%;bottom:15%;
     }
     .slot-1
     {
     position:absolute;
-    right:79%;bottom:50%;
+    right:79%;bottom:44%;
     }
     .slot-2
     {
     position:absolute;
-    right:74%;bottom:74%;
+    right:74%;bottom:69%;
     }
     .slot-3
     {
     position:absolute;
-    right:55%;bottom:82%;
+    right:55%;bottom:75%;
     }
     .slot-4
     {
     position:absolute;
-    right:35%;bottom:82%;
+    right:35%;bottom:75%;
     }
     .slot-5
     {
     position:absolute;
-    right:18%;bottom:74%;
+    right:14%;bottom:69%;
     }
     .slot-6
     {
     position:absolute;
-    right:9%;bottom:50%;
+    right:8%;bottom:44%;
     }
     .slot-7
     {
     position:absolute;
-    right:18%;bottom:22%;
+    right:14%;bottom:15%;
     }
     .slot-8
     {
     position:absolute;
-    right:35%;bottom:12%;
+    right:35%;bottom:8%;
     }
     .slot-9
     {
     position:absolute;
-    right:55%;bottom:12%;
+    right:55%;bottom:8%;
     }
     .table
     {
@@ -133,10 +133,10 @@
       
     @keyframes bounce {
         from {
-            transform: translate3d(-32px, -50px, 0);
+            transform: translate3d(-32px, -50px, 10px);
         }
         to {
-            transform: translate3d(68px, -50px, 0);
+            transform: translate3d(86px, -50px, 10px);
         }
     }
     /* Prefix Support */
@@ -198,11 +198,19 @@
                                     if (data.lastWinners.includes(data.playerNames[i])) {
                                         document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='white';
+                                        document.getElementsByClassName("card2")[i].width="85";   
+                                        document.getElementsByClassName("card2")[i].height="130";   
+                                        document.getElementsByClassName("card1")[i].width="85";   
+                                        document.getElementsByClassName("card1")[i].height="130";
+                                        document.getElementsByClassName("card2")[i].style.right="2%";
+                                        document.getElementsByClassName("card1")[i].style.right="50%";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
+                                        document.getElementsByClassName("ball")[i].style.visibility='visible';
                                     } else {
                                         document.getElementsByClassName("card1")[i].style.visibility='hidden';
                                         document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
+                                        document.getElementsByClassName("ball")[i].style.visibility='hidden';
                                     }
                                 }
                             } else {
@@ -210,15 +218,19 @@
                                     if (data.players[i].currentBet == null) {
                                         document.getElementsByClassName("card1")[i].style.visibility='hidden';
                                         document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
-                                    } else if (data.players[i].user == document.getElementById("sessionID").innerHTML) {
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
                                     } else {
                                         document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
                                         document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
                                         document.getElementsByClassName("card1")[i].style.visibility='visible';
                                         document.getElementsByClassName("card2")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card2")[i].width="65";   
+                                        document.getElementsByClassName("card2")[i].height="108";   
+                                        document.getElementsByClassName("card1")[i].width="65";   
+                                        document.getElementsByClassName("card1")[i].height="108";
+                                        document.getElementsByClassName("card2")[i].style.right="12%";
+                                        document.getElementsByClassName("card1")[i].style.right="48%";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
                                     }
                                 }                            
                             }
@@ -264,10 +276,13 @@
                             
                             // Change current player marker
                             for (let i=0; i < 10; i++) {
-                                if (i == data.currentPlayer) {
-                                    document.getElementsByClassName("ball")[i].style.visibility='visible';
-                                } else {
-                                    document.getElementsByClassName("ball")[i].style.visibility='hidden';
+                                if (data.round < 4) {
+                                    if (i == data.currentPlayer) {
+                                        document.getElementsByClassName("ball")[i].style.visibility='visible';
+                                    } else {
+                                        document.getElementsByClassName("ball")[i].style.visibility='hidden';
+                                    }
+
                                 }
                             }
 
@@ -295,8 +310,16 @@
 
 
                             // Give personal user cards
-                            document.getElementsByClassName("uc1")[0].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card1;
-                            document.getElementsByClassName("uc2")[0].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card2;
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card1;
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card2;   
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].width="85";   
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].height="130";   
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].width="85";   
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].height="130";
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="2%";
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="50%";
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
 
                             // Handle pot and current bet
                             $("#pot").text(data.pot.toString());
@@ -305,11 +328,12 @@
 
                             
                             // Disable button if its not the users turn
+                            /*
                             if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML) {
                                 document.getElementsByClassName("button4")[0].disabled = 'false';
                             } else {
                                 document.getElementsByClassName("button4")[0].disabled = 'true';
-                            }
+                            }*/
 
 
                             // Set call & bet slider to correct amounts
@@ -382,116 +406,134 @@
             <!-- Player Slots -->
             <div class="slots">
                 <div class="curBet" id="curBet" style="position:absolute;right:46%;bottom:47%;font-size:16px;">Hello!</div>
-                <img class="uc1" width="70" height="110" style="position:absolute;right:45%;bottom:33%"></div>
-                <img class="uc2" width="70" height="110" style="position:absolute;right:51%;bottom:33%"></div>
 
 
                 <div class="slot-0">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName0"></div>
-                    <div class="c0" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName0" style="position:absolute;left:45px;bottom:53px;"></div>
+                    <div class="c0" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                     <img id="blind0" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
                 </div>
         
                 <div class="slot-1">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName1"></div>
-                    <div class="c1" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName1" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c1" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind1" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-2">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName2"></div>
-                    <div class="c2" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName2" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c2" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind2" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-3">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName3"></div>
-                    <div class="c3" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName3" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c3" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind3" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-4">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName4"></div>
-                    <div class="c4" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName4" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c4" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind4" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-5">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName5"></div>
-                    <div class="c5" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName5" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c5" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind5" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
 
 
                 <div class="slot-6">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName6"></div>
-                    <div class="c6" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName6" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c6" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind6" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-7">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName7"></div>
-                    <div class="c7" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName7" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c7" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind7" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-8">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName8"></div>
-                    <div class="c8" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName8" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c8" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind8" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             
             
                 <div class="slot-9">
-                    <img src="../static/empty.png" width="150" height="1">
-                    <div class="playerName9"></div>
-                    <div class="c9" style="font-size:13px"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName9" style="position:absolute;left:45px;bottom:53px"></div>
+                    <div class="c9" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img id="blind9" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
-                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
-                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg); z-index:-10;">
+                    <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                 </div>
             </div>
             
