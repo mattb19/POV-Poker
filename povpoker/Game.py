@@ -600,18 +600,31 @@ class Game:
         return self.active
     
     def json(self):
-        game = deepcopy(self)
-        game.setFlop1(game.getFlop1().__dict__)
-        game.setFlop2(game.getFlop2().__dict__)
-        game.setFlop3(game.getFlop3().__dict__)
-        game.setTurn(game.getTurn().__dict__)
-        game.setRiver(game.getRiver().__dict__)
-        game.setTableCards()
-        for i in game.players:
-            i.setCard1(str(i.getCard1()))
-            i.setCard2(str(i.getCard2()))
-        game.setPlayers([i.__dict__ for i in game.getPlayers()])
-        return json.dumps(game.__dict__, indent=4)
+        try:
+            game = deepcopy(self)
+            game.setFlop1(game.getFlop1().__dict__)
+            game.setFlop2(game.getFlop2().__dict__)
+            game.setFlop3(game.getFlop3().__dict__)
+            game.setTurn(game.getTurn().__dict__)
+            game.setRiver(game.getRiver().__dict__)
+            game.setTableCards()
+            for i in game.players:
+                i.setCard1(str(i.getCard1()))
+                i.setCard2(str(i.getCard2()))
+            game.setPlayers([i.__dict__ for i in game.getPlayers()])
+            return json.loads(json.dumps(game, default=lambda o: o.__dict__))
+        except TypeError:
+            game = deepcopy(self)
+            print()
+            print()
+            print()
+            print()
+            print(json.loads(json.dumps(game, default=lambda o: o.__dict__)))
+            print()
+            print()
+            print()
+            print()
+        
     
     def reset(self, big, small, player1, player2, player3):
         self.bigBlind = big

@@ -162,16 +162,15 @@
         background-color: #FF5722;
         animation: bounce 0.5s;
         animation-direction: alternate;
-        animation-timing-function: cubic-bezier(.5, 0.05, 1, .5);
         animation-iteration-count: infinite;
     }
       
     @keyframes bounce {
         from {
-            transform: translate3d(0, 0, 0);
+            transform: translate3d(-32px, -50px, 0);
         }
         to {
-            transform: translate3d(0, 50px, 0);
+            transform: translate3d(68px, -50px, 0);
         }
     }
     /* Prefix Support */
@@ -180,8 +179,6 @@
         -webkit-animation-name: bounce;
         -webkit-animation-duration: 0.5s;
         -webkit-animation-direction: alternate;
-        -webkit-animation-timing-function: cubic-bezier(
-        .5, 0.05, 1, .5);
         -webkit-animation-iteration-count: infinite;
     }
       
@@ -259,7 +256,6 @@
                             // Display each players name with the correct color
                             for (let i=0; i < data.players.length; i++) {
                                 $(".playerName"+i.toString()).text(data.players[i].user);
-                                console.log(document.getElementsByClassName("slot-"+i.toString()));
                                 document.getElementsByClassName("slot-"+i.toString())[0].style.color=data.players[i].color;
                                 document.getElementsByClassName("slot-"+i.toString())[0].style.fontFamily="'Lucida Console', 'Monaco', monospace;";
                                 document.getElementsByClassName("slot-"+i.toString())[0].style.fontSize="26px";
@@ -317,11 +313,12 @@
                             // Give personal user cards
                             document.getElementsByClassName("uc1")[0].src=data.players[1].card1;
                             document.getElementsByClassName("uc2")[0].src=data.players[1].card2;
+                            $("#curBet").text("Current Bet: "+data.currentBet.toString());
                             
 
 
                             // Call the function 5 times every second
-                            setTimeout(update_values, 200);
+                            setTimeout(update_values, 2000);
                         });
                 }
 
@@ -333,9 +330,9 @@
 
             <!-- Player Slots -->
             <div class="slots">
-                <div class="curBet" id="curBet"></div>
-                <img class="uc1" width="70" height="110" style="position:absolute;right:44.5%;bottom:36%"></div>
-                <img class="uc2" width="70" height="110" style="position:absolute;right:50.5%;bottom:36%"></div>
+                <div class="curBet" id="curBet" style="position:absolute;right:46%;bottom:47%;font-size:16px;">Hello!</div>
+                <img class="uc1" width="70" height="110" style="position:absolute;right:45%;bottom:33%"></div>
+                <img class="uc2" width="70" height="110" style="position:absolute;right:51%;bottom:33%"></div>
 
 
                 <div class="slot-0">
@@ -343,9 +340,9 @@
                     <div class="playerName0"></div>
                     <div class="c0" style="font-size:13px"></div>
                     <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
-                    <img id="blind0" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
                     <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
                     <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img id="blind0" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
                 </div>
         
                 <div class="slot-1">
