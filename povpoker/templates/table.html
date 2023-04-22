@@ -192,61 +192,6 @@
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
 
-                            // if the round is over, show winners cards
-                            if (data.round == 4) {
-                                for (let i=0; i < data.players.length; i++) {
-                                    if (data.lastWinners.includes(data.playerNames[i])) {
-                                        document.getElementsByClassName("card1")[i].src=data.players[i].card1;
-                                        document.getElementsByClassName("card2")[i].src=data.players[i].card2;
-                                        document.getElementsByClassName("card2")[i].width="85";   
-                                        document.getElementsByClassName("card2")[i].height="130";   
-                                        document.getElementsByClassName("card1")[i].width="85";   
-                                        document.getElementsByClassName("card1")[i].height="130";
-                                        document.getElementsByClassName("card2")[i].style.right="2%";
-                                        document.getElementsByClassName("card1")[i].style.right="50%";
-                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
-                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
-                                        document.getElementsByClassName("ball")[i].style.visibility='visible';
-                                    } else {
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("ball")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
-                                    }
-                                }
-                            } else {
-                                for (let i=0; i < data.players.length; i++) {
-                                    if (data.players[i].currentBet == null) {
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
-                                    } else {
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="1.0";
-                                        document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
-                                        document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
-                                        document.getElementsByClassName("card1")[i].style.visibility='visible';
-                                        document.getElementsByClassName("card2")[i].style.visibility='visible';
-                                        document.getElementsByClassName("card2")[i].width="65";   
-                                        document.getElementsByClassName("card2")[i].height="108";   
-                                        document.getElementsByClassName("card1")[i].width="65";   
-                                        document.getElementsByClassName("card1")[i].height="108";
-                                        document.getElementsByClassName("card2")[i].style.right="12%";
-                                        document.getElementsByClassName("card1")[i].style.right="48%";
-                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
-                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
-                                    }
-                                }                            
-                            }
-
-
-                            // Change each players chip count
-                            for (let i=0; i < data.players.length; i++) {
-                                $(".c"+i.toString()).text(data.players[i].chipCount);
-                            }
-
-
-
-
                             // Set table cards
                             if (data.round >= 1) {
                                 document.getElementById("flop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
@@ -270,30 +215,25 @@
 
 
 
-                            // Display each players name with the correct color
+
                             for (let i=0; i < data.players.length; i++) {
+
+                                // Display each players name with the correct color
                                 $(".playerName"+i.toString()).text(data.players[i].user);
                                 document.getElementsByClassName("slot-"+i.toString())[0].style.color=data.players[i].color;
                                 document.getElementsByClassName("slot-"+i.toString())[0].style.fontFamily="'Lucida Console', 'Monaco', monospace;";
                                 document.getElementsByClassName("slot-"+i.toString())[0].style.fontSize="26px";
-                            }
 
-                            
-                            // Change current player marker
-                            for (let i=0; i < 10; i++) {
+                                // Change current player marker
                                 if (data.round < 4) {
                                     if (i == data.currentPlayer) {
                                         document.getElementsByClassName("ball")[i].style.visibility='visible';
                                     } else {
                                         document.getElementsByClassName("ball")[i].style.visibility='hidden';
                                     }
-
                                 }
-                            }
 
-
-                            // Handle blinds
-                            for (let i=0; i < data.players.length; i++) {
+                                // Handle blinds
                                 if (data.players[i].blind == 1) {
                                     document.getElementById("blind"+i.toString()).src='../static/small.png';
                                 } else if (data.players[i].blind == 2) {
@@ -301,15 +241,58 @@
                                 } else {
                                     document.getElementById("blind"+i.toString()).src='../static/empty.png';
                                 }
-                            }
 
-
-                            // Only display slots which contain a currently active player
-                            for (let i=0; i < 10; i++) {
+                                // Only display slots which contain a currently active player
                                 if (i < data.players.length) {
                                     document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='visible';
                                 } else {
                                     document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='hidden';
+                                }
+
+                                // Change chip count for each player
+                                $(".c"+i.toString()).text(data.players[i].chipCount);
+
+
+                                // Handle folds and end of round
+                                if (data.round == 4) {
+                                    if (data.lastWinners.includes(data.playerNames[i])) {
+                                        document.getElementsByClassName("card1")[i].src=data.players[i].card1;
+                                        document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                        document.getElementsByClassName("card2")[i].width="85";   
+                                        document.getElementsByClassName("card2")[i].height="130";   
+                                        document.getElementsByClassName("card1")[i].width="85";   
+                                        document.getElementsByClassName("card1")[i].height="130";
+                                        document.getElementsByClassName("card2")[i].style.right="2%";
+                                        document.getElementsByClassName("card1")[i].style.right="50%";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
+                                        document.getElementsByClassName("ball")[i].style.visibility='visible';
+                                    } else {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("ball")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
+                                    }
+                                } else {
+                                    if (data.players[i].currentBet == null) {
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
+                                    } else {
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="1.0";
+                                        document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
+                                        document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
+                                        document.getElementsByClassName("card1")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card2")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card2")[i].width="65";   
+                                        document.getElementsByClassName("card2")[i].height="108";   
+                                        document.getElementsByClassName("card1")[i].width="65";   
+                                        document.getElementsByClassName("card1")[i].height="108";
+                                        document.getElementsByClassName("card2")[i].style.right="12%";
+                                        document.getElementsByClassName("card1")[i].style.right="48%";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
+                                    }
                                 }
                             }
 
@@ -476,7 +459,7 @@
                     <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
                 </div>
                 {% endfor %}
-                
+
             </div>
             
 
