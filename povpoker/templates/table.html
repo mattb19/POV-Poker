@@ -40,9 +40,12 @@
     right:59%;bottom:12%;
 }
 
+body {
+    background-color: black;
+}
+
 #table {
     background-image: url(../static/thetable.jpeg);
-    background-color: black;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -61,8 +64,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size:30px;
-    font-family: "Lucida Console", "Monaco", monospace;
-    color: white;
 }
 
 #tablecards {
@@ -83,9 +84,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
-    <body id="table">
-        <div class="players">
+    <body id="table" class="players">
+        <section>
             {{ session.name }}
+        </section>
+        <div>
             <div class="slot-1">Jeremy</div>
             <div class="slot-2">Matt</div>
             <div class="slot-3">Trent</div>
