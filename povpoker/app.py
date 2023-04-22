@@ -23,7 +23,7 @@ game.newRound()
 
 
 
-theUser = User(1, 'YTTFK', 'trentsalas@gmail.com', 'juul12345')
+theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
 @app.route('/')
 def home():
     return render_template_modal('home.html', theUser=theUser)
