@@ -201,11 +201,11 @@ class Game:
         
         # if they don't bet enough
         elif value < self.currentBet:
-            final = "You must put more in to call or raise"
+            return "You must put more in to call or raise"
         
         # if they put in too much
         elif value > player.getChipCount():
-            final = "Insufficient Funds"
+            return "Insufficient Funds"
         
         # set turn to true for all players who havent folded or called new bet
         for i in self.players:

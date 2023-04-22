@@ -99,11 +99,14 @@ def login():
 def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
-        print(bet)
         bet = int(bet)
         if bet < 0:
             bet = None
-        game.placeBetFold(bet)
+        re = game.placeBetFold(bet)
+        if re != None:
+            return re
+        else:
+            return redirect("/table")
     return redirect("/table")
     
 @app.route('/getGame')
