@@ -7,6 +7,10 @@ from User import User
 import cv2
 import random
 import json
+import logging
+
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 from flask_modals import Modal
 from flask_modals import render_template_modal
 
@@ -17,10 +21,49 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SECRET_KEY'] = 'secret!'
 Session(app)
 
-player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
-game = Game(player, 10, 20, True)
+# player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
+player = [Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
+game = Game(player, 10, 20)
 game.newRound()
-
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(20)
+# game.placeBetFold(10)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
+# game.placeBetFold(0)
 
 
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
@@ -56,10 +99,10 @@ def login():
 def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
+        print(bet)
         bet = int(bet)
-        if bet == -1:
+        if bet < 0:
             bet = None
-        print(game.players)
         game.placeBetFold(bet)
     return redirect("/table")
     

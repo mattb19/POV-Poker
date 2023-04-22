@@ -1,57 +1,57 @@
 <style type="text/css">
     .slot-form {
     position:absolute;
-    right:76.5%;bottom:0%;
+    right:73.5%;bottom:0%;
+    }
+    .slot-0
+    {
+    position:absolute;
+    right:71%;bottom:21%;
     }
     .slot-1
     {
     position:absolute;
-    right:77%;bottom:21%;
+    right:79%;bottom:50%;
     }
     .slot-2
     {
     position:absolute;
-    right:83%;bottom:50%;
+    right:74%;bottom:74%;
     }
     .slot-3
     {
     position:absolute;
-    right:78%;bottom:74%;
+    right:55%;bottom:82%;
     }
     .slot-4
     {
     position:absolute;
-    right:59%;bottom:82%;
+    right:35%;bottom:82%;
     }
     .slot-5
     {
     position:absolute;
-    right:39%;bottom:82%;
+    right:18%;bottom:74%;
     }
     .slot-6
     {
     position:absolute;
-    right:22%;bottom:74%;
+    right:9%;bottom:50%;
     }
     .slot-7
     {
     position:absolute;
-    right:13%;bottom:50%;
+    right:18%;bottom:22%;
     }
     .slot-8
     {
     position:absolute;
-    right:22%;bottom:22%;
+    right:35%;bottom:12%;
     }
     .slot-9
     {
     position:absolute;
-    right:39%;bottom:12%;
-    }
-    .slot-10
-    {
-    position:absolute;
-    right:59%;bottom:12%;
+    right:55%;bottom:12%;
     }
     .table
     {
@@ -72,40 +72,6 @@
     .chips {
         font-size: 13px;
     
-    }
-    .pot {
-    position:absolute;
-    right:49%;bottom:49%;
-    font-size:30px
-    }
-
-    .card1 {
-    position:absolute;
-    right:50.5%;bottom:34%;
-    }
-    .card2 {
-    position:absolute;
-    right:45%;bottom:34%;
-    }
-    .flop1 {
-    position:absolute;
-    right:59.5%;bottom:55%;
-    }
-    .flop2 {
-    position:absolute;
-    right:53.5%;bottom:55%;
-    }
-    .flop3 {
-    position:absolute;
-    right:47.5%;bottom:55%;
-    }
-    .turn {
-    position:absolute;
-    right:41.5%;bottom:55%;
-    }
-    .river {
-    position:absolute;
-    right:35.5%;bottom:55%;
     }
     .tests {
         position:absolute;
@@ -155,6 +121,43 @@
     .slider input[type=”range”]::-webkit-slider-thumb:hover {
         background:#7E6D57;
     }
+    .ball {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #FF5722;
+        animation: bounce 0.5s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+    }
+      
+    @keyframes bounce {
+        from {
+            transform: translate3d(-32px, -50px, 0);
+        }
+        to {
+            transform: translate3d(68px, -50px, 0);
+        }
+    }
+    /* Prefix Support */
+      
+    ball {
+        -webkit-animation-name: bounce;
+        -webkit-animation-duration: 0.5s;
+        -webkit-animation-direction: alternate;
+        -webkit-animation-iteration-count: infinite;
+    }
+      
+    @-webkit-keyframes bounce {
+        from {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        to {
+            -webkit-transform: translate3d(0, 200px, 0);
+            transform: translate3d(0, 200px, 0);
+        }
+    }
 </style>
 
 
@@ -170,42 +173,55 @@
 
     <body>
         <div class="slots" id="load">
-            <body>{{ session.name }}</body>
-
-
-
-
-
+            <div id="sessionID">{{ session.name }}</div>
             <!-- Table Cards -->
             <div class="tableCards">
-                <div class="pot">
-                    <body>{{ game.getPot() }}</body>
-                </div>
-                <div class="flop1">
-                    <img src={{ game.getFlop1() }} width="70" height="110">
-                </div>
-                <div class="flop2">
-                    <img src={{ game.getFlop2() }} width="70" height="110">
-                </div>
-                <div class="flop3">
-                    <img src={{ game.getFlop3() }} width="70" height="110">
-                </div>
-                <div class="turn">
-                    <img src={{ game.getTurn() }} width="70" height="110">
-                </div>
-                <div class="river">
-                    <img src={{ game.getRiver() }} width="70" height="110">
-                </div>
+                <div class="pot" id="pot" style="position:absolute;right:49.5%;bottom:49.5%;font-size:26px;"></div>
+                <img id="flop1" src="" width="70" height="110" style="position:absolute;right:59.5%;bottom:55%;">
+                <img id="flop2" src="" width="70" height="110" style="position:absolute;right:53.5%;bottom:55%;">
+                <img id="flop3" src="" width="70" height="110" style="position:absolute;right:47.5%;bottom:55%;">
+                <img id="turn" src="" width="70" height="110" style="position:absolute;right:41.5%;bottom:55%;">
+                <img id="river" src="" width="70" height="110" style="position:absolute;right:35.5%;bottom:55%;">
             </div>
-
 
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script>
+
                 function update_values() {
                     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
-                            console.log(data);
+
+                            // if the round is over, show winners cards
+                            if (data.round == 4) {
+                                for (let i=0; i < data.players.length; i++) {
+                                    if (data.lastWinners.includes(data.playerNames[i])) {
+                                        document.getElementsByClassName("card1")[i].src=data.players[i].card1;
+                                        document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='white';
+                                    } else {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
+                                    }
+                                }
+                            } else {
+                                for (let i=0; i < data.players.length; i++) {
+                                    if (data.players[i].currentBet == null) {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
+                                    } else if (data.players[i].user == document.getElementById("sessionID").innerHTML) {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                    } else {
+                                        document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
+                                        document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
+                                        document.getElementsByClassName("card1")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card2")[i].style.visibility='visible';
+                                    }
+                                }                            
+                            }
 
 
                             // Change each players chip count
@@ -214,17 +230,94 @@
                             }
 
 
+                            // Set table cards
+                            if (data.round >= 1) {
+                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
+                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/" + data.tableCards[1]._num + "_of_" + data.tableCards[1]._suit + ".png";
+                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/" + data.tableCards[2]._num + "_of_" + data.tableCards[2]._suit + ".png";
+                            } else {
+                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/None_of_None.png";
+                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/None_of_None.png";
+                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+                            if (data.round >= 2) {
+                                document.getElementById("turn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
+                            } else {
+                                document.getElementById("turn").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+                            if (data.round >= 3) {
+                                document.getElementById("river").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
+                            } else {
+                                document.getElementById("river").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+
+
+
+                            // Display each players name with the correct color
+                            for (let i=0; i < data.players.length; i++) {
+                                $(".playerName"+i.toString()).text(data.players[i].user);
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.color=data.players[i].color;
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.fontFamily="'Lucida Console', 'Monaco', monospace;";
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.fontSize="26px";
+                            }
+
+                            
                             // Change current player marker
                             for (let i=0; i < 10; i++) {
                                 if (i == data.currentPlayer) {
-                                    console.log(document.getElementsByClassName("user0"))
-                                    document.getElementById("user"+i.toString()).style.visibility='visible';
+                                    document.getElementsByClassName("ball")[i].style.visibility='visible';
                                 } else {
-                                    document.getElementById("user"+i.toString()).style.visibility='hidden';
+                                    document.getElementsByClassName("ball")[i].style.visibility='hidden';
                                 }
                             }
 
 
+                            // Handle blinds
+                            for (let i=0; i < data.players.length; i++) {
+                                if (data.players[i].blind == 1) {
+                                    document.getElementById("blind"+i.toString()).src='../static/small.png';
+                                } else if (data.players[i].blind == 2) {
+                                    document.getElementById("blind"+i.toString()).src='../static/blind.png';
+                                } else {
+                                    document.getElementById("blind"+i.toString()).src='../static/empty.png';
+                                }
+                            }
+
+
+                            // Only display slots which contain a currently active player
+                            for (let i=0; i < 10; i++) {
+                                if (i < data.players.length) {
+                                    document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='visible';
+                                } else {
+                                    document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='hidden';
+                                }
+                            }
+
+
+                            // Give personal user cards
+                            document.getElementsByClassName("uc1")[0].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card1;
+                            document.getElementsByClassName("uc2")[0].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card2;
+
+                            // Handle pot and current bet
+                            $("#pot").text(data.pot.toString());
+                            $("#curBet").text("Current Bet: "+data.currentBet.toString());
+
+
+                            
+                            // Disable button if its not the users turn
+                            if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML) {
+                                document.getElementsByClassName("button4")[0].disabled = 'false';
+                            } else {
+                                document.getElementsByClassName("button4")[0].disabled = 'true';
+                            }
+
+
+                            // Set call & bet slider to correct amounts
+                            document.getElementsByClassName("button2")[0].value = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
+
+                            
                             // Call the function 5 times every second
                             setTimeout(update_values, 200);
                         });
@@ -233,98 +326,173 @@
                 update_values();
             </script>
 
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('form.cat').on('submit', function(event) {
+                        $.ajax({
+                            data : {
+                                bet : $('.button2').val(),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+                $(document).ready(function() {
+                    $('form.dog').on('submit', function(event) {
+                        $.ajax({
+                            data : {
+                                bet : $('.button1').val(),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+            </script>
+
+
 
 
 
             <!-- Player Slots -->
-            <div id="playy" class="players">
-                {% if game.players|length > 0  %}
-                <div class="slot-1" style="color:{{ game.players[0].color }}">
-                    <body>{{ game.players[0].user }}</body>
+            <div class="slots">
+                <div class="curBet" id="curBet" style="position:absolute;right:46%;bottom:47%;font-size:16px;">Hello!</div>
+                <img class="uc1" width="70" height="110" style="position:absolute;right:45%;bottom:33%"></div>
+                <img class="uc2" width="70" height="110" style="position:absolute;right:51%;bottom:33%"></div>
+
+
+                <div class="slot-0">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName0"></div>
                     <div class="c0" style="font-size:13px"></div>
-                    <img id="user0" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
+                    <img id="blind0" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
                 </div>
-                {%endif%}
-            
-                {% if game.players|length > 1  %}
-                <div class="slot-2" style="color:{{ game.players[1].color }}">
-                    <body>{{ game.players[1].user }}</body>
+        
+                <div class="slot-1">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName1"></div>
                     <div class="c1" style="font-size:13px"></div>
-                    <img id="user1" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind1" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 2  %}
-                <div class="slot-3" style="color:{{ game.players[2].color }}">
-                    <body>{{ game.players[2].user }}</body>
+                <div class="slot-2">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName2"></div>
                     <div class="c2" style="font-size:13px"></div>
-                    <img id="user2" src="../static/chips.png" width="40" height="40">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind2" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 3  %}
-                <div class="slot-4" style="color:{{ game.players[3].color }}">
-                    <body>{{ game.players[3].user }}</body>
+                <div class="slot-3">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName3"></div>
                     <div class="c3" style="font-size:13px"></div>
-                    <img id="user3" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind3" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 4  %}
-                <div class="slot-5" style="color:{{ game.players[4].color }}">
-                    <body>{{ game.players[4].user }}</body>
+                <div class="slot-4">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName4"></div>
                     <div class="c4" style="font-size:13px"></div>
-                    <img id="user4" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind4" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 5  %}
-                <div class="slot-6" style="color:{{ game.players[5].color }}">
-                    <body>{{ game.players[5].user }}</body>
+                <div class="slot-5">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName5"></div>
                     <div class="c5" style="font-size:13px"></div>
-                    <img id="user5" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind5" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
 
 
-                {% if game.players|length > 6  %}
-                <div class="slot-7" style="color:{{ game.players[6].color }}">
-                    <body>{{ game.players[6].user }}</body>
+                <div class="slot-6">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName6"></div>
                     <div class="c6" style="font-size:13px"></div>
-                    <img id="user6" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind6" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 7  %}
-                <div class="slot-8" style="color:{{ game.players[7].color }}">
-                    <body>{{ game.players[7].user }}</body>
+                <div class="slot-7">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName7"></div>
                     <div class="c7" style="font-size:13px"></div>
-                    <img id="user7" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind7" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 8  %}
-                <div class="slot-9" style="color:{{ game.players[8].color }}">
-                    <body>{{ game.players[8].user }}</body>
+                <div class="slot-8">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName8"></div>
                     <div class="c8" style="font-size:13px"></div>
-                    <img id="user8" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind8" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             
             
-                {% if game.players|length > 9  %}
-                <div class="slot-10" style="color:{{ game.players[9].color }}">
-                    <body>{{ game.players[9].user }}</body>
+                <div class="slot-9">
+                    <img src="../static/empty.png" width="150" height="1">
+                    <div class="playerName9"></div>
                     <div class="c9" style="font-size:13px"></div>
-                    <img id="user9" src="../static/chips.png" width="25" height="25">
+                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:74%;bottom:190%;">
+                    <img id="blind9" src="" width="35" height="35" style="position:absolute;right:105%;bottom:40%;">
+                    <img class="card1" src="" width="55" height="92" style="position:absolute;right:70%;bottom:110%;transform: rotate(350deg);">
+                    <img class="card2" src="" width="55" height="92" style="position:absolute;right:35%;bottom:110%;transform: rotate(10deg);">
                 </div>
-                {%endif%}
             </div>
             
 
@@ -333,17 +501,17 @@
                 <div class="container">
                     <form action="/bet" method="post">
                         <div class="check">
-                            <button class="button3" type="submit" id="bet"  name="bet" value="0">CHECK</button>
+                            <button class="button3" type="submit" id="check"  name="bet" value="0">CHECK</button>
                         </div>
                     </form>
-                    <form action="/bet" method="post">
+                    <form class="cat" action="/bet" method="post">
                         <div class="check">
-                            <button class="button2" type="submit" id="bet"  name="bet" value={{ game.currentBet - game.players[game.currentPlayer].currentBet }}>CALL</button>
+                            <button class="button2" type="submit" id="call"  name="bet" value="0">CALL</button>
                         </div>
                     </form>
-                    <form action="/bet" method="post">
+                    <form class="dog" action="/bet" method="post">
                         <div class="check">
-                            <button class="button1" type="submit" id="bet"  name="bet" value="-1">FOLD</button>
+                            <button class="button1" type="submit" id="fold"  name="bet" value="-1">FOLD</button>
                         </div>
                     </form>
                 </div>
@@ -352,9 +520,9 @@
             <div class="slot-form">
                 <form action="/bet" method="post">
                     <div class="slider">
-                        <input type="range" id="bet" name="bet" min={{ game.currentBet - game.players[game.currentPlayer].currentBet }} value="10"   
+                        <input class="betbet" type="range" id="bet" name="bet" min='' value="10"   
                         oninput="rangeValue.innerText = this.value">
-                        <p id="rangeValue">{{ game.currentBet - game.players[game.currentPlayer].currentBet }}</p>
+                        <p id="rangeValue"></p>
                     </div>
                     <button type="submit" class="button4">BET</button>
                 </form>

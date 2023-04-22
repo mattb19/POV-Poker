@@ -6,7 +6,7 @@ import json
 from copy import deepcopy
 
 class Game:
-    def __init__(self, players, smallBlind, bigBlind, active) -> None:
+    def __init__(self, players, smallBlind, bigBlind) -> None:
         self.players = players
         self.deck = []
         self.pot = 0
@@ -18,7 +18,8 @@ class Game:
         self.playerNames = [i.getUser() for i in self.players]
         self.playerCount = len(self.players)
         self.playerQueue = []
-        self.active = active
+        self.active = False
+        self.blinds = []
         
         self.flop1 = Card("None","None",0)
         self.flop2 = Card("None","None",0)
@@ -54,15 +55,45 @@ class Game:
             self.players[i].setCard2(self.deck[-1])
             self.deck.pop()
         
-        
+    
     def newRound(self):
         # generate a new deck
         self.shuffleDeck()
         
-        self.players + self.playerQueue
+        # add any waiting players
+        self.players += self.playerQueue
         self.playerQueue = []
         self.round = 0
-        # rotates player list by 1
+        
+        # initialize blinds if its a new game
+        if not self.active:
+            self.players[0].setBlind(1)
+            self.players[1].setBlind(2)
+            self.active = True
+        else:
+            # rotate blinds
+            for i in range(len(self.players)):
+                if self.players[i].getBlind() == 0:
+                    continue
+                elif self.players[i].getBlind() == 1 and i == len(self.players)-1:
+                    self.players[len(self.players)-1].setBlind(0)
+                    self.players[0].setBlind(1)
+                    self.players[1].setBlind(2)
+                    break
+                elif self.players[i].getBlind() == 1 and i == len(self.players)-2:
+                    self.players[len(self.players)-2].setBlind(0)
+                    self.players[len(self.players)-1].setBlind(1)
+                    self.players[0].setBlind(2)
+                    break
+                else:
+                    self.players[i].setBlind(0)
+                    self.players[i+1].setBlind(1)
+                    self.players[i+2].setBlind(2)
+                    break
+                
+
+            
+        
         
         
         # set everyones bet count to zero and turn to true
@@ -71,15 +102,24 @@ class Game:
             i.setTurn(True)
             i.setColor("white")
         
-        # set blinds bet count
-        self.players[0].setCurrentBet(self.smallBlind)
-        self.players[0].setChipCount(0-self.smallBlind)
-        self.players[1].setCurrentBet(self.bigBlind)
-        self.players[1].setChipCount(0-self.bigBlind)
-        self.currentBet = self.bigBlind
+        
+        # set all players bet counts
+        for i in range(len(self.players)):
+            if self.players[i].getBlind() == 1:
+                self.players[i].setCurrentBet(self.smallBlind)
+                self.players[i].setChipCount(-self.smallBlind)
+            elif self.players[i].getBlind() == 2:
+                self.players[i].setCurrentBet(self.bigBlind)
+                self.players[i].setChipCount(-self.bigBlind)
+            else:
+                self.players[i].setCurrentBet(0)
+        
+        
+        # initialize pot
         self.pot = 0
-        self.pot += self.bigBlind
         self.pot += self.smallBlind
+        self.pot += self.bigBlind
+        self.currentBet = self.bigBlind
         
         # set table cards to face down
         self.flop1 = Card("None","None",0)
@@ -102,7 +142,11 @@ class Game:
         self.tableCards = tableCards
         
         # get player 3, set him to bet first
-        self.currentPlayer = 2
+        for i in range(len(self.players)):
+            if self.players[i].getBlind() == 2 and i < len(self.players)-1:
+                self.currentPlayer = i+1
+            if self.players[i].getBlind() == 2 and i == len(self.players)-1:
+                self.currentPlayer = 0             
     
     
     def placeBetFold(self, value):
@@ -495,16 +539,21 @@ class Game:
                 winner.append(i)
             elif i.getCurrentBet() == high:
                 winner.append(i)
+        self.round += 1
+                
+        # distribute the winnings
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
-        self.lastWinners = winners
-        winnersList = [i[0] for i in winners]
+        winnersList = [i[0].getUser() for i in winners]
+        self.lastWinners = winnersList
         for i in range(len(self.players)):
             if self.players[i] not in winnersList:
                 self.players[i].setColor("black")
+        
+        time.sleep(10)
         
         self.newRound()
 
@@ -571,18 +620,31 @@ class Game:
         return self.active
     
     def json(self):
-        game = deepcopy(self)
-        game.setFlop1(game.getFlop1().__dict__)
-        game.setFlop2(game.getFlop2().__dict__)
-        game.setFlop3(game.getFlop3().__dict__)
-        game.setTurn(game.getTurn().__dict__)
-        game.setRiver(game.getRiver().__dict__)
-        game.setTableCards()
-        for i in game.players:
-            i.setCard1(str(i.getCard1()))
-            i.setCard2(str(i.getCard2()))
-        game.setPlayers([i.__dict__ for i in game.getPlayers()])
-        return json.dumps(game.__dict__, indent=4)
+        try:
+            game = deepcopy(self)
+            game.setFlop1(game.getFlop1().__dict__)
+            game.setFlop2(game.getFlop2().__dict__)
+            game.setFlop3(game.getFlop3().__dict__)
+            game.setTurn(game.getTurn().__dict__)
+            game.setRiver(game.getRiver().__dict__)
+            game.setTableCards()
+            for i in game.players:
+                i.setCard1(str(i.getCard1()))
+                i.setCard2(str(i.getCard2()))
+            game.setPlayers([i.__dict__ for i in game.getPlayers()])
+            return json.loads(json.dumps(game, default=lambda o: o.__dict__))
+        except TypeError:
+            game = deepcopy(self)
+            print()
+            print()
+            print()
+            print()
+            print(json.loads(json.dumps(game, default=lambda o: o.__dict__)))
+            print()
+            print()
+            print()
+            print()
+        
     
     def reset(self, big, small, player1, player2, player3):
         self.bigBlind = big
