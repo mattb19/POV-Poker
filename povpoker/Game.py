@@ -70,24 +70,26 @@ class Game:
             self.players[0].setBlind(1)
             self.players[1].setBlind(2)
             self.active = True
-            
-        
-        # rotate blinds
-        for i in range(len(self.players)):
-            if self.players[i].getBlind() == 0:
-                continue
-            elif self.players[i].getBlind() == 1 and i == len(self.players)-1:
-                self.players[len(self.players)-1].setBlind(0)
-                self.players[0].setBlind(1)
-                self.players[1].setBlind(2)
-            elif self.players[i].getBlind() == 1 and i == len(self.players)-2:
-                self.players[len(self.players)-2].setBlind(0)
-                self.players[len(self.players)-1].setBlind(1)
-                self.players[0].setBlind(2)
-            else:
-                self.players[i].setBlind(0)
-                self.players[i+1].setBlind(1)
-                self.players[i+2].setBlind(2)
+        else:
+            # rotate blinds
+            for i in range(len(self.players)):
+                if self.players[i].getBlind() == 0:
+                    continue
+                elif self.players[i].getBlind() == 1 and i == len(self.players)-1:
+                    self.players[len(self.players)-1].setBlind(0)
+                    self.players[0].setBlind(1)
+                    self.players[1].setBlind(2)
+                    break
+                elif self.players[i].getBlind() == 1 and i == len(self.players)-2:
+                    self.players[len(self.players)-2].setBlind(0)
+                    self.players[len(self.players)-1].setBlind(1)
+                    self.players[0].setBlind(2)
+                    break
+                else:
+                    self.players[i].setBlind(0)
+                    self.players[i+1].setBlind(1)
+                    self.players[i+2].setBlind(2)
+                    break
                 
 
             
@@ -547,7 +549,7 @@ class Game:
             if self.players[i] not in winnersList:
                 self.players[i].setColor("black")
         
-        time.sleep(30)
+        time.sleep(10)
         
         self.newRound()
 
