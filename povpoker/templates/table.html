@@ -73,40 +73,6 @@
         font-size: 13px;
     
     }
-    .pot {
-    position:absolute;
-    right:49%;bottom:49%;
-    font-size:30px
-    }
-
-    .card1 {
-    position:absolute;
-    right:50.5%;bottom:34%;
-    }
-    .card2 {
-    position:absolute;
-    right:45%;bottom:34%;
-    }
-    .flop1 {
-    position:absolute;
-    right:59.5%;bottom:55%;
-    }
-    .flop2 {
-    position:absolute;
-    right:53.5%;bottom:55%;
-    }
-    .flop3 {
-    position:absolute;
-    right:47.5%;bottom:55%;
-    }
-    .turn {
-    position:absolute;
-    right:41.5%;bottom:55%;
-    }
-    .river {
-    position:absolute;
-    right:35.5%;bottom:55%;
-    }
     .tests {
         position:absolute;
         right:17%;
@@ -207,50 +173,83 @@
 
     <body>
         <div class="slots" id="load">
-            <body>{{ session.name }}</body>
-
-
-
-
-
+            <div id="sessionID">{{ session.name }}</div>
             <!-- Table Cards -->
             <div class="tableCards">
-                <div class="pot">
-                    <body>{{ game.getPot() }}</body>
-                </div>
-                <div class="flop1">
-                    <img src={{ game.getFlop1() }} width="70" height="110">
-                </div>
-                <div class="flop2">
-                    <img src={{ game.getFlop2() }} width="70" height="110">
-                </div>
-                <div class="flop3">
-                    <img src={{ game.getFlop3() }} width="70" height="110">
-                </div>
-                <div class="turn">
-                    <img src={{ game.getTurn() }} width="70" height="110">
-                </div>
-                <div class="river">
-                    <img src={{ game.getRiver() }} width="70" height="110">
-                </div>
-                <!--
-
-                -->
+                <div class="pot" id="pot" style="position:absolute;right:49.5%;bottom:49.5%;font-size:26px;"></div>
+                <img id="flop1" src="" width="70" height="110" style="position:absolute;right:59.5%;bottom:55%;">
+                <img id="flop2" src="" width="70" height="110" style="position:absolute;right:53.5%;bottom:55%;">
+                <img id="flop3" src="" width="70" height="110" style="position:absolute;right:47.5%;bottom:55%;">
+                <img id="turn" src="" width="70" height="110" style="position:absolute;right:41.5%;bottom:55%;">
+                <img id="river" src="" width="70" height="110" style="position:absolute;right:35.5%;bottom:55%;">
             </div>
-
 
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script>
+
                 function update_values() {
                     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
+
+                            // if the round is over, show winners cards
+                            if (data.round == 4) {
+                                for (let i=0; i < data.players.length; i++) {
+                                    if (data.lastWinners.includes(data.playerNames[i])) {
+                                        document.getElementsByClassName("card1")[i].src=data.players[i].card1;
+                                        document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                    } else {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
+                                    }
+                                }
+                            } else {
+                                for (let i=0; i < data.players.length; i++) {
+                                    if (data.players[i].currentBet == null) {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
+                                    } else if (data.players[i].user == document.getElementById("sessionID").innerHTML) {
+                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                    } else {
+                                        document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
+                                        document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
+                                        document.getElementsByClassName("card1")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card2")[i].style.visibility='visible';
+                                    }
+                                }                            
+                            }
 
 
                             // Change each players chip count
                             for (let i=0; i < data.players.length; i++) {
                                 $(".c"+i.toString()).text(data.players[i].chipCount);
                             }
+
+
+                            // Set table cards
+                            if (data.round >= 1) {
+                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
+                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/" + data.tableCards[1]._num + "_of_" + data.tableCards[1]._suit + ".png";
+                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/" + data.tableCards[2]._num + "_of_" + data.tableCards[2]._suit + ".png";
+                            } else {
+                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/None_of_None.png";
+                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/None_of_None.png";
+                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+                            if (data.round >= 2) {
+                                document.getElementById("turn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
+                            } else {
+                                document.getElementById("turn").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+                            if (data.round >= 3) {
+                                document.getElementById("river").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
+                            } else {
+                                document.getElementById("river").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+
 
 
                             // Display each players name with the correct color
@@ -294,36 +293,91 @@
                             }
 
 
+
                             // Handle each players hand (handle folds)
-                            for (let i=0; i < data.players.length; i++) {
-                                if (data.players[i].currentBet == null) {
-                                    document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                    document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                    document.getElementsByClassName("slot-"+i.toString())[0].style.color='black';
-                                } else if (data.players[i].user == "Matt") {
-                                    document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                    document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                } else {
-                                    document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
-                                    document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';
-                                }
+
+
+                            // Give personal user cards
+                            document.getElementsByClassName("uc1")[0].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card1;
+                            document.getElementsByClassName("uc2")[0].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card2;
+
+                            // Handle pot and current bet
+                            $("#pot").text(data.pot.toString());
+                            $("#curBet").text("Current Bet: "+data.currentBet.toString());
+
+
+                            
+                            // Disable button if its not the users turn
+                            if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML) {
+                                document.getElementsByClassName("button4")[0].disabled = 'false';
+                            } else {
+                                document.getElementsByClassName("button4")[0].disabled = 'true';
                             }
 
-                            
-                            // Give personal user cards
-                            document.getElementsByClassName("uc1")[0].src=data.players[1].card1;
-                            document.getElementsByClassName("uc2")[0].src=data.players[1].card2;
-                            $("#curBet").text("Current Bet: "+data.currentBet.toString());
-                            
 
+                            // Set call & bet slider to correct amounts
+                            document.getElementsByClassName("button2")[0].value = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
 
+                            
                             // Call the function 5 times every second
-                            setTimeout(update_values, 2000);
+                            setTimeout(update_values, 200);
                         });
                 }
 
                 update_values();
             </script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('form.cat').on('submit', function(event) {
+                        $.ajax({
+                            data : {
+                                bet : $('.button2').val(),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+                $(document).ready(function() {
+                    $('form.dog').on('submit', function(event) {
+                        $.ajax({
+                            data : {
+                                bet : $('.button1').val(),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+            </script>
+
 
 
 
@@ -450,17 +504,17 @@
                 <div class="container">
                     <form action="/bet" method="post">
                         <div class="check">
-                            <button class="button3" type="submit" id="bet"  name="bet" value="0">CHECK</button>
+                            <button class="button3" type="submit" id="check"  name="bet" value="0">CHECK</button>
                         </div>
                     </form>
-                    <form action="/bet" method="post">
+                    <form class="cat" action="/bet" method="post">
                         <div class="check">
-                            <button class="button2" type="submit" id="bet"  name="bet" value={{ game.currentBet - game.players[game.currentPlayer].currentBet }}>CALL</button>
+                            <button class="button2" type="submit" id="call"  name="bet" value="0">CALL</button>
                         </div>
                     </form>
-                    <form action="/bet" method="post">
+                    <form class="dog" action="/bet" method="post">
                         <div class="check">
-                            <button class="button1" type="submit" id="bet"  name="bet" value="-1">FOLD</button>
+                            <button class="button1" type="submit" id="fold"  name="bet" value="-1">FOLD</button>
                         </div>
                     </form>
                 </div>
@@ -469,7 +523,7 @@
             <div class="slot-form">
                 <form action="/bet" method="post">
                     <div class="slider">
-                        <input type="range" id="bet" name="bet" min={{ game.currentBet - game.players[game.currentPlayer].currentBet }} value="10"   
+                        <input class="betbet" type="range" id="bet" name="bet" min={{ game.currentBet - game.players[game.currentPlayer].currentBet }} value="10"   
                         oninput="rangeValue.innerText = this.value">
                         <p id="rangeValue">{{ game.currentBet - game.players[game.currentPlayer].currentBet }}</p>
                     </div>

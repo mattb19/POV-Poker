@@ -100,15 +100,24 @@ class Game:
             i.setTurn(True)
             i.setColor("white")
         
-        # set blinds bet count
-        self.players[0].setCurrentBet(self.smallBlind)
-        self.players[0].setChipCount(0-self.smallBlind)
-        self.players[1].setCurrentBet(self.bigBlind)
-        self.players[1].setChipCount(0-self.bigBlind)
-        self.currentBet = self.bigBlind
+        
+        # set all players bet counts
+        for i in range(len(self.players)):
+            if self.players[i].getBlind() == 1:
+                self.players[i].setCurrentBet(self.smallBlind)
+                self.players[i].setChipCount(-self.smallBlind)
+            elif self.players[i].getBlind() == 2:
+                self.players[i].setCurrentBet(self.bigBlind)
+                self.players[i].setChipCount(-self.bigBlind)
+            else:
+                self.players[i].setCurrentBet(0)
+        
+        
+        # initialize pot
         self.pot = 0
-        self.pot += self.bigBlind
         self.pot += self.smallBlind
+        self.pot += self.bigBlind
+        self.currentBet = self.bigBlind
         
         # set table cards to face down
         self.flop1 = Card("None","None",0)
@@ -524,16 +533,21 @@ class Game:
                 winner.append(i)
             elif i.getCurrentBet() == high:
                 winner.append(i)
+        self.round += 1
+                
+        # distribute the winnings
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
-        self.lastWinners = winners
-        winnersList = [i[0] for i in winners]
+        winnersList = [i[0].getUser() for i in winners]
+        self.lastWinners = winnersList
         for i in range(len(self.players)):
             if self.players[i] not in winnersList:
                 self.players[i].setColor("black")
+        
+        time.sleep(30)
         
         self.newRound()
 
