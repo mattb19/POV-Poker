@@ -1,31 +1,37 @@
-<table size='1px' border='0' width='100%'>
+<table size='1px' border='0'>
     <tr>
-        <p style="text-align: center; color: black">Name : {{theUser.userName}}</p>
-        <p style="text-align: center; color: black">Email : {{theUser.userEmail}}</p>
-        <p style="text-align: center; color: black">Bio : {{theUser.bio}}</p>
+        <table border='0' style="width:104%; height:100px; margin-left:-2%">
+            <tr style="font-color:red">
+                <th width="100px">
+                    <p style="color: 000000; font-size:18px; margin-left:5px">Name : {{userid}}</p>
+                </br>
+                    <p style="color: 000000; font-size:18px; margin-left:5px">Email :</p>
+                </br>
+                    <p style="color: 000000; font-size:18px; margin-left:5px">Bio : World War II was a global conflict that lasted from 1939 to 1945, involving the majority of the world's nations. The war was sparked by the aggression of Nazi Germany, led by Adolf Hitler, who sought to expand the country's territory and influence. The war saw the emergence of two opposing military alliances, the Allies (led by the United States, Great Britain, and the Soviet Union) and the Axis powers (led by Germany, Japan, and Italy). The war resulted in the deaths of over 70 million people, including 6 million Jews in the Holocaust.</p>
+                </th>
+                <th width="100px" style="text-align:center">
+                    <img height="200px" src="../static/userpp.png" width="200px" alt="buttonpng"/>
+                </th>
+
+            </tr> 
+        </table>
     </br>
-        <table class="table table-bordered">
+        <table border='3px solid black' style="width:100%; height:100px; margin-left:%">
             <thead>
-                <tr>
-                    <th>Wins</th>
-                    <th>Straights</th>
-                    <th>Flushes</th>
-                    <th>Full Houses</th>
-                    <th>Four of a Kinds</th>
-                    <th>Straight Flushes</th>
-                    <th>Royal Flushes</th>
+                <tr style="font-color:red">
+                    <th width="100px" style="text-align:center; color: FF0000"> Wins </th>
+                    <th width="100px" style="text-align:center; color: FF0000"> Straights </th>
+                    <th width="100px" style="text-align:center; color: FF0000"> Flushes </th>
+                    <th width="100px" style="text-align:center; color: FF0000"> Full Houses </th>
+                    <th width="100px" style="text-align:center; color: FF0000"> Four of a Kinds </th>
+                    <th width="100px" style="text-align:center; color: FF0000"> Straight Flushes </th>
+                    <th width="100px" style="text-align:center; color: FF0000"> Royal Flushes </th>
                 </tr>
                 </thead>
-                    <tr>
-                        <td>{{theUser.winCount}}</td>
-                        <td>{{theUser.straightCount}}</td>
-                        <td>{{theUser.flushCount}}</td>
-                        <td>{{theUser.fullHouseCount}}</td>
-                        <td>{{theUser.quadCount}}</td>
-                        <td>{{theUser.straightFlushCount}}</td>
-                        <td>{{theUser.royalFlushCount}}</td>
-                    </tr>
+                    
         </table>
         </td>
     </tr>
 </table>
+</br>
+

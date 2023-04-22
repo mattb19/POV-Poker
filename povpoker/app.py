@@ -79,11 +79,14 @@ def profileCard():
         theUser = theUser,
     )
 
-@app.route("/ajaxfile",methods=["POST","GET"])
+@app.route("/ajaxfile", methods=["POST","GET"])
 def ajaxfile():
     if request.method == 'POST':
-        pass
-    return jsonify({'htmlresponse': render_template('response.html',theUser=theUser)})
+        i = 1
+        userid = request.form['userid']
+        print(userid)
+            
+    return jsonify({'htmlresponse': render_template('response.html', userid=userid)})
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

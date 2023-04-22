@@ -370,6 +370,8 @@
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
             <meta name="theme-color" content="#fafafa">
             <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
             <script>
                 $(document).ready(function() {
@@ -463,6 +465,7 @@
                 $(document).ready(function(){
                     $('.userinfo').click(function(){
                         var userid = $(this).data('id');
+                        console.log(userid)
                         console.log(document.getElementsByClassName("playerName"+userid.toString())[0].innerHTML);
                         $.ajax({
                             url: '/ajaxfile',
@@ -486,9 +489,9 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">'s Profile</h4>
+                                        <h4 class="modal-title" style="color:black">'s Profile</h4>
                                     </div>
-                                    <div class="modal-body">
+                                    <div class="modal-body" size="1px">
                                     </div>
                                 </div>
                             </div>
@@ -504,7 +507,7 @@
                 {% for i in range(10) %}
                 <div class="slot-{{i}}" style="opacity:1.0">
                     <img src="../static/tagg.png" width="175" height="120">
-                    <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;">
+                    <button data-id={{i}} class="userinfo"><img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></button>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
                     <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:41px;"></div>
