@@ -23,6 +23,7 @@ pip install Flask-SQLAlchemy
 pip install flask_wtf
 pip install opencv-python
 pip install -U Werkzeug
+pip install flask_modals
 ```
 
 ## How to Run
