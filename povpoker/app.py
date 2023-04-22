@@ -99,6 +99,7 @@ def login():
 def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
+        print(bet)
         bet = int(bet)
         if bet < 0:
             bet = None
@@ -116,6 +117,12 @@ def getGame():
 @app.route('/d')
 def d():
     return render_template('d.html')
+
+@app.route('/test')
+def test():
+    return render_template('pokerTable.html')
+
+
 
 
 
