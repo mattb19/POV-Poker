@@ -1,47 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Python Flask Load content Dynamically in Bootstrap Modal with Jquery AJAX and Mysqldb</title>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-</head>
-<body >
-<div class="container" style="margin-left: 1760px; margin-top: 1px">
-    <button data-id='1' class="userinfo btn btn-success"><img height="50px" src="../static/chippy.png" width="50px" alt="buttonpng" border="0" /></button>
-</div>    
-            <script type='text/javascript'>
-            $(document).ready(function(){
-                $('.userinfo').click(function(){
-                    var userid = $(this).data('id');
-                    $.ajax({
-                        url: '/ajaxfile',
-                        type: 'post',
-                        data: {userid: userid},
-                        success: function(data){ 
-                            $('.modal-body').html(data); 
-                            $('.modal-body').append(data.htmlresponse);
-                            $('#empModal').modal('show'); 
-                        }
-                    });
-                });
-            });
-            </script>
-        </div>
-        <div class="modal fade" id="empModal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{theUser.userName}}'s Profile</h4>
-                      <button type="button" class="close" data-dismiss="modal">×</button>
-                    </div>
-                    <div class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-    </div>
-</body>
-</html>
+{% extends "layout.html" %} {% block content %}
+
+
+{%endblock content %}
+
