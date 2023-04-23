@@ -1,4 +1,107 @@
 <style type="text/css">
+    .slider {
+        position:absolute;
+        bottom:2.5%;
+        right:5%;
+        transform:translate(-50%,-50%);
+        width:500px;
+        height:45px;
+        padding:10px;
+        padding-left: 40px;
+        background:#fcfcfc;
+        border-radius:20px;
+        display:flex;
+        align-items:center;
+        box-shadow:0px 15px 40px #7E6D5766;
+       }
+       .slider input[type="range"] {
+        -webkit-appearance:none !important;
+        width:440px;
+        height:2px;
+        position:absolute;
+        right:6%;
+        background: linear-gradient(0.25turn, #39FF14, #FFFF00, #FF3131);
+        border:none;
+        outline:none;
+       }
+       .slider input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance:none !important;
+        width:30px;
+        height:30px;
+        background:#fcfcfc;
+        border:2px solid #000;
+        border-radius:50%;
+        cursor:pointer;
+       }
+       .slider input[type="range"]::-webkit-slider-thumb:hover {
+        background:#000;
+       }
+       .button-7 {
+        align-items: center;
+        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color: black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 25px;
+        font-weight: bold;
+        height: 54px;
+        justify-content: center;
+        letter-spacing: .4px;
+        line-height: 1;
+        max-width: 100%;
+        min-width:160px;
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 3px;
+        position:absolute;
+        right:-34%;
+        margin-left:10px;
+        text-decoration: none;
+        text-transform: uppercase;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+       }
+       
+       .button-7:active {
+         outline: 0;
+       }
+       
+       .button-7:hover {
+         outline: 0;
+       }
+       
+       .button-7 span {
+         transition: all 200ms;
+       }
+       
+       .button-7:hover span {
+         transform: scale(.9);
+         opacity: .75;
+       }
+    #a {
+    
+        animation: pulse 2s ease-in-out infinite;
+    }
+    @-webkit-keyframes "pulse" {
+        0% {
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+        50% {
+           -webkit-transform: scale(2);
+           transform: scale(2);
+        }
+        100% {
+            -webkit-transform: scale(1.2);
+           transform: scale(1.2);
+        }
+        }
     .button-75 {
         align-items: center;
         background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
@@ -9,8 +112,8 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        font-family: "Impact", fantasy;
-        font-size: 16px;
+        font-family: "Tahoma", sans-serif;
+        font-size: 21px;
         font-weight: bold;
         height: 54px;
         justify-content: center;
@@ -40,23 +143,6 @@
       }
       
       .button-75:hover span {
-        transform: scale(.9);
-        opacity: .75;
-      }
-
-      .userinfo:active {
-        outline: 0;
-      }
-      
-      .userinfo:hover {
-        outline: 0;
-      }
-      
-      .userinfo span {
-        transition: all 200ms;
-      }
-
-      .userinfo:hover span {
         transform: scale(.9);
         opacity: .75;
       }
@@ -120,12 +206,12 @@
     .slot-8
     {
     position:absolute;
-    right:35%;bottom:8%;
+    right:35%;bottom:12.5%;
     }
     .slot-9
     {
     position:absolute;
-    right:55%;bottom:8%;
+    right:55%;bottom:12.5%;
     }
     .table
     {
@@ -135,49 +221,13 @@
     .slots
     {
     font-size: 26px;
-    font-family: "Impact", fantasy;
+    font-family: "Tahoma", sans-serif;
+    font-weight: bold;
     color: white;
     }
     body {
         margin: 0;
         background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
-    }
-    .ball {
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        background-color: #FF5722;
-        animation: bounce 0.5s;
-        animation-direction: alternate;
-        animation-iteration-count: infinite;
-    }
-      
-    @keyframes bounce {
-        from {
-            transform: translate3d(-32px, -50px, 10px);
-        }
-        to {
-            transform: translate3d(86px, -50px, 10px);
-        }
-    }
-    /* Prefix Support */
-      
-    ball {
-        -webkit-animation-name: bounce;
-        -webkit-animation-duration: 0.5s;
-        -webkit-animation-direction: alternate;
-        -webkit-animation-iteration-count: infinite;
-    }
-      
-    @-webkit-keyframes bounce {
-        from {
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }
-        to {
-            -webkit-transform: translate3d(0, 200px, 0);
-            transform: translate3d(0, 200px, 0);
-        }
     }
 </style>
 
@@ -193,15 +243,13 @@
         <div>
 
 
-            <div id="sessionID">{{ session.name }}</div>
+            <div id="sessionID" style="position:absolute;right:150%">{{ session.name }}</div>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script>
                 function update_values() {
                     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
-
-                            console.log(document.getElementsByClassName("button-75")[0].value);
 
                             // Set table cards
                             if (data.round >= 1) {
@@ -238,9 +286,9 @@
                                 // Change current player marker
                                 if (data.round < 4) {
                                     if (i == data.currentPlayer) {
-                                        document.getElementsByClassName("ball")[i].style.visibility='visible';
+                                        document.getElementsByClassName("a")[i].id='a';
                                     } else {
-                                        document.getElementsByClassName("ball")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("a")[i].id='b';
                                     }
                                 }
 
@@ -277,11 +325,11 @@
                                         document.getElementsByClassName("card1")[i].style.right="50%";
                                         document.getElementsByClassName("card1")[i].style.zIndex="95";
                                         document.getElementsByClassName("card2")[i].style.zIndex="95";
-                                        document.getElementsByClassName("ball")[i].style.visibility='visible';
+                                        document.getElementsByClassName("a")[i].id ='b';
                                     } else {
                                         document.getElementsByClassName("card1")[i].style.visibility='hidden';
                                         document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("ball")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("a")[i].id ='b';
                                         document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
                                     }
                                 } else {
@@ -301,8 +349,8 @@
                                         document.getElementsByClassName("card1")[i].height="108";
                                         document.getElementsByClassName("card2")[i].style.right="12%";
                                         document.getElementsByClassName("card1")[i].style.right="48%";
-                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
-                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="-1";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="-1";
                                     }
                                 }
                             }
@@ -327,23 +375,29 @@
                             // Disable button if its not the users turn (comment out for debug)
                             /*
                             if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML.toString()) {
-                                document.getElementsByClassName("button4")[0].disabled = false;
-                                document.getElementsByClassName("button2")[0].disabled = false;
-                                document.getElementsByClassName("button3")[0].disabled = false;
-                                document.getElementsByClassName("button1")[0].disabled = false;
-                                console.log("HHHHHHHHHH")
+                                document.getElementsByClassName("button-75")[0].disabled = false;
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[1].disabled = false;
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[2].disabled = false;
+                                document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
                             } else {
-                                document.getElementsByClassName("button1")[0].disabled = true;
-                                document.getElementsByClassName("button2")[0].disabled = true;
-                                document.getElementsByClassName("button3")[0].disabled = true;
-                                document.getElementsByClassName("button4")[0].disabled = true;
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[0].disabled = true;
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[1].disabled = true;
+                                document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[2].disabled = true;
                             }*/
 
 
                             // Set call & bet slider to correct amounts
+                            
+                            document.getElementsByClassName("button-7")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
                             document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
                             document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
                             document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
+                            
 
                             
                             // Call the function 5 times every second
@@ -357,10 +411,31 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
             <script>
                 $(document).ready(function() {
-                    console.log($(this).attr('val'));
                     $('.button-75').on('click', function(event) {
                         var de = $(this).attr('id');
-                        console.log(de);
+                        $.ajax({
+                            data : {
+                                bet : $(this).attr('id'),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+                $(document).ready(function() {
+                    $('.button-7').on('click', function(event) {
+                        var de = $(this).attr('id');
                         $.ajax({
                             data : {
                                 bet : $(this).attr('id'),
@@ -398,19 +473,18 @@
             
             <!-- Player Slots -->
             <div class="slots">
-                <div class="pot" id="pot" style="position:absolute;right:49.5%;bottom:49.5%;font-size:26px;text-align:center;"></div>
-                <div class="curBet" id="curBet" style="margin:auto;font-size:16px;text-align:center;">Hello!</div>
+                <div class="pot" id="pot" style="margin:auto;margin-top:50%;font-size:46px;text-align:center;"></div>
+                <div class="curBet" id="curBet" style="margin:auto;font-size:16px;text-align:center;"></div>
                 <div class="error" id="error" style="position:absolute;right:56%;bottom:40%;font-size:16px;color:red;"></div>
 
 
                 {% for i in range(10) %}
                 <div class="slot-{{i}}" style="opacity:1.0">
-                    <img src="../static/tagg.png" width="175" height="120">
+                    <img src="../static/tagg.png" class="a" id="a" width="175" height="120">
                     <a class="grow" id="{{i}}" href=""> <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></a>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
                     <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:38px;"></div>
-                    <img class="ball" src="../static/chips.png" width="25" height="25" style="position:absolute;right:50%;bottom:-35%;z-index:100;">
                     <img class="card1" src="" width="65" height="108" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
                     <img class="card2" src="" width="65" height="108" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                     <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
@@ -421,23 +495,16 @@
             
 
             <!-- Check, Bet, Fold buttons -->
-            <button class="button-75" style="position:absolute;right:10%;bottom:80%;" id="0"><span class="text">Call</span></button>
-            <button class="button-75" id='0' style="position:absolute;right:10%;bottom:90%;"><span class="text">Check</span></button>
-            <button class="button-75" id='-1' style="position:absolute;right:10%;bottom:60%;"><span class="text">Fold</span></button>
-
-            <div class="slot-form">
-                <form class="bear" action="/bet" method="post">
-                    <div class="slider">
-                        <input class="betbet" type="range" id="bet" name="bet" min='' value="10"   
-                        oninput="rangeValue.innerText = this.value">
-                        <p id="rangeValue"></p>
-                    </div>
-                    <button type="submit" class="button4">BET</button>
-                </form>
+            <button class="button-75" style="position:absolute;right:78%;bottom:4.5%;" id="0"><span class="text">Call</span></button>
+            <button class="button-75" id='0' style="position:absolute;right:85%;bottom:4.5%;"><span class="text">Check</span></button>
+            <button class="button-75" id='-1' style="position:absolute;right:71%;bottom:4.5%;"><span class="text">Fold</span></button>
+            <div class="slider">
+                <input type="range" class="betbet" min="0" max="100" value="10"   oninput="rangeValue.innerText = this.value">
+                <button class="button-7" id=''> <p id="rangeValue">10</p></button>  
             </div>
+
         </div>
-        {% extends "pokerTable.html" %} {% block content %}
-        {%endblock content %}
+        {% extends "pokerTable.html" %} {% block content2 %} {% endblock content2 %}
     </body>
 </html>
 
