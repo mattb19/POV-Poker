@@ -1,101 +1,11 @@
 <style type="text/css">
-    body {
-        background: #EFCDA4;
-       }
-       .slider {
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-50%);
-        width:500px;
-        height:45px;
-        padding:10px;
-        padding-left: 40px;
-        background:#fcfcfc;
-        border-radius:20px;
-        display:flex;
-        align-items:center;
-        box-shadow:0px 15px 40px #7E6D5766;
-       }
-       .slider input[type="range"] {
-        -webkit-appearance:none !important;
-        width:440px;
-        height:2px;
-        position:absolute;
-        right:10%;
-        background: linear-gradient(0.25turn, #39FF14, #FFFF00, #FF3131);
-        border:none;
-        outline:none;
-       }
-       .slider input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance:none !important;
-        width:30px;
-        height:30px;
-        background:#fcfcfc;
-        border:2px solid #000;
-        border-radius:50%;
-        cursor:pointer;
-       }
-       .slider input[type="range"]::-webkit-slider-thumb:hover {
-        background:#000;
-       }
-       .button-7 {
-        align-items: center;
-        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
-        border: 0;
-        border-radius: 10px;
-        box-sizing: border-box;
-        color: black;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        font-family: "Tahoma", sans-serif;
-        font-size: 25px;
-        font-weight: bold;
-        height: 54px;
-        justify-content: center;
-        letter-spacing: .4px;
-        line-height: 1;
-        max-width: 100%;
-        min-width:160px;
-        padding-left: 50px;
-        padding-right: 50px;
-        padding-top: 3px;
-        position:absolute;
-        right:-34%;
-        margin-left:10px;
-        text-decoration: none;
-        text-transform: uppercase;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-       }
-       
-       .button-7:active {
-         outline: 0;
-       }
-       
-       .button-7:hover {
-         outline: 0;
-       }
-       
-       .button-7 span {
-         transition: all 200ms;
-       }
-       
-       .button-7:hover span {
-         transform: scale(.9);
-         opacity: .75;
-       }
+
 
     
 </style>
 
 <!DOCTYPE html>
 <html lang="en">
-    <div class="slider">
-        <input type="range" min="0" max="100" value="10"   oninput="rangeValue.innerText = this.value">
-        <button class="button-7"> <p id="rangeValue">10</p></button>  
-    </div>
+    <img src="../static/blind.png" width="50%" height:"100">
 
 </html>
