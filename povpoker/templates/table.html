@@ -635,6 +635,8 @@
                                 document.getElementById("rangeValue").innerHTML = data.currentBet;
                             }
                             document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
+
+
                             
 
                             
@@ -738,7 +740,7 @@
 
 
                 {% for i in range(10) %}
-                <div class="slot-{{i}}" style="opacity:1.0">
+                <div class="slot-{{i}}" style="opacity:1.0;visibility:hidden;">
                     <img src="../static/tagg.png" class="a" id="a" width="175" height="120">
                     <a class="grow" id="{{i}}" href=""> <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></a>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">

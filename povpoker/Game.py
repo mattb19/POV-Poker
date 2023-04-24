@@ -536,10 +536,6 @@ class Game:
         
         # increment round
         self.round += 1
-        
-
-        for i in disWinnings:
-            print(i[0].getUser(), i[0].getCurrentBet(), i[1])
 
 
         # set all players current bets to zero
