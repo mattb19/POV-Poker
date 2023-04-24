@@ -99,7 +99,6 @@ def login():
 def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
-        print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
         bet = int(bet)

@@ -536,6 +536,14 @@
                                 document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
                                 document.getElementsByClassName("button-75")[2].disabled = false;
                                 document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[3].disabled = false;
+                                document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[4].disabled = false;
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[5].disabled = false;
+                                document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-7")[0].disabled = false;
+                                document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
                             } else {
                                 document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
                                 document.getElementsByClassName("button-75")[0].disabled = true;
@@ -543,7 +551,37 @@
                                 document.getElementsByClassName("button-75")[1].disabled = true;
                                 document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
                                 document.getElementsByClassName("button-75")[2].disabled = true;
+                                document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[3].disabled = true;
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[4].disabled = true;
+                                document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[5].disabled = true;
+                                document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-7")[0].disabled = true;
                             }*/
+
+                            // Disable call/check when necessary
+                            if (data.currentBet == data.players[data.currentPlayer].currentBet) {
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[0].disabled = true;
+                                document.getElementsByClassName("button-75")[1].disabled = false;
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                            } else {
+                                document.getElementsByClassName("button-75")[0].disabled = false;
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[1].disabled = true;
+                            }
+
+                            // Disable pot size bet button when pot is larger than players amounts
+                            if (data.pot > data.players[data.currentPlayer].chipCount) {
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[4].disabled = true;
+                            } else {
+                                document.getElementsByClassName("button-75")[4].disabled = false;
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                            }
 
 
                             // Set call & bet slider to correct amounts
