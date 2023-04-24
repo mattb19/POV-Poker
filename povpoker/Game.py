@@ -229,19 +229,26 @@ class Game:
             currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
             if len(currentPlayers) == 1:
                 return self.endRound()
+        
             
             # if all players have called, checked or folded
             if True not in turns:
-                self.currentPlayer = 0
+                firstPlayer = 0
+                for i in range(len(self.players)):
+                    if self.players[i].getCurrentBet() != None:
+                        firstPlayer = i
+                        print(firstPlayer)
+                        break
+                self.currentPlayer = firstPlayer
                 self.currentBet = 0
                 self.round += 1
                 self.flop1 = self.tableCards[0]
                 self.flop2 = self.tableCards[1]
                 self.flop3 = self.tableCards[2]
                 
-                # set all non-folded players current bets to zero
+                # set all non-folded/all-in'd players current bets to zero
                 for i in self.players:
-                    if i.getCurrentBet() is not None:
+                    if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setCurrentBetZero()
                         i.setTurn(True)
                         i.setColor("white")
@@ -270,14 +277,25 @@ class Game:
         elif self.round == 1:
             turns = [i.getTurn() for i in self.players]
             
+            # if all players have folded except one
+            currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
+            if len(currentPlayers) == 1:
+                return self.endRound()
+            
             # if all players have called, checked or folded
             if True not in turns:
-                self.currentPlayer = 0
+                firstPlayer = 0
+                for i in range(len(self.players)):
+                    if self.players[i].getCurrentBet() != None:
+                        firstPlayer = i
+                        print(firstPlayer)
+                        break
+                self.currentPlayer = firstPlayer
                 self.currentBet = 0
                 self.round += 1
                 self.turn = self.tableCards[3]
                 for i in self.players:
-                    if i.getCurrentBet() is not None:
+                    if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setCurrentBetZero()
                         i.setTurn(True)
                         i.setColor("white")
@@ -299,14 +317,25 @@ class Game:
                 
         # if the turn is down
         elif self.round == 2:
+            # if all players have folded except one
+            currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
+            if len(currentPlayers) == 1:
+                return self.endRound()
+            
             turns = [i.getTurn() for i in self.players]
             if True not in turns:
-                self.currentPlayer = 0
+                firstPlayer = 0
+                for i in range(len(self.players)):
+                    if self.players[i].getCurrentBet() != None:
+                        firstPlayer = i
+                        print(firstPlayer)
+                        break
+                self.currentPlayer = firstPlayer
                 self.currentBet = 0
                 self.round += 1
                 self.river = self.tableCards[4]
                 for i in self.players:
-                    if i.getCurrentBet() is not None:
+                    if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setCurrentBetZero()
                         i.setTurn(True)
                         i.setColor("white")
@@ -326,11 +355,22 @@ class Game:
 
         # if the river is down
         elif self.round == 3:
+            # if all players have folded except one
+            currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
+            if len(currentPlayers) == 1:
+                return self.endRound()
+            
             turns = [i.getTurn() for i in self.players]
             if True not in turns:
-                self.currentPlayer = 0
+                firstPlayer = 0
+                for i in range(len(self.players)):
+                    if self.players[i].getCurrentBet() != None:
+                        firstPlayer = i
+                        print(firstPlayer)
+                        break
+                self.currentPlayer = firstPlayer
                 for i in self.players:
-                    if i.getCurrentBet() is not None:
+                    if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setCurrentBetZero()
                         i.setColor("white")
                 return self.endRound()
@@ -559,7 +599,7 @@ class Game:
             else:
                 self.players[i].setColor("white")
         
-        time.sleep(10)
+        time.sleep(5)
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         
