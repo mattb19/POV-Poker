@@ -507,6 +507,7 @@
 
                                 // Handle folds and end of round
                                 if (data.round == 4) {
+                                    console.log("Hello")
                                     if (data.lastWinners.includes(data.playerNames[i])) {
                                         document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
@@ -623,7 +624,11 @@
 
                             // Set call & bet slider to correct amounts
                             document.getElementsByClassName("button-7")[0].id = (document.getElementById("rangeValue").innerText);
-                            document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            if (data.currentBet > data.players[data.currentPlayer].chipCount) {
+                                document.getElementsByClassName("button-75")[0].id = data.players[data.currentPlayer].chipCount
+                            } else {
+                                document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            }
                             document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
                             document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
                             if (document.getElementById("rangeValue").innerHTML < data.currentBet) {

@@ -132,6 +132,9 @@ class Game:
         # get dealt deck and playerlist with updated player hands
         self.dealCards()
         
+        # reset winners
+        self.lastWinners = []
+        
         # determines flop, turn and river cards
         tableCards = []
         for i in range(0, len(self.deck)):
@@ -200,6 +203,17 @@ class Game:
             self.players[x].setAllIn(True)
             final = player.getUser()+" IS ALL IN! "
         
+        elif value == player.getChipCount() and value < self.currentBet:
+            player.setCurrentBet(value)
+            player.setChipCount(0-value)
+            player.setTurn(False)
+            player.setColor("#EE4B2B")
+            self.pot += value
+            self.currentBet = value
+            self.players[x] = player
+            self.players[x].setAllIn(True)
+            final = player.getUser()+" IS ALL IN! "
+        
         # if they don't bet enough
         elif value < self.currentBet:
             return "You must put more in to call or raise"
@@ -222,23 +236,29 @@ class Game:
         
         
     def whoGoesNext(self): 
-        # if its pre flop
         turns = [i.getTurn() for i in self.players]
         
-        # if all players have folded except one
-        currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
+        # if all players have folded/all-in'd except one
+        currentPlayers = [i for i in self.players if i.getCurrentBet() != None and i.getAllIn() == False]
         if len(currentPlayers) == 1:
             return self.endRound()
     
         # if all players have called, checked or folded
         if True not in turns:
-            firstPlayer = 0
-            for i in range(len(self.players)):
-                if self.players[i].getCurrentBet() != None and self.players[i].getAllIn() == False:
-                    firstPlayer = i
-                    print(firstPlayer)
+            l = [i.getBlind() for i in self.players]
+            blindIndex = l.index(1)
+            c = blindIndex
+            while True:
+                if self.players[c].getCurrentBet() != None and self.players[c].getAllIn() == False:
                     break
-            self.currentPlayer = firstPlayer
+                else:
+                    if c == len(self.players)-1:
+                        c = 0
+                    else:
+                        c += 1
+                        
+                    
+            self.currentPlayer = c
             self.currentBet = 0
 
             if self.round == 0:
@@ -271,6 +291,8 @@ class Game:
                     i.setCurrentBetZero()
                     i.setTurn(True)
                     i.setColor("white")
+                elif i.getAllIn() == True:
+                    i.setCurrentBetZero()
             return self.currentPlayer
         
         # determine who's turn is next
@@ -295,7 +317,6 @@ class Game:
             lst = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
             unsortedCards = [[i.getValue(), i.getSuit()] for i in lst]
             card = sorted(unsortedCards,key=lambda l:l[0])
-            print(card)
             cards = [int(i[0]) for i in card]
             suits = [i[1] for i in card]
             # for j in lst:
@@ -478,41 +499,63 @@ class Game:
             # print()
             # print()
             # print()
-        
-        
-        
-        # check who won the hand
-        winner = []
-        high = 0
-        for i in finalPlayers:
-            if i.getCurrentBet() > high:
-                if len(winner) != 0:
-                    winner.clear()
-                high = i.getCurrentBet()
-                winner.append(i)
-            elif i.getCurrentBet() == high:
-                winner.append(i)
-        self.round += 1
             
-                    
-        for i in self.players:
-            i.setCurrentBetZero()
+            
+        newList = sorted(finalPlayers, key=lambda x:x.getCurrentBet(), reverse=True)
+        disWinnings = []
+        
+        # Determine who wins what
+        for i in newList:
+            # Handle splits
+            splitCount = 1
+            split = True
+            while split:
+                if (newList.index(i)+splitCount) < len(newList):
+                    if newList[newList.index(i)+splitCount].getCurrentBet() == i.getCurrentBet() and newList[newList.index(i)+splitCount].getTotalValue() == i.getTotalValue():
+                        splitCount += 1
+                        print("hi")
+                    else:
+                        split = False
+                else:
+                    split = False
+            
+            
+            # Determine amount to win per player
+            amount = 0
+            for j in self.players:
+                if i.getUser() != j.getUser():
+                    if i.getTotalValue() >= j.getTotalValue()//splitCount:
+                        amount += j.getTotalValue()//splitCount
+                        j.setTotalValue(-(j.getTotalValue()//splitCount))
+                    else:
+                        amount += i.getTotalValue()//splitCount
+                        j.setTotalValue(-i.getTotalValue()//splitCount)
+            disWinnings.append([i, amount])
+            if amount != 0:
+                self.lastWinners.append(i.getUser())
+        
+        # increment round
+        self.round += 1
         
 
-        winners = []
-        for i in winner:
-            winners.append([i, i.getCurrentBet()])
-        winnersList = [i[0].getUser() for i in winners]
-        self.lastWinners = winnersList
-        for i in range(len(self.players)):
-            if self.players[i] not in winnersList:
-                self.players[i].setColor("white")
-            else:
-                self.players[i].setColor("white")
+        for i in disWinnings:
+            print(i[0].getUser(), i[0].getCurrentBet(), i[1])
+
+
+        # set all players current bets to zero
+        for j in self.players:
+            j.setCurrentBetZero()
         
-        time.sleep(30)
-        for i in winners:
-            i[0].setChipCount(self.pot//len(winners))
+        
+
+        
+        time.sleep(10)
+        # for i in winners:
+        #     i[0].setChipCount(self.pot//len(winners))
+                
+        # Distribute winnings
+        for i in disWinnings:
+            self.players[self.players.index(i[0])].setChipCount(i[1])
         
         self.newRound()
 
