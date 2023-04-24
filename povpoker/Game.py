@@ -101,6 +101,7 @@ class Game:
             i.setCurrentBetZero()
             i.setTurn(True)
             i.setColor("white")
+            i.setTotalValueZero()
         
         
         # set all players bet counts
@@ -233,7 +234,7 @@ class Game:
         if True not in turns:
             firstPlayer = 0
             for i in range(len(self.players)):
-                if self.players[i].getCurrentBet() != None:
+                if self.players[i].getCurrentBet() != None and self.players[i].getAllIn() == False:
                     firstPlayer = i
                     print(firstPlayer)
                     break
@@ -248,6 +249,11 @@ class Game:
                 self.turn == self.tableCards[3]
             elif self.round == 2:
                 self.river == self.tableCards[4]
+                
+            # add to players total values
+            for i in self.players:
+                if i.getCurrentBet() is not None:
+                    i.setTotalValue(i.getCurrentBet())
             
             # if its the last rotation, end the round
             if self.round == 3:
@@ -284,10 +290,12 @@ class Game:
                 
     def endRound(self):
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
+        
         for i in finalPlayers:
             lst = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
             unsortedCards = [[i.getValue(), i.getSuit()] for i in lst]
             card = sorted(unsortedCards,key=lambda l:l[0])
+            print(card)
             cards = [int(i[0]) for i in card]
             suits = [i[1] for i in card]
             # for j in lst:
@@ -387,23 +395,23 @@ class Game:
                 suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6])):
                 
                 if cards[4]-cards[0] == 4:
-                    x = 9000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
+                    x = 900000000000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
                     i.setCurrentBet(x)
                 elif cards[5]-cards[1] == 4:
-                    x = 9000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
+                    x = 900000000000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
                     i.setCurrentBet(x)
                 elif cards[6]-cards[2] == 4:
-                    x = 9000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
+                    x = 900000000000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
                     i.setCurrentBet(x)
 
             # quads check
             elif quads != 0:
-                x = 8000000+(quads*4)
+                x = 800000000000+(quads*4)
                 i.setCurrentBet(x)
             
             # full house check
             elif len(fullHouse) != 0:
-                x = 7000000+(fullHouse[0]*10000)+(fullHouse[1]*100)
+                x = 70000000000+(fullHouse[0]*1000000)+(fullHouse[1]*1000)
                 i.setCurrentBet(x)
             
             # flush check
@@ -412,19 +420,23 @@ class Game:
                 if suits.count("Hearts") == 5:
                     flush = [i for i in card if i[1] == "Hearts"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000000+max(flushCount)
+                    flushCount = reversed(flushCount)
+                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
                 elif suits.count("Spades") == 5:
                     flush = [i for i in card if i[1] == "Spades"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000000+max(flushCount)
+                    flushCount = reversed(flushCount)
+                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
                 elif suits.count("Diamonds") == 5:
                     flush = [i for i in card if i[1] == "Diamonds"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000000+max(flushCount)
+                    flushCount = reversed(flushCount)
+                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
                 elif suits.count("Clubs") == 5:
                     flush = [i for i in card if i[1] == "Clubs"]
                     flushCount = [i[0] for i in flush]
-                    x = 6000000+max(flushCount)
+                    flushCount = reversed(flushCount)
+                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
                 i.setCurrentBet(x)
             
             # straight check
@@ -432,28 +444,28 @@ class Game:
                 (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5]) or
                 (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6])):
                 if cards[4]-cards[0] == 4:
-                    x = 5000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
+                    x = 500000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
                     i.setCurrentBet(x)
                 elif cards[5]-cards[1] == 4:
-                    x = 5000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
+                    x = 500000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
                     i.setCurrentBet(x)
                 elif cards[6]-cards[2] == 4:
-                    x = 5000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
+                    x = 500000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
                     i.setCurrentBet(x)
             
             # trips check
             elif trips != 0:
-                x = 4000000 + (trips*10000) + one*100 + two*10
+                x = 400000000 + (trips*10000) + one*100 + two
                 i.setCurrentBet(x)
             
             # two pair check
             elif len(twoPair) != 0:
-                x = 3000000 + (twoPair[0]*10000) + (twoPair[1]*100) + card5
+                x = 300000000 + (twoPair[0]*10000) + (twoPair[1]*100) + card5
                 i.setCurrentBet(x)
             
             # pair check
             elif pair != 0:
-                x = 2000000 + pair*10000 + otherCards[0]*1000 + otherCards[1]*100 + otherCards[2]*10
+                x = 200000000 + pair*1000000 + otherCards[0]*10000 + otherCards[1]*100 + otherCards[2]
                 i.setCurrentBet(x)
                 
             # high card check
@@ -468,6 +480,7 @@ class Game:
             # print()
         
         
+        
         # check who won the hand
         winner = []
         high = 0
@@ -480,8 +493,12 @@ class Game:
             elif i.getCurrentBet() == high:
                 winner.append(i)
         self.round += 1
-                
-        # distribute the winnings
+            
+                    
+        for i in self.players:
+            i.setCurrentBetZero()
+        
+
         winners = []
         for i in winner:
             winners.append([i, i.getCurrentBet()])
@@ -493,7 +510,7 @@ class Game:
             else:
                 self.players[i].setColor("white")
         
-        time.sleep(5)
+        time.sleep(30)
         for i in winners:
             i[0].setChipCount(self.pot//len(winners))
         

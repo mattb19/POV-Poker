@@ -413,6 +413,8 @@
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
 
+                            console.log(data);
+
                             $("#pot").text(data.pot);
 
                             // Set table cards
