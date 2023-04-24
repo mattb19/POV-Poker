@@ -213,6 +213,37 @@
     position:absolute;
     right:55%;bottom:10%;
     }
+    #playerBet {
+        font-size:0px;
+        animation:betani;
+        animation-fill-mode: forwards;
+        animation-delay: .6s;
+    }
+    @keyframes betani {
+        from {font-size:0px;}
+        to {font-size:14px;}
+    }
+    #bettag {
+        width:0;
+        animation: bettage;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+        animation-delay: .3s;
+    }
+    #chips {
+        width:0;
+        animation: chips2;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes chips2 {
+        from {width:0;height:0;}
+        to {width:40;height:40;}
+    }
+    @keyframes bettage {
+        from {width:0;height:30;}
+        to {width:90;height:30;}
+    }
     .currentBet0{
         position:absolute;
         right:-40%;
@@ -406,10 +437,6 @@
                             }
 
 
-
-
-
-
                             for (let i=0; i < data.players.length; i++) {
 
                                 // Display each players name with the correct color
@@ -444,9 +471,13 @@
                                 }
                                 
                                 // Handle chip to pot animation
-                                if (data.round == document.getElementById("round").innerHTML) {
+                                if (data.round == document.getElementById("round").innerHTML && document.getElementById("round").innerHTML != 4) {
                                     document.getElementsByClassName("currentBet"+i.toString())[0].style.animationName = "example";
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
+                                } else if (document.getElementById("round").innerHTML == 4) {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "hidden";
                                 } else {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
                                     document.getElementsByClassName("currentBet"+i.toString())[0].style.animationName = "example"+i.toString();
                                 }
 
@@ -459,9 +490,13 @@
                                 
                                 if (data.round == document.getElementById("round").innerHTML) {
                                     if (data.players[i].currentBet == 0 || data.players[i].currentBet == null) {
-                                        document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "hidden";
+                                        document.getElementsByClassName("bettag")[i].style.animationName = "none";
+                                        document.getElementsByClassName("chips")[i].style.animationName = "none";
+                                        document.getElementsByClassName("playerBet"+i.toString())[0].style.animationName = "none";
                                     } else {
-                                        document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
+                                        document.getElementsByClassName("bettag")[i].style.animationName = "bettage";
+                                        document.getElementsByClassName("chips")[i].style.animationName = "chips2";
+                                        document.getElementsByClassName("playerBet"+i.toString())[0].style.animationName = "betani";
                                     }
                                 } else {
                                     $("#pot").text(data.pot.toString());
@@ -706,9 +741,9 @@
                     <img class="card2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                     <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
                     <div class="currentBet{{i}}">
-                        <img class="chip" src="../static/bettag.png" width="75">
-                        <img class="chip" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-10%;">
-                        <div class="playerBet{{i}}" style="position:absolute;color:black;font-size:14px;left:30%;bottom:26%;">10000</div>
+                        <img class="bettag" id="bettag" src="../static/bettag.png" width="60">
+                        <img class="chips" id="chips" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-15%;">
+                        <div class="playerBet{{i}}" id="playerBet" style="position:absolute;color:black;font-size:0px;left:30%;bottom:26%;">10000</div>
                     </div>
                 </div>
                 {% endfor %}

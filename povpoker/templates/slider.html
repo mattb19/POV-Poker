@@ -1,11 +1,43 @@
 <style type="text/css">
-
-
-    
+    .image {
+        width:0;
+        height:30;
+        animation: example;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+    }
+    .image2 {
+        width:0;
+        height:30;
+        animation: example2;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example2 {
+        from {width:0;height:40;}
+        to {width:40;height:40;}
+    }
+    @keyframes example {
+        from {width:0;height:30;}
+        to {width:90;height:30;}
+    }
+    .aaa {
+        font-size:0px;
+        animation: example3;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example3 {
+        from {font-size:0px;}
+        to {
+            font-size:14px;
+        }
+    }
 </style>
 
 <!DOCTYPE html>
 <html lang="en">
-    
-
+    <img src="../static/bettag.png" class="image" alt="">
+    <img src="../static/chips.png" alt="" class="image2" style="position:absolute;left:0%;top:0.2%;">
+    <div class="aaa">Hello</div>
 </html>
