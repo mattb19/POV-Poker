@@ -1,7 +1,25 @@
+<style>
+
+    .body{
+        text-align:center;
+        margin-top: 12.5%;
+        background-color: red;
+        margin-left:38%;
+        margin-right:38%;
+        padding-top:14;
+        padding-bottom:14;
+    }
+
+
+</style>
+
+
+
 {% set active_page = "login" %}
 
 {% block content %}
-    <h1 class="large centeralign">Login</h1>
+<div class="body">
+    <h1 class="largeCenterAlign">Login</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         {{ form.name.label }}<br>
@@ -20,4 +38,6 @@
     </p>
         <p>{{ form.submit() }}</p>
     </form>
+</div>   
+    
 {% endblock %}
