@@ -23,7 +23,9 @@ def home():
 @app.route('/login2')
 def login2():
     return render_template('login2.html')
-
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 @app.route('/help')
 def help():
     return render_template('help.html')

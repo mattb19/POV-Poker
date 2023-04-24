@@ -4,6 +4,7 @@
         font-family: Assistant, sans-serif;
         display: flex;
         min-height: 90vh;
+        
       }
       .login {
         color: white;
@@ -65,16 +66,20 @@
         border-radius: 3px;
         padding: 5px 2em;
         transition: 0.5s;
+        margin-left:60px;
       }
       .login .form .btn-login:hover {
         background: white;
         color: dimgray;
         transition: 0.5s;
+        
       }
       .login .forgot {
         text-decoration: none;
         color: white;
         float: right;
+        margin-right:58px;
+        margin-top: 15px
       }
       footer {
         position: absolute;
@@ -113,8 +118,8 @@
     <form>
   <input type="text" placeholder='Username' class='text' id='username' required><br>
   <input type="password" placeholder='Password' class='password'><br>
-  <a href="#" class='btn-login' id='do-login'>Login</a>
-  <a href="#" class='forgot'>Forgot?</a>
+  <a href="help" class='btn-login' id='do-login'>Login</a><br><br>
+  <a href="signup" class='forgot'>Create Account</a>
     </form>
   
 </section>
