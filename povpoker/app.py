@@ -20,7 +20,9 @@ game.newRound()
 @app.route('/')
 def home():
     return render_template('home.html')
-
+@app.route('/login2')
+def login2():
+    return render_template('login2.html')
 
 @app.route('/help')
 def help():
