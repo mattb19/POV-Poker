@@ -1,0 +1,95 @@
+<html>
+    <body>
+        <div class="rainbow" style="z-index:-2000;">
+            <div id="table">
+                <div style="margin:auto;margin-top:500px;font-size:16px;text-align:center;"></div>
+            </div>
+        </div>
+    </body>
+
+</html>
+
+<style>
+    #table {
+        position: absolute;
+        display: block;
+        box-sizing: border-box;
+        right:2%;
+        width: 96%;
+        bottom:4%;
+        z-index: -10;
+        height:92%;
+        background: radial-gradient(circle, rgba(8,128,6,1) 0%, rgba(38,52,38,1) 100%);
+        border-radius: 10000px;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: radial-gradient(
+            farthest-corner at 40px 40px,
+            #f35 0%,
+            #43e 100%
+          );
+    }
+    
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    
+    @keyframes rotate {
+        100% {
+            transform: rotate(1turn);
+        }
+    }
+    .grow img{
+        transition: .25s ease;
+        }
+        
+        .grow img:hover{
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        transform: scale(1.1);
+        transition: .25s ease;
+        }
+    
+    .rainbow {
+        position: absolute;
+        z-index: 0;
+        width: 75%;
+        height: 65%;
+        border-radius: 10000px;
+        overflow: hidden;
+        padding: 2rem;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            z-index: -20;
+            left: -100%;
+            top: -100%;
+            width: 300%;
+            height: 300%;
+            background-color: #cbcbcb;
+            background-repeat: no-repeat;
+            background-size: 50% 50%, 50% 50%;
+            background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+            background-image: linear-gradient(#acacac, #cbcbcb), linear-gradient(#7b7b7b, #cbcbcb), linear-gradient(#cbcbcb, #d0d0d0), linear-gradient(#d0d0d0, #acacac);
+            animation: rotate 10s linear infinite;
+        }
+        
+        &::after {
+            position: absolute;
+            display: block;
+            box-sizing: border-box;
+            right:17.5%;
+            width: 65%;
+            bottom:22.5%;
+            height:55%;
+            background: radial-gradient(circle, rgba(8,128,6,1) 0%, rgba(38,52,38,1) 100%);
+            border-radius: 10000px;
+        }
+    }
+      
+</style>

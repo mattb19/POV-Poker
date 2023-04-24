@@ -100,7 +100,7 @@ class Game:
         for i in self.players:
             i.setCurrentBetZero()
             i.setTurn(True)
-            i.setColor("black")
+            i.setColor("white")
         
         
         # set all players bet counts
@@ -158,7 +158,7 @@ class Game:
         if value == None: 
             player.setFolded()
             player.setTurn(False)
-            player.setColor("black")
+            player.setColor("white")
             self.players[x] = player
             final = player.getUser()+" Folds."
         
@@ -244,7 +244,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
-                        i.setColor("black")
+                        i.setColor("white")
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -280,7 +280,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
-                        i.setColor("black")
+                        i.setColor("white")
                 return self.currentPlayer
             
             # determine who's turn is next
@@ -309,7 +309,7 @@ class Game:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                         i.setTurn(True)
-                        i.setColor("black")
+                        i.setColor("white")
                 return self.currentPlayer
             counter = self.currentPlayer
             while True:
@@ -332,7 +332,7 @@ class Game:
                 for i in self.players:
                     if i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
-                        i.setColor("black")
+                        i.setColor("white")
                 return self.endRound()
             counter = self.currentPlayer
             while True:
@@ -557,7 +557,7 @@ class Game:
             if self.players[i] not in winnersList:
                 self.players[i].setColor("white")
             else:
-                self.players[i].setColor("black")
+                self.players[i].setColor("white")
         
         time.sleep(10)
         for i in winners:
