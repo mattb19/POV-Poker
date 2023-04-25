@@ -113,7 +113,7 @@ def login():
             if i.isalnum() or i in ['!', '%', '$', '#']:
                 newu += i
         
-        
+        session["name"] = loginname
         
         
         if newu==loginname and newp==loginpassword:
@@ -160,7 +160,7 @@ def d():
 
 @app.route('/test')
 def test():
-    return render_template('pokerTable.html')
+    return render_template('test.html')
 
 def connectDB():
     conn = None
