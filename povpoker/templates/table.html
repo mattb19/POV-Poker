@@ -413,8 +413,6 @@
                     $.getJSON($SCRIPT_ROOT+"/getGame",
                         function(data) {
 
-                            console.log(data);
-
                             $("#pot").text(data.pot);
 
                             // Set table cards
@@ -513,7 +511,7 @@
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
                                         document.getElementsByClassName("card2")[i].width="85";   
                                         document.getElementsByClassName("card2")[i].height="130";   
-                                        document.getElementsByClassName("card1")[i].width="85";   
+                                        document.getElementsByClassName("card1")[i].width="85.";   
                                         document.getElementsByClassName("card1")[i].height="130";
                                         document.getElementsByClassName("card2")[i].style.right="2%";
                                         document.getElementsByClassName("card1")[i].style.right="50%";

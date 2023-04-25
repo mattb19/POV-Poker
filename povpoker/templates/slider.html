@@ -1,43 +1,34 @@
 <style type="text/css">
-    .image {
-        width:0;
-        height:30;
-        animation: example;
-        animation-duration: .6s;
+    #explosion {
+        animation: exploded 2s;
+        animation-delay: 0.1s;
         animation-fill-mode: forwards;
     }
-    .image2 {
-        width:0;
-        height:30;
-        animation: example2;
-        animation-duration: .6s;
-        animation-fill-mode: forwards;
-    }
-    @keyframes example2 {
-        from {width:0;height:40;}
-        to {width:40;height:40;}
-    }
-    @keyframes example {
-        from {width:0;height:30;}
-        to {width:90;height:30;}
-    }
-    .aaa {
-        font-size:0px;
-        animation: example3;
-        animation-duration: .6s;
-        animation-fill-mode: forwards;
-    }
-    @keyframes example3 {
-        from {font-size:0px;}
-        to {
-            font-size:14px;
-        }
+    @keyframes exploded {
+        from {opacity:1.0;}
+        to {opacity:0.0;}
     }
 </style>
 
 <!DOCTYPE html>
 <html lang="en">
-    <img src="../static/bettag.png" class="image" alt="">
-    <img src="../static/chips.png" alt="" class="image2" style="position:absolute;left:0%;top:0.2%;">
-    <div class="aaa">Hello</div>
+    <body style="background-color:black;">
+        <img src="../static/white.png" class="explosion" height="10000px" style="right:-20%;bottom:-20%;position:absolute;z-index:3000;opacity:0.0;">
+        <div>
+            <button class="bombPot" style="position:absolute;right:25%;top:50%;">Click Me</button>
+        </div>
+    </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.bombPot').on('click', function(event) {
+            document.getElementsByClassName("explosion")[0].id = "explosion";
+            setTimeout(resetBomb, 4000);
+        });
+    });
+    function resetBomb() {
+        document.getElementsByClassName("explosion")[0].id = "noexplosion";
+    }
+</script>
