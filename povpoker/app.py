@@ -4,6 +4,8 @@ from forms import *
 from Game import Game
 from Player import Player
 from User import User
+import sqlite3
+import os
 import cv2
 import random
 import json
@@ -23,7 +25,7 @@ Session(app)
 
 player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
 # player = [Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
-game = Game(player, 10, 20)
+game = Game(1, player, 10, 20)
 game.newRound()
 # game.placeBetFold(20)
 # game.placeBetFold(20)
@@ -69,7 +71,10 @@ game.newRound()
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
 @app.route('/')
 def home():
-    return render_template_modal('home.html', theUser=theUser)
+    conn = connectDB()
+    cursor = conn.execute("SELECT * FROM User")
+    val = cursor.fetchall()
+    return render_template_modal('home.html', theUser=theUser, val=val)
 
 
 @app.route('/userProfile/')
@@ -123,9 +128,13 @@ def d():
 def test():
     return render_template('pokerTable.html')
 
-
-
-
+def connectDB():
+    conn = None
+    try:
+        conn = sqlite3.connect('temp-db.db')
+    except sqlite3.Error as e:
+        print(e)
+    return conn
 
 @app.route('/table')
 def table():
