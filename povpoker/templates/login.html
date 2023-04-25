@@ -1,23 +1,47 @@
-{% set active_page = "login" %}
+<html>
+    <form>
+        <label for="fname">UserName:</label><br>
+        <input type="text" id="username" value=""><br>
+        <label for="lname">Password:</label><br>
+        <input type="text" id="password" value="">
+      </form>
+    
+    
+    <button class="login">Login</button>
+    <button class="register">Register</button>
+    <div id="error"></div>
+</html>
 
-{% block content %}
-    <h1 class="large centeralign">Login</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        {{ form.name.label }}<br>
-        {{ form.name(size=32) }}
-    <p>    
-        {% for error in form.name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}
-    <p>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-{% endblock %}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.login').on('click', function(event) {
+            var user = (document.getElementById("username").value)
+            var pass = (document.getElementById("password").value)
+            $.ajax({
+                data : {
+                    username : user,
+                    password : pass
+                },
+                type : 'POST',
+                url : '/login'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    console.log("ERROR")
+                    document.getElementsByClassName("error")[0].innerHTML = data.error
+                    $('#successAlert').hide();
+                }
+                else {
+                    $('#successAlert').text(data.name).show();
+                    document.getElementById("error").innerHTML = data
+                    $('#errorAlert').hide();
+                }
+            });
+            event.preventDefault();
+        });
+    });
+</script>
