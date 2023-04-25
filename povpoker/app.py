@@ -93,19 +93,18 @@ def ajaxfile():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    conn = connectDB()
+    loginname = form.name.data
+    loginpassword = form.password.data
     if form.validate_on_submit():
         next_page = url_for('table')
-        name = form.name.data
-        password = form.password.data
-        session["name"] = name
-        
-        
-        conn = connectDB()
-        count = int(str(conn.execute("SELECT COUNT(userID) FROM User;").fetchall()[0]).strip('(').strip(')').strip(','))
-        conn.execute("INSERT INTO User (userID, userName, password) VALUES (?, ?, ?)", (count+1, name, password))
-        conn.commit()
-        return redirect(next_page)
-    
+        user = str(conn.execute("SELECT userName FROM User WHERE userName=?", (loginname)).fetchall()[0]).strip('(').strip(')').strip(',')
+        password = str(conn.execute("SELECT password FROM User WHERE userName=?", (loginname)).fetchall()[0]).strip('(').strip(')').strip(',')
+        if user==loginname and password==loginpassword:
+            session["name"] = loginname
+            return redirect(next_page)
+        else:
+            return redirect(url_for("login"))
     
     return render_template('login.html', title='Login', form=form)
 

@@ -15,7 +15,7 @@ class User:
         self.muckCount = 0
         self.tenCount = 0
         self.bombPot = 0
-        
+
     def getUserID(self):
         return self.userID
     
