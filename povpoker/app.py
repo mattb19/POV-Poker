@@ -25,7 +25,7 @@ Session(app)
 
 player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
 #player = [Player("Matt",None,None,1000,8,0), Player("Trent",None,None,1000,9,0)]
-game = Game(player, 10, 20)
+game = Game(1, player, 10, 20)
 game.newRound()
 # game.placeBetFold(20)
 # game.placeBetFold(20)
@@ -96,8 +96,17 @@ def login():
     if form.validate_on_submit():
         next_page = url_for('table')
         name = form.name.data
+        password = form.password.data
         session["name"] = name
+        
+        
+        conn = connectDB()
+        count = int(str(conn.execute("SELECT COUNT(userID) FROM User;").fetchall()[0]).strip('(').strip(')').strip(','))
+        conn.execute("INSERT INTO User (userID, userName, password) VALUES (?, ?, ?)", (count+1, name, password))
+        conn.commit()
         return redirect(next_page)
+    
+    
     return render_template('login.html', title='Login', form=form)
 
 @app.route('/bet', methods=['GET', 'POST'])
