@@ -1,4 +1,44 @@
 <style type="text/css">
+    #folded1 {
+        animation: folding1 .5s ease-out;
+        animation-fill-mode: forwards;
+    }
+    @keyframes folding1 {
+        from {
+            right:48%;
+            bottom:80%;
+            opacity:1.0;
+            transform: rotate(350deg);
+        }
+        to {
+            right:148%;
+            bottom:300%;
+            opacity:0.0;
+            transform: rotate(330deg);
+        }
+    }
+    #folded2 {
+        animation: folding2 .5s ease-in;
+        animation-fill-mode: forwards;
+    }
+    @keyframes folding2 {
+        from {
+            right:12%;
+            bottom:80%;
+            opacity:1.0;
+            transform: rotate(10deg);
+        }
+        to {
+            right:-40%;
+            bottom:300%;
+            opacity:0.0;
+            transform: rotate(30deg);
+        }
+    }
+    @keyframes tagfold {
+        from {opacity:1.0;}
+        to{opacity:0.25;}
+    }
     .slider {
         position:absolute;
         bottom:2.5%;
@@ -213,6 +253,37 @@
     position:absolute;
     right:55%;bottom:10%;
     }
+    #playerBet {
+        font-size:0px;
+        animation:betani;
+        animation-fill-mode: forwards;
+        animation-delay: .6s;
+    }
+    @keyframes betani {
+        from {font-size:0px;}
+        to {font-size:14px;}
+    }
+    #bettag {
+        width:0;
+        animation: bettage;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+        animation-delay: .3s;
+    }
+    #chips {
+        width:0;
+        animation: chips2;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes chips2 {
+        from {width:0;height:0;}
+        to {width:40;height:40;}
+    }
+    @keyframes bettage {
+        from {width:0;height:30;}
+        to {width:90;height:30;}
+    }
     .currentBet0{
         position:absolute;
         right:-40%;
@@ -406,10 +477,6 @@
                             }
 
 
-
-
-
-
                             for (let i=0; i < data.players.length; i++) {
 
                                 // Display each players name with the correct color
@@ -444,9 +511,13 @@
                                 }
                                 
                                 // Handle chip to pot animation
-                                if (data.round == document.getElementById("round").innerHTML) {
+                                if (data.round == document.getElementById("round").innerHTML && document.getElementById("round").innerHTML != 4) {
                                     document.getElementsByClassName("currentBet"+i.toString())[0].style.animationName = "example";
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
+                                } else if (document.getElementById("round").innerHTML == 4) {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "hidden";
                                 } else {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
                                     document.getElementsByClassName("currentBet"+i.toString())[0].style.animationName = "example"+i.toString();
                                 }
 
@@ -459,9 +530,13 @@
                                 
                                 if (data.round == document.getElementById("round").innerHTML) {
                                     if (data.players[i].currentBet == 0 || data.players[i].currentBet == null) {
-                                        document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "hidden";
+                                        document.getElementsByClassName("bettag")[i].style.animationName = "none";
+                                        document.getElementsByClassName("chips")[i].style.animationName = "none";
+                                        document.getElementsByClassName("playerBet"+i.toString())[0].style.animationName = "none";
                                     } else {
-                                        document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
+                                        document.getElementsByClassName("bettag")[i].style.animationName = "bettage";
+                                        document.getElementsByClassName("chips")[i].style.animationName = "chips2";
+                                        document.getElementsByClassName("playerBet"+i.toString())[0].style.animationName = "betani";
                                     }
                                 } else {
                                     $("#pot").text(data.pot.toString());
@@ -470,12 +545,13 @@
 
                                 // Handle folds and end of round
                                 if (data.round == 4) {
+                                    console.log("Hello")
                                     if (data.lastWinners.includes(data.playerNames[i])) {
                                         document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
                                         document.getElementsByClassName("card2")[i].width="85";   
                                         document.getElementsByClassName("card2")[i].height="130";   
-                                        document.getElementsByClassName("card1")[i].width="85";   
+                                        document.getElementsByClassName("card1")[i].width="85.";   
                                         document.getElementsByClassName("card1")[i].height="130";
                                         document.getElementsByClassName("card2")[i].style.right="2%";
                                         document.getElementsByClassName("card1")[i].style.right="50%";
@@ -483,22 +559,27 @@
                                         document.getElementsByClassName("card2")[i].style.zIndex="95";
                                         document.getElementsByClassName("a")[i].id ='b';
                                     } else {
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].id='folded1';
                                         document.getElementsByClassName("a")[i].id ='b';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagfold 0.5s ease-in";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
                                     }
                                 } else {
                                     if (data.players[i].currentBet == null) {
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].id='folded1';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagfold 0.5s ease-in";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
                                     } else {
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="none";
                                         document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="1.0";
                                         document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
                                         document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
-                                        document.getElementsByClassName("card1")[i].style.visibility='visible';
-                                        document.getElementsByClassName("card2")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card1")[i].id='nofold';
+                                        document.getElementsByClassName("card2")[i].id="nofold";
                                         document.getElementsByClassName("card2")[i].width="65";   
                                         document.getElementsByClassName("card2")[i].height="108";   
                                         document.getElementsByClassName("card1")[i].width="65";   
@@ -509,6 +590,18 @@
                                         document.getElementsByClassName("card2")[i].style.zIndex="-1";
                                     }
                                 }
+                            }
+                            
+
+                            // Handle bomb pot
+                            if (document.getElementsByClassName("isBomb")[0].innerHTML == "yes" && data.round == 0) {
+                                setBombPot();
+                                document.getElementsByClassName("isBomb")[0].innerHTML = "active"
+                            } else if (document.getElementsByClassName("isBomb")[0].innerHTML == "active" && data.round == 0) {
+                                console.log('Active!')
+                            } else if (document.getElementsByClassName("isBomb")[0].innerHTML == "active" && data.round == 1) {
+                                console.log('Inactive!')
+                                document.getElementsByClassName("isBomb")[0].innerHTML = "no"
                             }
 
 
@@ -586,13 +679,19 @@
 
                             // Set call & bet slider to correct amounts
                             document.getElementsByClassName("button-7")[0].id = (document.getElementById("rangeValue").innerText);
-                            document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            if (data.currentBet > data.players[data.currentPlayer].chipCount) {
+                                document.getElementsByClassName("button-75")[0].id = data.players[data.currentPlayer].chipCount
+                            } else {
+                                document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            }
                             document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
                             document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
                             if (document.getElementById("rangeValue").innerHTML < data.currentBet) {
                                 document.getElementById("rangeValue").innerHTML = data.currentBet;
                             }
                             document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
+
+
                             
 
                             
@@ -696,19 +795,19 @@
 
 
                 {% for i in range(10) %}
-                <div class="slot-{{i}}" style="opacity:1.0">
+                <div class="slot-{{i}}" style="opacity:1.0;visibility:hidden;">
                     <img src="../static/tagg.png" class="a" id="a" width="175" height="120">
                     <a class="grow" id="{{i}}" href=""> <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></a>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
                     <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:38px;"></div>
-                    <img class="card1" src="" width="5%" height="7.5%" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
-                    <img class="card2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
+                    <img class="card1" id="folded1" src="" width="5%" height="7.5%" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
+                    <img class="card2" id="folded2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                     <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
                     <div class="currentBet{{i}}">
-                        <img class="chip" src="../static/bettag.png" width="75">
-                        <img class="chip" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-10%;">
-                        <div class="playerBet{{i}}" style="position:absolute;color:black;font-size:14px;left:30%;bottom:26%;">10000</div>
+                        <img class="bettag" id="bettag" src="../static/bettag.png" width="60">
+                        <img class="chips" id="chips" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-15%;">
+                        <div class="playerBet{{i}}" id="playerBet" style="position:absolute;color:black;font-size:0px;left:30%;bottom:26%;">10000</div>
                     </div>
                 </div>
                 {% endfor %}
