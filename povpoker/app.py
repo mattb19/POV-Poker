@@ -92,20 +92,40 @@ def ajaxfile():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    conn = connectDB()
-    loginname = form.name.data
-    loginpassword = form.password.data
-    if form.validate_on_submit():
-        next_page = url_for('table')
-        user = str(conn.execute("SELECT userName FROM User WHERE userName=?", (loginname)).fetchall()[0]).strip('(').strip(')').strip(',')
-        password = str(conn.execute("SELECT password FROM User WHERE userName=?", (loginname)).fetchall()[0]).strip('(').strip(')').strip(',')
-        if user==loginname and password==loginpassword:
+    if request.method == "POST":
+        loginname = str(request.form.get("username"))
+        loginpassword = str(request.form.get("password"))
+        
+        conn = connectDB()
+        user = str(conn.execute("SELECT userName FROM User WHERE userName=?", (loginname,)).fetchall()).strip('(').strip(')').strip(',')
+        password = str(conn.execute("SELECT password FROM User WHERE userName=?", (loginname,)).fetchall()).strip('(').strip(')').strip(',')
+        
+        
+        password = list(password)
+        newp = ""
+        for i in password:
+            if i.isalnum() or i in ['!', '%', '$', '#']:
+                newp += i
+        
+        user= list(user)
+        newu = ""
+        for i in user:
+            if i.isalnum() or i in ['!', '%', '$', '#']:
+                newu += i
+        
+        session["name"] = loginname
+        
+        
+        if newu==loginname and newp==loginpassword:
             session["name"] = loginname
-            return redirect(next_page)
+            return redirect("/")
         else:
-            return redirect(url_for("login"))
-    
+            return "User Not Found"
+        
+    else:
+        return render_template("login.html")
+
+
     return render_template('login.html', title='Login', form=form)
 
 @app.route('/bet', methods=['GET', 'POST'])
@@ -140,7 +160,7 @@ def d():
 
 @app.route('/test')
 def test():
-    return render_template('pokerTable.html')
+    return render_template('test.html')
 
 def connectDB():
     conn = None

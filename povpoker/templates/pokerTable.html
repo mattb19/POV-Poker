@@ -40,7 +40,7 @@
                     bet : "BOMB POT",
                 },
                 type : 'POST',
-                url : '/bet'
+                url : '/bet',
             })
             .done(function(data) {
                 if (data.error) {
@@ -49,6 +49,7 @@
                 }
                 else {
                     $('#successAlert').text(data.name).show();
+                    console.log("SUCCESS")
                     $('#errorAlert').hide();
                 }
             });
