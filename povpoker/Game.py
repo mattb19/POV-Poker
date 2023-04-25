@@ -6,7 +6,8 @@ import json
 from copy import deepcopy
 
 class Game:
-    def __init__(self, players, smallBlind, bigBlind) -> None:
+    def __init__(self, gameID, players, smallBlind, bigBlind) -> None:
+        self.gameID = gameID
         self.players = players
         self.deck = []
         self.pot = 0
@@ -575,6 +576,8 @@ class Game:
         self.newRound()
 
         
+    def getGameID(self):
+        return self.gameID
     
     def getPlayers(self):
         return self.players
@@ -627,6 +630,9 @@ class Game:
     def setTableCards(self):
         self.tableCards = [i.__dict__ for i in self.tableCards]
 
+    def setGameID(self, gameID):
+        self.gameID = gameID
+        
     def setPlayers(self, players):
         self.players = players
     

@@ -4,6 +4,8 @@ from forms import *
 from Game import Game
 from Player import Player
 from User import User
+import sqlite3
+import os
 import cv2
 import random
 import json
@@ -69,7 +71,10 @@ game.newRound()
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
 @app.route('/')
 def home():
-    return render_template_modal('home.html', theUser=theUser)
+    conn = connectDB()
+    cursor = conn.execute("SELECT * FROM User")
+    val = cursor.fetchall()
+    return render_template_modal('home.html', theUser=theUser, val=val)
 
 
 @app.route('/userProfile/')
@@ -129,9 +134,13 @@ def d():
 def test():
     return render_template('pokerTable.html')
 
-
-
-
+def connectDB():
+    conn = None
+    try:
+        conn = sqlite3.connect('temp-db.db')
+    except sqlite3.Error as e:
+        print(e)
+    return conn
 
 @app.route('/table')
 def table():

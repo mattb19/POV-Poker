@@ -13,15 +13,8 @@ class User:
         self.straightFlushCount = 0
         self.royalFlushCount = 0
         self.muckCount = 0
-        self.blind2Count = 0
-        self.blind4Count = 0
-        self.tenFlopCount = 0
         self.tenCount = 0
-        self.tenPreFlopCount = 0
-        self.challengeCount = 0
-        self.challengeDenyCount = 0
-        self.flopPeekCount = 0
-        self.playerPeekCount = 0
+        self.bombPot = 0
         
     def getUserID(self):
         return self.userID
@@ -154,3 +147,9 @@ class User:
 
     def getPlayerPeekCount(self):
         return self.playerPeekCount
+    
+    def getBombPot(self):
+        return self.bombPot
+    
+    def setBombPot(self, bombPot):
+        self.bombPot = bombPot
