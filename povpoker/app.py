@@ -99,9 +99,14 @@ def login():
 def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
-        print(bet)
+        
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
+        
+        if bet == 'BOMB POT':
+            game.setBombPot()
+            return "BOMB POT"
+        
         bet = int(bet)
         if bet < 0:
             bet = None

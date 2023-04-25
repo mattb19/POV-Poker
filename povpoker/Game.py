@@ -20,6 +20,9 @@ class Game:
         self.playerQueue = []
         self.active = False
         self.blinds = []
+        self.buyIn = 1000
+        
+        self.bombPot = False
         
         self.flop1 = Card("None","None",0)
         self.flop2 = Card("None","None",0)
@@ -150,7 +153,18 @@ class Game:
             if self.players[i].getBlind() == 2 and i < len(self.players)-1:
                 self.currentPlayer = i+1
             if self.players[i].getBlind() == 2 and i == len(self.players)-1:
-                self.currentPlayer = 0             
+                self.currentPlayer = 0
+        
+        if self.bombPot:
+            time.sleep(5)
+            for i in range(len(self.players)):
+                if i == len(self.players)-1:
+                    self.placeBetFold((.10*1000)-self.bigBlind)
+                elif i == len(self.players)-2:
+                    self.placeBetFold((.10*1000)-self.smallBlind)
+                else:
+                    self.placeBetFold((.10*1000))
+        
     
     
     def placeBetFold(self, value):
@@ -245,6 +259,11 @@ class Game:
     
         # if all players have called, checked or folded
         if True not in turns:
+            if self.bombPot and self.round == 0:
+                self.bombPot = False
+                time.sleep(5)
+            
+            
             l = [i.getBlind() for i in self.players]
             blindIndex = l.index(1)
             c = blindIndex
@@ -260,7 +279,7 @@ class Game:
                     
             self.currentPlayer = c
             self.currentBet = 0
-
+            time.sleep(1)
             if self.round == 0:
                 self.flop1 = self.tableCards[0]
                 self.flop2 = self.tableCards[1]
@@ -616,6 +635,9 @@ class Game:
     
     def isActive(self):
         return self.active
+    
+    def setBombPot(self):
+        self.bombPot = True
     
     def json(self):
         try:

@@ -1,4 +1,44 @@
 <style type="text/css">
+    #folded1 {
+        animation: folding1 .5s ease-out;
+        animation-fill-mode: forwards;
+    }
+    @keyframes folding1 {
+        from {
+            right:48%;
+            bottom:80%;
+            opacity:1.0;
+            transform: rotate(350deg);
+        }
+        to {
+            right:148%;
+            bottom:300%;
+            opacity:0.0;
+            transform: rotate(330deg);
+        }
+    }
+    #folded2 {
+        animation: folding2 .5s ease-in;
+        animation-fill-mode: forwards;
+    }
+    @keyframes folding2 {
+        from {
+            right:12%;
+            bottom:80%;
+            opacity:1.0;
+            transform: rotate(10deg);
+        }
+        to {
+            right:-40%;
+            bottom:300%;
+            opacity:0.0;
+            transform: rotate(30deg);
+        }
+    }
+    @keyframes tagfold {
+        from {opacity:1.0;}
+        to{opacity:0.25;}
+    }
     .slider {
         position:absolute;
         bottom:2.5%;
@@ -519,22 +559,27 @@
                                         document.getElementsByClassName("card2")[i].style.zIndex="95";
                                         document.getElementsByClassName("a")[i].id ='b';
                                     } else {
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].id='folded1';
                                         document.getElementsByClassName("a")[i].id ='b';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagfold 0.5s ease-in";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
                                     }
                                 } else {
                                     if (data.players[i].currentBet == null) {
-                                        document.getElementsByClassName("card2")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("card1")[i].style.visibility='hidden';
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="0.2";
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].id='folded1';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagfold 0.5s ease-in";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
                                     } else {
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="none";
                                         document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="1.0";
                                         document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
                                         document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
-                                        document.getElementsByClassName("card1")[i].style.visibility='visible';
-                                        document.getElementsByClassName("card2")[i].style.visibility='visible';
+                                        document.getElementsByClassName("card1")[i].id='nofold';
+                                        document.getElementsByClassName("card2")[i].id="nofold";
                                         document.getElementsByClassName("card2")[i].width="65";   
                                         document.getElementsByClassName("card2")[i].height="108";   
                                         document.getElementsByClassName("card1")[i].width="65";   
@@ -545,6 +590,18 @@
                                         document.getElementsByClassName("card2")[i].style.zIndex="-1";
                                     }
                                 }
+                            }
+                            
+
+                            // Handle bomb pot
+                            if (document.getElementsByClassName("isBomb")[0].innerHTML == "yes" && data.round == 0) {
+                                setBombPot();
+                                document.getElementsByClassName("isBomb")[0].innerHTML = "active"
+                            } else if (document.getElementsByClassName("isBomb")[0].innerHTML == "active" && data.round == 0) {
+                                console.log('Active!')
+                            } else if (document.getElementsByClassName("isBomb")[0].innerHTML == "active" && data.round == 1) {
+                                console.log('Inactive!')
+                                document.getElementsByClassName("isBomb")[0].innerHTML = "no"
                             }
 
 
@@ -744,8 +801,8 @@
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
                     <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:38px;"></div>
-                    <img class="card1" src="" width="5%" height="7.5%" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
-                    <img class="card2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
+                    <img class="card1" id="folded1" src="" width="5%" height="7.5%" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
+                    <img class="card2" id="folded2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                     <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
                     <div class="currentBet{{i}}">
                         <img class="bettag" id="bettag" src="../static/bettag.png" width="60">
