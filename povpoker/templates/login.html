@@ -1,13 +1,16 @@
 <html>
     <body class="bg">
-        <div class="loginScreen" style="position:absolute;right:40%;bottom:40%;animation-fill-mode: forwards;">
+        <div class="loginScreen" style="position:absolute;right:33.2%;bottom:30%;animation-fill-mode: forwards;">
+            <div class="titleLabel">
+                Sign Up
+            </div>
             <label for="username">UserName:</label><br>
-            <input type="text" id="username" value=""><br>
+            <input type="text" style="padding-left:6px; width:50%; margin-bottom:8px;" id="username" value="" ><br>
             <label for="password">Password:</label><br>
-            <input type="password" id="password" value="">
+            <input type="password"style="padding-left:6px; width:50%; margin-bottom:8px;" id="password" value="">
             
             <div id="error"></div><br><br>
-            <button class="login">Login</button><br><br>
+            <button class="login" >Login</button><br><br>
             <a href="#" class="dont">Don't Have An Account?</a>
 
         </div>
@@ -26,9 +29,9 @@
             <input style="padding-left:6px; width:50%;margin-bottom:8px;" type="password" id="confirmPassword" value="">
     
             <div id="error2" style="color:white;font-size:26px;z-index:10;"></div><br><br>
-            <button class="register" id="buttonTech"style="position:absolute; left:36.3%; bottom:17.235673%;">Register</button><br><br>
+            <button class="register" id="buttonTech"style="position:absolute; left:36.3%; bottom:17.235673%;"><span class="text" style="color:black;">Register</span></button><br><br>
             <div class="already"></div>
-            <a href="#" class="already" ><div class="already"style="position:absolute; right:35.8%; top:87%; color:black; font-weight:normal;">Already Have An Account?</div></a>
+            <a href="#" class="already" ><div class="already"style="position:absolute; right:35.8%; top:87%; color:black; font-weight:normal;">Already have an account?</div></a>
         </div>
         
     </body>
@@ -168,14 +171,16 @@
 
     }
     .loginScreen {
-        height: 25%;
-        width:20%;
+        font-family: "Tahoma", sans-serif;
+        font-weight:bold;
+        color:white;
+        text-align:center;
+        height: 50%;
+        width:30%;
         padding: 35px;
-        background-image: radial-gradient(
-            farthest-corner at 40px 40px,
-            #ffffff 0%,
-            #808080 100%
-          );
+        background-image: linear-gradient(#3c1053,#ad5389);
+        position:absolute;
+        right:10%;
         border-radius: 15px;
     }
     .registerScreen {
@@ -293,23 +298,32 @@
         touch-action: manipulation;
       }
       
-      #buttonTech:active {
+    #buttonTech:active {
         outline: 0;
-      }
+    }
       
-      #buttonTech:hover {
+    #buttonTech:hover {
         outline: 0;
-      }
+    }
       
-      #buttonTech span {
+    #buttonTech span {
         transition: all 200ms;
-      }
+    }
       
-      #buttonTech:hover span {
+    #buttonTech:hover span {
         transform: scale(.9);
         opacity: .75;
+    }
+    
+    @media screen and (max-width: 991px) {
+        #buttonTech {
+          font-size: 15px;
+          height: 50px;
+        }
+      
+        #buttonTech span {
+          line-height: 50px;
+        }
       }
-    
-    
     
 </style>

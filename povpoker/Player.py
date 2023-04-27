@@ -12,8 +12,13 @@ class Player:
         self.currentBetStr = ""
         self.totalValue = 0
         self.spectate = False
+        self.handWorth = 0
     
-    
+    def getHandWorth(self):
+        return self.handWorth
+    def setHandWorth(self,handWorth):
+        self.handWorth = handWorth
+        
     def getBlind(self):
         return self.blind
     
