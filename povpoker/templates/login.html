@@ -130,7 +130,7 @@
       
       .bg {
         /* The image used */
-        background-image: url("../static/background1.jpeg");
+        background-image: url("../static/login_background.jpg");
       
         /* Full height */
         height: 100%;
@@ -140,6 +140,7 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        
       }
 
     @keyframes back {
@@ -166,16 +167,17 @@
         border-radius: 15px;
     }
     .registerScreen {
-        height: 25%;
-        width:20%;
+        font-family:Marker Felt;
+        color:white;
+        text-align:center;
+        height: 50%;
+        width:30%;
         padding: 35px;
-        background-image: radial-gradient(
-            farthest-corner at 40px 40px,
-            #ffffff 0%,
-            #808080 100%
-          );
+        background-image: linear-gradient(#dd2476, orange);
+        
         border-radius: 15px;
     }
+    
     @keyframes fadeout {
         from {opacity:1.0;}
         to {opacity:0.0;}
@@ -184,4 +186,91 @@
         from {opacity:0.0;}
         to {opacity:1.0;}
     }
+    #signupTitle{
+        font-size: 35px;
+        
+        
+    }
+    .usernameLabel{
+        margin-right:28%;
+        margin-top:5%;
+    }
+    .emailLabel{
+        margin-right:34%;
+        margin-top:1%;
+    }
+    .passwordLabel{
+        margin-right:29%;
+        margin-top:1%;
+    }
+    .confirmPasswordLabel{
+        margin-right:15%;
+        margin-top:1%;
+        
+    }
+    .register{
+        margin-top:-7%;
+        
+    }
+    .usernameInput{
+        background-color:black;
+    }
+    .emailInput{
+
+    }
+    .passwordInput{
+
+    }
+    .confirmInput{
+
+    }
+    #confirmPassword{
+        
+        border: 3px solid purple;
+        border-radius: 8px;
+        height:30px;
+    }
+    #newusername{
+        border: 3px solid purple;
+        border-radius: 8px;
+        height:30px;
+    }
+    #newemail{
+        border: 3px solid purple;
+        border-radius: 8px;
+        height:30px;
+    }
+    #newpassword{
+        border: 3px solid purple;
+        border-radius: 8px;
+        height:30px;
+        
+    }
+    #buttonTech{
+
+        display: inline-block;
+        outline: none;
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1;
+        border-radius: 500px;
+        transition-property: background-color,border-color,color,box-shadow,filter;
+        transition-duration: .3s;
+        border: 1px solid transparent;
+        letter-spacing: 2px;
+        min-width: 160px;
+        text-transform: uppercase;
+        white-space: normal;
+        font-weight: 700;
+        text-align: center;
+        padding: 16px 14px 18px;
+        color: white;
+        background-color: purple;
+        height: 48px;
+        :hover{
+            background-color: #1db954;
+        }
+    
+    }
+    
 </style>
