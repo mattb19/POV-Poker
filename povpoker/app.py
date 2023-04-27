@@ -154,10 +154,6 @@ def bet():
 def getGame():
     return game.json()
 
-@app.route('/d')
-def d():
-    return render_template('slider.html')
-
 @app.route('/test')
 def test():
     return render_template('test.html')
