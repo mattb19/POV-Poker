@@ -1,4 +1,24 @@
 <style type="text/css">
+    #nofold1 {
+        animation-fill-mode: forwards;
+        animation: join1 .5s ease-out;
+        animation-delay: 0.2s;
+    }
+    #nofold2 {
+        animation-fill-mode: forwards;
+        animation: join2 .5s ease-out;
+        animation-delay: 0.2s;
+    }
+    @keyframes join1 {
+        0% {right:48%;bottom:10%;-webkit-transform: scale(0.2);transform: scale(0.2);transform: rotate(360deg);}
+        90% {right:48%;bottom:90%;-webkit-transform: scale(1.0);transform: scale(1.0);transform: rotate(350deg);}
+        100% {right:48%;bottom:80%;-webkit-transform: scale(1.0);transform: scale(1.0);transform: rotate(350deg);}
+    }
+    @keyframes join2 {
+        0% {right:12%;bottom:10%;-webkit-transform: scale(0.2);transform: scale(0.2);transform: rotate(0deg);}
+        90% {right:12%;bottom:90%;-webkit-transform: scale(1.0);transform: scale(1.0);transform: rotate(10deg);}
+        100% {right:12%;bottom:80%;-webkit-transform: scale(1.0);transform: scale(1.0);transform: rotate(10deg);}
+    }
     #folded1 {
         animation: folding1 .5s ease-out;
         animation-fill-mode: forwards;
@@ -16,6 +36,10 @@
             opacity:0.0;
             transform: rotate(330deg);
         }
+    }
+    @keyframes tagjoin {
+        from {opacity:0.25;}
+        to {opacity:1.0;}
     }
     #folded2 {
         animation: folding2 .5s ease-in;
@@ -441,6 +465,7 @@
 
     <body>
         <div></div>
+        <div id="flop4" style="visibility=hidden;"></div>
         <div>
             <a class="home" href="/"><img src="../static/home.png" width="75" height="75" style="position:absolute;right:1%;top:1%"></a>
 
@@ -456,24 +481,43 @@
                             $("#pot").text(data.pot);
 
                             // Set table cards
-                            if (data.round >= 1) {
-                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
-                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/" + data.tableCards[1]._num + "_of_" + data.tableCards[1]._suit + ".png";
-                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/" + data.tableCards[2]._num + "_of_" + data.tableCards[2]._suit + ".png";
-                            } else {
-                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/None_of_None.png";
-                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/None_of_None.png";
-                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            if (data.round == 0) {
+                                document.getElementById("newflop1").style.animation = "rotateout ease-in 0.5s";
+                                document.getElementById("newflop2").style.animation = "rotateout ease-in 0.5s";
+                                document.getElementById("newflop3").style.animation = "rotateout ease-in 0.5s";
+                                document.getElementById("newturn").style.animation = "rotateout ease-in 0.5s";
+                                document.getElementById("newriver").style.animation = "rotateout ease-in 0.5s";
+
                             }
-                            if (data.round >= 2) {
-                                document.getElementById("turn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
-                            } else {
-                                document.getElementById("turn").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            if (data.round == 1) {
+
+                                // remove card backs
+
+                                // add table cards
+                                document.getElementById("newflop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
+                                document.getElementById("newflop1").style.animation = "rotatein ease-out 0.5s"
+                                document.getElementById("newflop1").style.animationDelay = "0.5s"
+                                document.getElementById("newflop1").style.animationFillMode="forwards";
+                                document.getElementById("newflop2").src = "../static/PNG-cards-1.3/" + data.tableCards[1]._num + "_of_" + data.tableCards[1]._suit + ".png";
+                                document.getElementById("newflop2").style.animation = "rotatein ease-out 0.5s"
+                                document.getElementById("newflop2").style.animationDelay = "0.5s"
+                                document.getElementById("newflop2").style.animationFillMode="forwards";
+                                document.getElementById("newflop3").src = "../static/PNG-cards-1.3/" + data.tableCards[2]._num + "_of_" + data.tableCards[2]._suit + ".png";
+                                document.getElementById("newflop3").style.animation = "rotatein ease-out 0.5s"
+                                document.getElementById("newflop3").style.animationDelay = "0.5s"
+                                document.getElementById("newflop3").style.animationFillMode="forwards";
                             }
-                            if (data.round >= 3) {
-                                document.getElementById("river").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
-                            } else {
-                                document.getElementById("river").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            if (data.round == 2) {
+                                document.getElementById("newturn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
+                                document.getElementById("newturn").style.animation = "rotatein ease-out 0.5s"
+                                document.getElementById("newturn").style.animationDelay = "0.5s"
+                                document.getElementById("newturn").style.animationFillMode="forwards";
+                            }
+                            if (data.round == 3) {
+                                document.getElementById("newriver").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
+                                document.getElementById("newriver").style.animation = "rotatein ease-out 0.5s"
+                                document.getElementById("newriver").style.animationDelay = "0.5s"
+                                document.getElementById("newriver").style.animationFillMode="forwards";                            
                             }
 
 
@@ -545,7 +589,6 @@
 
                                 // Handle folds and end of round
                                 if (data.round == 4) {
-                                    console.log("Hello")
                                     if (data.lastWinners.includes(data.playerNames[i])) {
                                         document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
@@ -558,6 +601,10 @@
                                         document.getElementsByClassName("card1")[i].style.zIndex="95";
                                         document.getElementsByClassName("card2")[i].style.zIndex="95";
                                         document.getElementsByClassName("a")[i].id ='b';
+                                        document.getElementsByClassName("card1")[i].style.animationDelay = "9s";
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].style.animationDelay = "9s";
+                                        document.getElementsByClassName("card2")[i].id='folded1';
                                     } else {
                                         document.getElementsByClassName("card1")[i].id='folded2';
                                         document.getElementsByClassName("card2")[i].id='folded1';
@@ -574,12 +621,14 @@
                                         document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
                                         document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
                                     } else {
-                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="none";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagjoin 0.5s ease-in";
                                         document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="1.0";
+                                        document.getElementsByClassName("card2")[i].style.animationDelay = "0s";
+                                        document.getElementsByClassName("card1")[i].style.animationDelay = "0s";
                                         document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
                                         document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
-                                        document.getElementsByClassName("card1")[i].id='nofold';
-                                        document.getElementsByClassName("card2")[i].id="nofold";
+                                        document.getElementsByClassName("card1")[i].id='nofold1';
+                                        document.getElementsByClassName("card2")[i].id="nofold2";
                                         document.getElementsByClassName("card2")[i].width="65";   
                                         document.getElementsByClassName("card2")[i].height="108";   
                                         document.getElementsByClassName("card1")[i].width="65";   
@@ -616,6 +665,8 @@
                             document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="50%";
                             document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
                             document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold1";
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold2";
 
                             // Handle current bet
                             $("#curBet").text("Current Bet: "+data.currentBet.toString());
@@ -728,6 +779,7 @@
                             else {
                                 $('#successAlert').text(data.name).show();
                                 $('#errorAlert').hide();
+                                //disableButtons();
                             }
                         });
                         event.preventDefault();
@@ -751,6 +803,8 @@
                             else {
                                 $('#successAlert').text(data.name).show();
                                 $('#errorAlert').hide();
+                                //disableButtons();
+                                console.log("Hello")
                             }
                         });
                         event.preventDefault();
@@ -770,6 +824,22 @@
                         document.getElementsByClassName("betbet")[0].value = document.getElementsByClassName("blind")[0].innerHTML * 2
                     });
                 });
+                function disableButtons() {
+                    document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-75")[0].disabled = true;
+                    document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-75")[1].disabled = true;
+                    document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-75")[2].disabled = true;
+                    document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-75")[3].disabled = true;
+                    document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-75")[4].disabled = true;
+                    document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-75")[5].disabled = true;
+                    document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                    document.getElementsByClassName("button-7")[0].disabled = true;
+                }
             </script>
 
             <div class="blind" style="visibility:hidden;"></div>
@@ -779,11 +849,11 @@
 
             <!-- Table Cards -->
             <div class="tableCards">
-                <img id="flop1" src="" width="100" height="155" style="position:absolute;right:59.5%;bottom:52%;">
-                <img id="flop2" src="" width="100" height="155" style="position:absolute;right:53.5%;bottom:52%;">
-                <img id="flop3" src="" width="100" height="155" style="position:absolute;right:47.5%;bottom:52%;">
-                <img id="turn" src="" width="100" height="155" style="position:absolute;right:41.5%;bottom:52%;">
-                <img id="river" src="" width="100" height="155" style="position:absolute;right:35.5%;bottom:52%;">
+                <img id="newflop1" src="../static/PNG-cards-1.3/None_of_None.png" width="100" height="155" style="position:absolute;right:59.5%;bottom:52%;visibility:hidden;">
+                <img id="newflop2" src="../static/PNG-cards-1.3/None_of_None.png" width="100" height="155" style="position:absolute;right:53.5%;bottom:52%;visibility:hidden;">
+                <img id="newflop3" src="../static/PNG-cards-1.3/None_of_None.png" width="100" height="155" style="position:absolute;right:47.5%;bottom:52%;visibility:hidden;">
+                <img id="newturn" src="../static/PNG-cards-1.3/None_of_None.png" width="100" height="155" style="position:absolute;right:41.5%;bottom:52%;visibility:hidden;">
+                <img id="newriver" src="../static/PNG-cards-1.3/None_of_None.png" width="100" height="155" style="position:absolute;right:35.5%;bottom:52%;visibility:hidden;">
             </div>
 
             
@@ -801,8 +871,8 @@
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
                     <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:38px;"></div>
-                    <img class="card1" id="folded1" src="" width="70" height="110" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
-                    <img class="card2" id="folded2" src="" width="70" height="110" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
+                    <img class="card1" id="folded1" src="" width="5%" height="7.5%" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
+                    <img class="card2" id="folded2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
                     <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
                     <div class="currentBet{{i}}">
                         <img class="bettag" id="bettag" src="../static/bettag.png" width="60">
@@ -811,7 +881,6 @@
                     </div>
                 </div>
                 {% endfor %}
-
             </div>
             
 

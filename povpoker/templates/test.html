@@ -1,1 +1,20 @@
-{% extends "pokerTable.html" %}
+<html>
+    <img class="card" src="../static/PNG-cards-1.3/None_of_None.png" width="100" style="animation:rotateout ease-in 0.5s;position:absolute;right:5%;animation-fill-mode: forwards;">
+    <img class="card" src="../static/PNG-cards-1.3/ace_of_spades.png" width="100" style="animation:rotatein ease-out 0.5s;animation-delay:0.5s;position:absolute;right:5%;animation-fill-mode: forwards;">
+</html>
+
+<style>
+    .card {
+        transform: rotate3d(0, 1, 0, 90deg);
+        animation-fill-mode: forwards;
+    }
+    @keyframes rotateout {
+        from {transform: rotate3d(0, 1, 0, 0deg);}
+        to {transform: rotate3d(0, 1, 0, 90deg);}
+    }
+    @keyframes rotatein {
+        from {transform: rotate3d(0, 1, 0, 90deg);}
+        to {transform: rotate3d(0, 1, 0, 0deg);}
+    }
+    
+</style>

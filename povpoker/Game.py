@@ -22,6 +22,7 @@ class Game:
         self.active = False
         self.blinds = []
         self.buyIn = 1000
+        self.flip = True
         
         self.bombPot = False
         
@@ -67,6 +68,7 @@ class Game:
         # add any waiting players
         self.players += self.playerQueue
         self.playerQueue = []
+        
         self.round = 0
         
         # initialize blinds if its a new game
@@ -256,7 +258,10 @@ class Game:
         # if all players have folded/all-in'd except one
         currentPlayers = [i for i in self.players if i.getCurrentBet() != None and i.getAllIn() == False]
         if len(currentPlayers) == 1:
+            # increment round
+            self.round = 4
             return self.endRound()
+        
     
         # if all players have called, checked or folded
         if True not in turns:
@@ -276,11 +281,12 @@ class Game:
                         c = 0
                     else:
                         c += 1
-                        
-                    
+
+
+            time.sleep(0.6)
             self.currentPlayer = c
             self.currentBet = 0
-            time.sleep(1)
+
             if self.round == 0:
                 self.flop1 = self.tableCards[0]
                 self.flop2 = self.tableCards[1]
@@ -301,9 +307,14 @@ class Game:
                     if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setCurrentBetZero()
                         i.setColor("white")
+                
+                # increment round
+                self.round = 4
                 return self.endRound()
 
             self.round += 1
+            
+
             
             # set all non-folded/all-in'd players current bets to zero
             for i in self.players:
@@ -533,7 +544,6 @@ class Game:
                 if (newList.index(i)+splitCount) < len(newList):
                     if newList[newList.index(i)+splitCount].getCurrentBet() == i.getCurrentBet() and newList[newList.index(i)+splitCount].getTotalValue() == i.getTotalValue():
                         splitCount += 1
-                        print("hi")
                     else:
                         split = False
                 else:
@@ -554,8 +564,7 @@ class Game:
             if amount != 0:
                 self.lastWinners.append(i.getUser())
         
-        # increment round
-        self.round += 1
+
 
 
         # set all players current bets to zero
@@ -563,7 +572,6 @@ class Game:
             j.setCurrentBetZero()
         
         
-
         
         time.sleep(10)
         # for i in winners:
@@ -572,7 +580,7 @@ class Game:
         # Distribute winnings
         for i in disWinnings:
             self.players[self.players.index(i[0])].setChipCount(i[1])
-        
+            
         self.newRound()
 
         
