@@ -131,12 +131,18 @@ def register():
     if request.method == "POST":
         registername = str(request.form.get("username"))
         registerpassword = str(request.form.get("password"))
+        if len(registerpassword) < 8:
+            return "Password too Short!"
         registerpassword = generate_password_hash(registerpassword)
         registeremail = str(request.form.get("email"))
         conn = connectDB()
         user = list(str(conn.execute("SELECT userName FROM User WHERE userName=?", (registername,)).fetchall()).strip('(').strip(')').strip(','))
         email = list(str(conn.execute("SELECT userName FROM User WHERE email=?", (registeremail,)).fetchall()).strip('(').strip(')').strip(','))
-        if int(len(user)) == int(2) and len(email) == int(2):
+        if len(registername) < 6:
+            return "Username too short!"
+        elif len(registername) > 15:
+            return "Username too Long!"
+        elif int(len(user)) == int(2) and len(email) == int(2):
             session["name"] = registername
             id = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))+1
             conn.execute("INSERT INTO User VALUES (?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ?)", (id, registername, registerpassword, None, None, registeremail))
