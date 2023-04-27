@@ -1,6 +1,27 @@
 from Card import *
 
+def quads(cards):
+    cardValues = [i.getValue() for i in cards]
+    quads = 0
+    for i in cardValues:
+        if cardValues.count(i) == 4:
+            quads = i
+            cardValues.remove(i)
+            cardValues.remove(i)
+            cardValues.remove(i)
+            cardValues.remove(i)
+    if quads == 0:
+        return [False,0]
+    cardValues.sort()
+    cardValues.reverse()
+    
+    h1 = cardValues[0]
+    h2 = cardValues[1]
+    h3 = cardValues[2]
+    
+    val = 80000000000 + quads*100000000 + h1*1000000 + h2*10000 +h3*100
 
+    return[True,val]
 def isFlush(cards):
     
     handSuits = [i.getSuit() for i in cards]
