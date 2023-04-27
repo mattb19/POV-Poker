@@ -63,7 +63,7 @@
         $('.register').on('click', function(event) {
             var user = (document.getElementById("newusername").value)
             var pass = (document.getElementById("newpassword").value)
-            var email = (document.getElementById("newpassword").value)
+            var email = (document.getElementById("newemail").value)
             console.log(email)
             $.ajax({
                 data : {
@@ -72,7 +72,7 @@
                     email : email
                 },
                 type : 'POST',
-                url : '/login'
+                url : '/register'
             })
             .done(function(data) {
                 if (data.error) {

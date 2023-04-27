@@ -590,6 +590,7 @@
                                 // Handle folds and end of round
                                 if (data.round == 4) {
                                     if (data.lastWinners.includes(data.playerNames[i])) {
+                                        console.log("Hello")
                                         document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
                                         document.getElementsByClassName("card2")[i].width="85";   
@@ -804,7 +805,6 @@
                                 $('#successAlert').text(data.name).show();
                                 $('#errorAlert').hide();
                                 //disableButtons();
-                                console.log("Hello")
                             }
                         });
                         event.preventDefault();
