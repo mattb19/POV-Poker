@@ -11,12 +11,20 @@ class Player:
         self.allIn = False
         self.currentBetStr = ""
         self.totalValue = 0
+        self.spectate = False
+    
     
     def getBlind(self):
         return self.blind
     
     def setTotalValue(self, value):
         self.totalValue += value
+        
+    def setSpectate(self, value):
+        self.spectate = value
+    
+    def getSpectate(self):
+        return self.spectate
         
     def setTotalValueZero(self):
         self.totalValue = 0
