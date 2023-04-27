@@ -22,7 +22,7 @@
             <label for="confirmPassword">Confirm Password:</label><br>
             <input type="text" id="confirmPassword" value="">
     
-            <div id="error"></div><br><br>
+            <div id="error2" style="color:white;font-size:26px;z-index:10;"></div><br><br>
             <button class="register">Register</button><br><br>
             <a href="#" class="already">Already Have An Account?</a>
         </div>
@@ -55,6 +55,9 @@
                 else {
                     $('#successAlert').text(data.name).show();
                     document.getElementById("error").innerHTML = data
+                    if (data == "SUCCESS") {
+                        window.location = "/";
+                    }
                     $('#errorAlert').hide();
                 }
             });
@@ -83,7 +86,11 @@
                 }
                 else {
                     $('#successAlert').text(data.name).show();
-                    document.getElementById("error").innerHTML = data
+                    document.getElementById("error2").innerHTML = data;
+                    console.log(document.getElementById("error").innerHTML)
+                    if (data == "SUCCESS") {
+                        window.location = "/";
+                    }
                     $('#errorAlert').hide();
                 }
             });

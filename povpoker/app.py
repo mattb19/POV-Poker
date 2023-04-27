@@ -26,7 +26,7 @@ Session(app)
 
 #player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
 player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0)]
-#player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0)]
+#player = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 game = Game(1, player, 10, 20)
 game.newRound()
 # game.placeBetFold(20)
@@ -119,7 +119,7 @@ def login():
         
         if newu==loginname and check_password_hash(newp, loginpassword)==True:
             session["name"] = loginname
-            return redirect("/")
+            return "SUCCESS"
         else:
             return "User Not Found"
         
