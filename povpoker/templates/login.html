@@ -12,20 +12,25 @@
 
         </div>
     
-        <div class="registerScreen" style="position:absolute;right:40%;bottom:40%;animation-fill-mode: forwards;">
+        <div class="registerScreen" style="position:absolute;right:33.2%;bottom:30%;animation-fill-mode: forwards;">
+            <div class="titleLabel">
+                Sign Up
+            </div>
             <label for="username">UserName:</label><br>
-            <input type="text" id="newusername" value=""><br>
+            <input style="padding-left:6px; width:50%; margin-bottom:8px;"type="text" id="newusername" value=""><br>
             <label for="email">Email</label><br>
-            <input type="text" id="newemail" value=""><br>
+            <input style="padding-left:6px; width:50%;margin-bottom:8px;" type="text" id="newemail" value=""><br>
             <label for="password">Password:</label><br>
-            <input type="password" id="newpassword" value=""><br>
+            <input style="padding-left:6px; width:50%;margin-bottom:8px;" type="password" id="newpassword" value=""><br>
             <label for="confirmPassword">Confirm Password:</label><br>
-            <input type="password" id="confirmPassword" value="">
+            <input style="padding-left:6px; width:50%;margin-bottom:8px;" type="password" id="confirmPassword" value="">
     
             <div id="error2" style="color:white;font-size:26px;z-index:10;"></div><br><br>
-            <button class="register">Register</button><br><br>
-            <a href="#" class="already">Already Have An Account?</a>
+            <button class="register" id="buttonTech"style="position:absolute; left:36.3%; bottom:17.235673%;">Register</button><br><br>
+            <div class="already"></div>
+            <a href="#" class="already" ><div class="already"style="position:absolute; right:35.8%; top:87%; color:black; font-weight:normal;">Already Have An Account?</div></a>
         </div>
+        
     </body>
 </html>
 
@@ -137,7 +142,7 @@
       
       .bg {
         /* The image used */
-        background-image: url("../static/login_background.jpg");
+        background-image: url("../static/background2.jpg");
       
         /* Full height */
         height: 100%;
@@ -174,14 +179,16 @@
         border-radius: 15px;
     }
     .registerScreen {
-        font-family:Marker Felt;
+        font-family: "Tahoma", sans-serif;
+        font-weight:bold;
         color:white;
         text-align:center;
         height: 50%;
         width:30%;
         padding: 35px;
-        background-image: linear-gradient(#dd2476, orange);
-        
+        background-image: linear-gradient(#3c1053,#ad5389);
+        position:absolute;
+        right:10%;
         border-radius: 15px;
     }
     
@@ -193,8 +200,10 @@
         from {opacity:0.0;}
         to {opacity:1.0;}
     }
-    #signupTitle{
-        font-size: 35px;
+    .titleLabel{
+        font-weight:bold;
+        font-size:35px;
+        margin-bottom:13.2px;
         
         
     }
@@ -255,29 +264,52 @@
     }
     #buttonTech{
 
-        display: inline-block;
-        outline: none;
+        
+        align-items: center;
+       
+        background-color:white;
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color:dark-black;
         cursor: pointer;
-        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 21px;
+        font-weight: bold;
+        height: 54px;
+        justify-content: center;
+        letter-spacing: .4px;
         line-height: 1;
-        border-radius: 500px;
-        transition-property: background-color,border-color,color,box-shadow,filter;
-        transition-duration: .3s;
-        border: 1px solid transparent;
-        letter-spacing: 2px;
-        min-width: 160px;
+        max-width: 100%;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 3px;
+        text-decoration: none;
         text-transform: uppercase;
-        white-space: normal;
-        font-weight: 700;
-        text-align: center;
-        padding: 16px 14px 18px;
-        color: white;
-        background-color: purple;
-        height: 48px;
-        :hover{
-            background-color: #1db954;
-        }
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      
+      #buttonTech:active {
+        outline: 0;
+      }
+      
+      #buttonTech:hover {
+        outline: 0;
+      }
+      
+      #buttonTech span {
+        transition: all 200ms;
+      }
+      
+      #buttonTech:hover span {
+        transform: scale(.9);
+        opacity: .75;
+      }
     
-    }
+    
     
 </style>
