@@ -16,10 +16,9 @@ def quads(cards):
     cardValues.reverse()
     
     h1 = cardValues[0]
-    h2 = cardValues[1]
-    h3 = cardValues[2]
     
-    val = 80000000000 + quads*100000000 + h1*1000000 + h2*10000 +h3*100
+    
+    val = 80000000000 + quads*100000000 + h1*1000000
 
     return[True,val]
 def isFlush(cards):
