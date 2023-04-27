@@ -590,6 +590,7 @@
                                 // Handle folds and end of round
                                 if (data.round == 4) {
                                     if (data.lastWinners.includes(data.playerNames[i])) {
+                                        console.log("Hello")
                                         document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                         document.getElementsByClassName("card2")[i].src=data.players[i].card2;
                                         document.getElementsByClassName("card2")[i].width="85";   
@@ -668,26 +669,34 @@
                             document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold1";
                             document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold2";
 
+                            console.log(document.getElementById("sessionID").innerHTML);
+
+
                             // Handle current bet
                             $("#curBet").text("Current Bet: "+data.currentBet.toString());
                             
                             // Disable button if its not the users turn (comment out for debug)
-                            /*
+                            
                             if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML.toString()) {
                                 document.getElementsByClassName("button-75")[0].disabled = false;
-                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -10%, #50C878)";
                                 document.getElementsByClassName("button-75")[1].disabled = false;
-                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -10%, #50C878)";
                                 document.getElementsByClassName("button-75")[2].disabled = false;
-                                document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
-                                document.getElementsByClassName("button-75")[3].disabled = false;
-                                document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
-                                document.getElementsByClassName("button-75")[4].disabled = false;
-                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
-                                document.getElementsByClassName("button-75")[5].disabled = false;
-                                document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -10%, #50C878)";
                                 document.getElementsByClassName("button-7")[0].disabled = false;
-                                document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -10%, #50C878)";
+                                if (data.currentBet == data.players[data.currentPlayer].currentBet) {
+                                    document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -50%, #6e260e)";
+                                    document.getElementsByClassName("button-75")[0].disabled = true;
+                                    document.getElementsByClassName("button-75")[1].disabled = false;
+                                    document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -10%, #50C878)";
+                                } else {
+                                    document.getElementsByClassName("button-75")[0].disabled = false;
+                                    document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -10%, #50C878)";
+                                    document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -50%, #6e260e)";
+                                    document.getElementsByClassName("button-75")[1].disabled = true;
+                                }
                             } else {
                                 document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
                                 document.getElementsByClassName("button-75")[0].disabled = true;
@@ -695,28 +704,12 @@
                                 document.getElementsByClassName("button-75")[1].disabled = true;
                                 document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
                                 document.getElementsByClassName("button-75")[2].disabled = true;
-                                document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
-                                document.getElementsByClassName("button-75")[3].disabled = true;
-                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
-                                document.getElementsByClassName("button-75")[4].disabled = true;
-                                document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
-                                document.getElementsByClassName("button-75")[5].disabled = true;
                                 document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
                                 document.getElementsByClassName("button-7")[0].disabled = true;
-                            }*/
+                            }
 
                             // Disable call/check when necessary
-                            if (data.currentBet == data.players[data.currentPlayer].currentBet) {
-                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
-                                document.getElementsByClassName("button-75")[0].disabled = true;
-                                document.getElementsByClassName("button-75")[1].disabled = false;
-                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
-                            } else {
-                                document.getElementsByClassName("button-75")[0].disabled = false;
-                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
-                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
-                                document.getElementsByClassName("button-75")[1].disabled = true;
-                            }
+
 
                             // Disable pot size bet button when pot is larger than players amounts
                             if (data.pot > data.players[data.currentPlayer].chipCount) {
@@ -724,7 +717,7 @@
                                 document.getElementsByClassName("button-75")[4].disabled = true;
                             } else {
                                 document.getElementsByClassName("button-75")[4].disabled = false;
-                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #000000 -20%, #808080)";
                             }
 
 
@@ -779,7 +772,7 @@
                             else {
                                 $('#successAlert').text(data.name).show();
                                 $('#errorAlert').hide();
-                                //disableButtons();
+                                disableButtons();
                             }
                         });
                         event.preventDefault();
@@ -803,8 +796,7 @@
                             else {
                                 $('#successAlert').text(data.name).show();
                                 $('#errorAlert').hide();
-                                //disableButtons();
-                                console.log("Hello")
+                                disableButtons();
                             }
                         });
                         event.preventDefault();
@@ -891,9 +883,23 @@
             <div class="slider">
                 <input type="range" class="betbet" min="0" max="100" value="10"   oninput="rangeValue.innerText = this.value">
                 <button class="button-7" style="" id=''> <p id="rangeValue">10</p></button>
-                <button class="button-75" id='2blind' val="2blind" style="position:absolute;right:-19%;bottom:117%;width:85px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;"><span class="text">2x Blind</span></button>
-                <button class="button-75" id='pottt2' val="pot" style="position:absolute;right:-29%;bottom:117%;width:45px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;"><span class="text">Pot</span></button>
-                <button class="button-75" id='allin' val="allin" style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;"><span class="text">ALL IN</span></button>
+
+
+                <button class="button-75" id='2blind' val="2blind" 
+                style="position:absolute;right:-19%;bottom:117%;width:85px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080)">
+                <span class="text" style="color:#39FF14;">2x Blind</span></button>
+
+
+                <button class="button-75" id='pottt2' val="pot" 
+                style="position:absolute;right:-29%;bottom:117%;width:45px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -50%, #808080)">
+                <span class="text" style="color:#39FF14;">Pot</span></button>
+
+
+                <button class="button-75" id='allin' val="allin" 
+                style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080);">
+                <span class="text" style="color:#39FF14;">ALL IN</span></button>
+                
+
             </div>
 
         </div>

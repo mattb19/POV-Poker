@@ -1,11 +1,10 @@
 class Player:
-    def __init__(self, user, card1, card2, chipCount, playerNum, blind) -> None:
+    def __init__(self, user, card1, card2, chipCount, blind) -> None:
         self.user = user
         self.card1 = card1
         self.card2 = card2
         self.chipCount = chipCount
         self.currentBet = 0
-        self.playerNum = playerNum
         self.blind = blind
         self.turn = False
         self.color = "white"
