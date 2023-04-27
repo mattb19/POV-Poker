@@ -1,43 +1,187 @@
-<style>
+<html>
+    <body class="bg">
+        <div class="loginScreen" style="position:absolute;right:40%;bottom:40%;animation-fill-mode: forwards;">
+            <label for="username">UserName:</label><br>
+            <input type="text" id="username" value=""><br>
+            <label for="password">Password:</label><br>
+            <input type="text" id="password" value="">
+            
+            <div id="error"></div><br><br>
+            <button class="login">Login</button><br><br>
+            <a href="#" class="dont">Don't Have An Account?</a>
 
-    .body{
-        text-align:center;
-        margin-top: 12.5%;
-        background-color: red;
-        margin-left:38%;
-        margin-right:38%;
-        padding-top:14;
-        padding-bottom:14;
-    }
-
-
-</style>
-
-
-
-{% set active_page = "login" %}
-
-{% block content %}
-<div class="body">
-    <h1 class="largeCenterAlign">Login</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        {{ form.name.label }}<br>
-        {{ form.name(size=32) }}
-    <p>    
-        {% for error in form.name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}
-    <p>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-</div>   
+        </div>
     
-{% endblock %}
+        <div class="registerScreen" style="position:absolute;right:40%;bottom:40%;animation-fill-mode: forwards;">
+            <label for="username">UserName:</label><br>
+            <input type="text" id="newusername" value=""><br>
+            <label for="email">Email</label><br>
+            <input type="text" id="newemail" value=""><br>
+            <label for="password">Password:</label><br>
+            <input type="text" id="newpassword" value=""><br>
+            <label for="confirmPassword">Confirm Password:</label><br>
+            <input type="text" id="confirmPassword" value="">
+    
+            <div id="error"></div><br><br>
+            <button class="register">Register</button><br><br>
+            <a href="#" class="already">Already Have An Account?</a>
+        </div>
+    </body>
+</html>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.login').on('click', function(event) {
+            var user = (document.getElementById("username").value)
+            var pass = (document.getElementById("password").value)
+            $.ajax({
+                data : {
+                    username : user,
+                    password : pass
+                },
+                type : 'POST',
+                url : '/login'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    console.log("ERROR")
+                    document.getElementsByClassName("error")[0].innerHTML = data.error
+                    $('#successAlert').hide();
+                }
+                else {
+                    $('#successAlert').text(data.name).show();
+                    document.getElementById("error").innerHTML = data
+                    $('#errorAlert').hide();
+                }
+            });
+            event.preventDefault();
+        });
+        $('.register').on('click', function(event) {
+            var user = (document.getElementById("newusername").value)
+            var pass = (document.getElementById("newpassword").value)
+            var email = (document.getElementById("newpassword").value)
+            console.log(email)
+            $.ajax({
+                data : {
+                    username : user,
+                    password : pass,
+                    email : email
+                },
+                type : 'POST',
+                url : '/login'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    console.log("ERROR")
+                    document.getElementsByClassName("error")[0].innerHTML = data.error
+                    $('#successAlert').hide();
+                }
+                else {
+                    $('#successAlert').text(data.name).show();
+                    document.getElementById("error").innerHTML = data
+                    $('#errorAlert').hide();
+                }
+            });
+            event.preventDefault();
+        });
+        $('.already').on('click', function(event) {
+            document.getElementsByClassName("loginScreen")[0].style.visibility="visible";
+            document.getElementsByClassName("registerScreen")[0].style.visibility="visible";
+            document.getElementsByClassName("registerScreen")[0].style.animation = "fadeout 0.3s";
+            document.getElementsByClassName("registerScreen")[0].style.animationFillMode="forwards";
+            document.getElementsByClassName("loginScreen")[0].style.animation = "fadein 0.3s";
+            document.getElementsByClassName("loginScreen")[0].style.animationFillMode="forwards";
+            setTimeout(hideRegister, 500)
+        });
+        $('.dont').on('click', function(event) {
+            console.log('Hello')
+            document.getElementsByClassName("registerScreen")[0].style.visibility="visible";
+            document.getElementsByClassName("loginScreen")[0].style.visibility="visible";
+            document.getElementsByClassName("registerScreen")[0].style.animation = "fadein 0.3s";
+            document.getElementsByClassName("registerScreen")[0].style.animationFillMode="forwards";
+            document.getElementsByClassName("loginScreen")[0].style.animation = "fadeout 0.3s";
+            document.getElementsByClassName("loginScreen")[0].style.animationFillMode="forwards";
+            setTimeout(hideLogin, 500)
+        });
+    });
+    function updateBack() {
+        document.getElementsByClassName("bg")[0].animation = "back 1s;";
+    }
+    function hideLogin() {
+        document.getElementsByClassName("loginScreen")[0].style.visibility="hidden";
+    }
+    function hideRegister() {
+        document.getElementsByClassName("registerScreen")[0].style.visibility="hidden";
+    }
+    updateBack
+</script>
+
+
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+      }
+      
+      .bg {
+        /* The image used */
+        background-image: url("../static/background1.jpeg");
+      
+        /* Full height */
+        height: 100%;
+        animation: none 25s infinite;
+      
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+    @keyframes back {
+        0% {background-image: url("../static/background1.jpeg");}
+        20% {background-image: url("../static/background1.jpeg");}
+        25% {background-image: url("../static/background2.jpg");}
+        45% {background-image: url("../static/background2.jpg");}
+        50% {background-image: url("../static/background3.png");}
+        70% {background-image: url("../static/background3.png");}
+        75% {background-image: url("../static/background4.jpeg");}
+        95% {background-image: url("../static/background4.jpeg");}
+        100% {background-image: url("../static/background1.jpeg");}
+
+    }
+    .loginScreen {
+        height: 25%;
+        width:20%;
+        padding: 35px;
+        background-image: radial-gradient(
+            farthest-corner at 40px 40px,
+            #ffffff 0%,
+            #808080 100%
+          );
+        border-radius: 15px;
+    }
+    .registerScreen {
+        height: 25%;
+        width:20%;
+        padding: 35px;
+        background-image: radial-gradient(
+            farthest-corner at 40px 40px,
+            #ffffff 0%,
+            #808080 100%
+          );
+        border-radius: 15px;
+    }
+    @keyframes fadeout {
+        from {opacity:1.0;}
+        to {opacity:0.0;}
+    }
+    @keyframes fadein {
+        from {opacity:0.0;}
+        to {opacity:1.0;}
+    }
+</style>

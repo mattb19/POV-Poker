@@ -9,13 +9,30 @@ class Player:
         self.blind = blind
         self.turn = False
         self.color = "white"
+        self.allIn = False
         self.currentBetStr = ""
+        self.totalValue = 0
     
     def getBlind(self):
         return self.blind
     
+    def setTotalValue(self, value):
+        self.totalValue += value
+        
+    def setTotalValueZero(self):
+        self.totalValue = 0
+    
+    def getTotalValue(self):
+        return self.totalValue
+    
     def getColor(self):
         return self.color
+    
+    def getAllIn(self):
+        return self.allIn
+    
+    def setAllIn(self, allIn):
+        self.allIn = allIn
     
     def setColor(self, color):
         self.color = str(color)

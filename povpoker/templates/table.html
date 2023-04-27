@@ -1,343 +1,835 @@
 <style type="text/css">
+    #folded1 {
+        animation: folding1 .5s ease-out;
+        animation-fill-mode: forwards;
+    }
+    @keyframes folding1 {
+        from {
+            right:48%;
+            bottom:80%;
+            opacity:1.0;
+            transform: rotate(350deg);
+        }
+        to {
+            right:148%;
+            bottom:300%;
+            opacity:0.0;
+            transform: rotate(330deg);
+        }
+    }
+    #folded2 {
+        animation: folding2 .5s ease-in;
+        animation-fill-mode: forwards;
+    }
+    @keyframes folding2 {
+        from {
+            right:12%;
+            bottom:80%;
+            opacity:1.0;
+            transform: rotate(10deg);
+        }
+        to {
+            right:-40%;
+            bottom:300%;
+            opacity:0.0;
+            transform: rotate(30deg);
+        }
+    }
+    @keyframes tagfold {
+        from {opacity:1.0;}
+        to{opacity:0.25;}
+    }
+    .slider {
+        position:absolute;
+        bottom:2.5%;
+        right:5%;
+        transform:translate(-50%,-50%);
+        width:500px;
+        height:45px;
+        padding:10px;
+        padding-left: 40px;
+        background:#fcfcfc;
+        border-radius:20px;
+        display:flex;
+        align-items:center;
+        box-shadow:0px 15px 40px #7E6D5766;
+       }
+       .slider input[type="range"] {
+        -webkit-appearance:none !important;
+        width:440px;
+        height:2px;
+        position:absolute;
+        right:6%;
+        background: linear-gradient(0.25turn, #39FF14, #FFFF00, #FF3131);
+        border:none;
+        outline:none;
+       }
+       .slider input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance:none !important;
+        width:30px;
+        height:30px;
+        background:#fcfcfc;
+        border:2px solid #000;
+        border-radius:50%;
+        cursor:pointer;
+       }
+       .slider input[type="range"]::-webkit-slider-thumb:hover {
+        background:#000;
+       }
+       .button-7 {
+        align-items: center;
+        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color: black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 25px;
+        font-weight: bold;
+        height: 54px;
+        justify-content: center;
+        letter-spacing: .4px;
+        line-height: 1;
+        max-width: 100%;
+        min-width:200px;
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 3px;
+        position:absolute;
+        right:-42%;
+        margin-left:10px;
+        text-decoration: none;
+        text-transform: uppercase;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+       }
+       
+       .button-7:active {
+         outline: 0;
+       }
+       
+       .button-7:hover {
+         outline: 0;
+       }
+       
+       .button-7 span {
+         transition: all 200ms;
+       }
+       
+       .button-7:hover span {
+         transform: scale(.9);
+         opacity: .75;
+       }
+    #a {
+    
+        animation: pulse 2s ease-in-out infinite;
+    }
+    @-webkit-keyframes "pulse" {
+        0% {
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+        50% {
+           -webkit-transform: scale(2);
+           transform: scale(2);
+        }
+        100% {
+            -webkit-transform: scale(1.2);
+           transform: scale(1.2);
+        }
+        }
+    .button-75 {
+        align-items: center;
+        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color: black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 21px;
+        font-weight: bold;
+        height: 54px;
+        justify-content: center;
+        letter-spacing: .4px;
+        line-height: 1;
+        max-width: 100%;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 3px;
+        text-decoration: none;
+        text-transform: uppercase;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      
+      .button-75:active {
+        outline: 0;
+      }
+      
+      .button-75:hover {
+        outline: 0;
+      }
+      
+      .button-75 span {
+        transition: all 200ms;
+      }
+      
+      .button-75:hover span {
+        transform: scale(.9);
+        opacity: .75;
+      }
+
+
+      
+      @media screen and (max-width: 991px) {
+        .button-75 {
+          font-size: 15px;
+          height: 50px;
+        }
+      
+        .button-75 span {
+          line-height: 50px;
+        }
+      }
     .slot-form {
     position:absolute;
-    right:76.5%;bottom:0%;
+    right:73.5%;bottom:0%;
+    }
+    .slot-0
+    {
+    position:absolute;
+    right:74%;bottom:15%;
     }
     .slot-1
     {
     position:absolute;
-    right:77%;bottom:21%;
+    right:79%;bottom:44%;
     }
     .slot-2
     {
     position:absolute;
-    right:83%;bottom:50%;
+    right:74%;bottom:69%;
     }
     .slot-3
     {
     position:absolute;
-    right:78%;bottom:74%;
+    right:55%;bottom:75%;
     }
     .slot-4
     {
     position:absolute;
-    right:59%;bottom:82%;
+    right:35%;bottom:75%;
     }
     .slot-5
     {
     position:absolute;
-    right:39%;bottom:82%;
+    right:14%;bottom:69%;
     }
     .slot-6
     {
     position:absolute;
-    right:22%;bottom:74%;
+    right:8%;bottom:44%;
     }
     .slot-7
     {
     position:absolute;
-    right:13%;bottom:50%;
+    right:14%;bottom:15%;
     }
     .slot-8
     {
     position:absolute;
-    right:22%;bottom:22%;
+    right:35%;bottom:10%;
     }
     .slot-9
     {
     position:absolute;
-    right:39%;bottom:12%;
+    right:55%;bottom:10%;
     }
-    .slot-10
-    {
-    position:absolute;
-    right:59%;bottom:12%;
+    #playerBet {
+        font-size:0px;
+        animation:betani;
+        animation-fill-mode: forwards;
+        animation-delay: .6s;
+    }
+    @keyframes betani {
+        from {font-size:0px;}
+        to {font-size:14px;}
+    }
+    #bettag {
+        width:0;
+        animation: bettage;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+        animation-delay: .3s;
+    }
+    #chips {
+        width:0;
+        animation: chips2;
+        animation-duration: .6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes chips2 {
+        from {width:0;height:0;}
+        to {width:40;height:40;}
+    }
+    @keyframes bettage {
+        from {width:0;height:30;}
+        to {width:90;height:30;}
+    }
+    .currentBet0{
+        position:absolute;
+        right:-40%;
+        bottom:90%;
+        z-index:190;
+        animation-name: example0;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example0 {
+        from {right: -40%; bottom:40%;opacity:1.0;}
+        to {right: -290%; bottom:220%;opacity:0.0;}
+    }
+    .currentBet1{
+        position:absolute;
+        right:-62%;
+        bottom:40%;
+        z-index:190;
+        animation-name: example1;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example1 {
+        from {right: -62%; bottom:40%;opacity:1.0;}
+        to {right: -320%; bottom:-10%;opacity:0.0;}
+    }
+    .currentBet2{
+        position:absolute;
+        right:-30%;
+        bottom:-20%;
+        z-index:190;
+        animation-name: example2;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example2 {
+        from {right: -30%; bottom:-20%;opacity:1.0;}
+        to {right: -290%; bottom:-200%;opacity:0.0;}
+    }
+    .currentBet3{
+        position:absolute;
+        right:45%;
+        bottom:-22%;
+        z-index:190;
+        animation-name: example3;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example3 {
+        from {right: 45%; bottom:-22%;opacity:1.0;}
+        to {right: -60%; bottom:-245%;opacity:0.0;}
+    }
+    .currentBet4{
+        position:absolute;
+        right:45%;
+        bottom:-25%;
+        z-index:190;
+        animation-name: example4;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example4 {
+        from {right: 45%; bottom:-25%;opacity:1.0;}
+        to {right: 120%; bottom:-245%;opacity:0.0;}
+    }
+    .currentBet5{
+        position:absolute;
+        right:130%;
+        bottom:-20%;
+        z-index:190;
+        animation-name: example5;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example5 {
+        from {right: 130%; bottom:-20%;opacity:1.0;}
+        to {right: 340%; bottom:-200%;opacity:0.0;}
+    }
+    .currentBet6{
+        position:absolute;
+        right:150%;
+        bottom:40%;
+        z-index:190;
+        animation-name: example6;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example6 {
+        from {right: 150%; bottom:40%;opacity:1.0;}
+        to {right: 440%; bottom:-20%;opacity:0.0;}
+    }
+    .currentBet7{
+        position:absolute;
+        right:135%;
+        bottom:100%;
+        animation-name: example7;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+        z-index:190;
+    }
+    @keyframes example7 {
+        from {right: 135%; bottom:100%;opacity:1.0;}
+        to {right: 370%; bottom:220%;opacity:0.0;}
+    }
+    .currentBet8{
+        position:absolute;
+        right:45%;
+        bottom:195%;
+        z-index:190;
+        animation-name: example8;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example8 {
+        from {right: 45%; bottom:195%;opacity:1.0;}
+        to {right: 140%; bottom:260%;opacity:0.0;}
+    }
+    .currentBet9{
+        position:absolute;
+        right:45%;
+        bottom:195%;
+        z-index:190;
+        animation-name: example9;
+        animation-duration: 0.6s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes example9 {
+        from {right: 45%; bottom:195%;opacity:1.0;}
+        to {right: -80%; bottom:260%;opacity:0.0;}
     }
     .table
     {
     position:absolute;
     right:5%;
     }
-    .playChips1{
-    position:absolute;
-    right:50%:bottom:10%
-    }
     .slots
     {
     font-size: 26px;
-    font-family: "Lucida Console", "Monaco", monospace;
+    font-family: "Tahoma", sans-serif;
+    font-weight: bold;
     color: white;
     }
-
-    .chips {
-        font-size: 13px;
-    
-    }
-    .pot {
-    position:absolute;
-    right:49%;bottom:49%;
-    font-size:30px
-    }
-
-    .card1 {
-    position:absolute;
-    right:50.5%;bottom:34%;
-    }
-    .card2 {
-    position:absolute;
-    right:45%;bottom:34%;
-    }
-    .flop1 {
-    position:absolute;
-    right:59.5%;bottom:55%;
-    }
-    .flop2 {
-    position:absolute;
-    right:53.5%;bottom:55%;
-    }
-    .flop3 {
-    position:absolute;
-    right:47.5%;bottom:55%;
-    }
-    .turn {
-    position:absolute;
-    right:41.5%;bottom:55%;
-    }
-    .river {
-    position:absolute;
-    right:35.5%;bottom:55%;
-    }
-
-
     body {
-        background: #EFCDA4;
-    }
-    .slider {
-        position:absolute;
-        bottom:5%;
-        right:0%;
-        transform:translate(-50%,-50%);
-        width:225px;
-        height:20px;
-        padding:30px;
-        background:#fcfcfc;
-        border-radius:20px;
-        display:flex;
-        align-items:center;
-        box-shadow:0px 15px 40px #7E6D5766;
-    }
-    .slider p {
-        font-size:26px;
-        font-weight:600;
-        padding-left:30px;
-        color:green;
-    }
-    .slider input[type=”range”] {
-        -webkit-appearance:none !important;
-        width:500px;
-        height:2px;
-        background:#7E6D57;
-        border:none;
-        outline:none;
-    }
-    .slider input[type=”range”]::-webkit-slider-thumb {
-        -webkit-appearance:none !important;
-        width:30px;
-        height:30px;
-        background:#fcfcfc;
-        border:2px solid #7E6D57;
-        border-radius:50%;
-        cursor:pointer;
-    }
-    .slider input[type=”range”]::-webkit-slider-thumb:hover {
-        background:#7E6D57;
+        margin: 0;
+        background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
     }
 </style>
 
-
-
-
 <html>
-    <div class="slots" id="load">
-        <body>{{ session.name }}</body>
-
-        <!-- Table Cards -->
-        <div class="tableCards">
-            <div class="pot">
-                <body>{{ game.getPot() }}</body>
-            </div>
-            <div class="flop1">
-                <img src={{ game.getFlop1() }} width="70" height="110">
-            </div>
-            <div class="flop2">
-                <img src={{ game.getFlop2() }} width="70" height="110">
-            </div>
-            <div class="flop3">
-                <img src={{ game.getFlop3() }} width="70" height="110">
-            </div>
-            <div class="turn">
-                <img src={{ game.getTurn() }} width="70" height="110">
-            </div>
-            <div class="river">
-                <img src={{ game.getRiver() }} width="70" height="110">
-            </div>
-        </div>
-
-        <!-- Player Slots -->
-        <div class="players">
-            {% if game.getPlayerCount() > 0  %}
-            <div class="slot-1" style="color:{{ game.getPlayers()[0].getColor() }}">
-            <body>{{ game.getPlayers()[0].getUser() }}</body>
-            <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[0].getChipCount() }}     </body></div>
-            {% if game.getCurrentPlayer() == 0 %}
-            <img src="../static/chips.png" width="25" height="25">
-            {% endif %}
-            </div>
-            <div class="playChips1"> {{ game.getPlayers()[0].getCurrentBetStr() }}</div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 1  %}
-            <div class="slot-2" style="color:{{ game.getPlayers()[1].getColor() }}">
-                {% if game.getCurrentPlayer() == 1 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-                <body>{{ game.getPlayers()[1].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[1].getChipCount() }}     </body></div>
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 2  %}
-            <div class="slot-3" style="color:{{ game.getPlayers()[2].getColor() }}">
-                <body>{{ game.getPlayers()[2].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[2].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 2 %}
-                <img src="../static/chips.png" width="40" height="40">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 3  %}
-            <div class="slot-4" style="color:{{ game.getPlayers()[3].getColor() }}">
-                <body>{{ game.getPlayers()[3].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[3].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 3 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 4  %}
-            <div class="slot-5" style="color:{{ game.getPlayers()[4].getColor() }}">
-                <body>{{ game.getPlayers()[4].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[4].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 4 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 5  %}
-            <div class="slot-6" style="color:{{ game.getPlayers()[5].getColor() }}">
-                <body>{{ game.getPlayers()[5].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[5].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 5 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 6  %}
-            <div class="slot-7" style="color:{{ game.getPlayers()[6].getColor() }}">
-                <body>{{ game.getPlayers()[6].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[6].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 6 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 7  %}
-            <div class="slot-8" style="color:{{ game.getPlayers()[7].getColor() }}">
-                <body>{{ game.getPlayers()[7].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[7].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 7 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 8  %}
-            <div class="slot-9" style="color:{{ game.getPlayers()[8].getColor() }}">
-                <body>{{ game.getPlayers()[8].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[8].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 8 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-    
-    
-            {% if game.getPlayerCount() > 9  %}
-            <div class="slot-10" style="color:{{ game.getPlayers()[9].getColor() }}">
-                <body>{{ game.getPlayers()[9].getUser() }}</body>
-                <div class="chips" position="relative"><body class="chips">{{ game.getPlayers()[9].getChipCount() }}     </body></div>
-                {% if game.getCurrentPlayer() == 9 %}
-                <img src="../static/chips.png" width="25" height="25">
-                {% endif %}
-            </div>
-            {%endif%}
-        </div>
-
-        <!-- Check, Bet, Fold buttons -->
-        <div class="form">
-            <div class="container">
-                <form action="/bet" method="post">
-                    <div class="check">
-                        <button class="button3" type="submit" id="bet" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabledd{%endif%} name="bet" value="0">CHECK</button>
-                    </div>
-                </form>
-                <form action="/bet" method="post">
-                    <div class="check">
-                        <button class="button2" type="submit" id="bet" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabledd{%endif%} name="bet" value={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}>CALL</button>
-                    </div>
-                </form>
-                <form action="/bet" method="post">
-                    <div class="check">
-                        <button class="button1" type="submit" id="bet" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabledd{%endif%} name="bet" value="-1">FOLD</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-
-        <div class="slot-form">
-        <form action="/bet" method="post">
-            <div class="slider">
-                <input type="range" id="bet" name="bet" min={{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }} max={{ game.getPlayers()[0].getChipCount() }} value="10"   oninput="rangeValue.innerText = this.value">
-                <p id="rangeValue">{{ game.getCurrentBet() - game.getPlayers()[game.getCurrentPlayer()].getCurrentBet() }}</p>
-            </div>
-            <button type="submit" class="button4" {% if not game.getPlayerNames().index(session.name) == game.getCurrentPlayer() %}disabled{%endif%}>BET</button>
-        </form>
-        </div>
-    </div>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
         </style>
     </head>
-    <div class="table">
-        <body style="background: url(../static/thetable.jpeg) no-repeat center center fixed; background-size: 100%;">
-        </body>
-    </div>
+
+    <body>
+        <div></div>
+        <div>
+            <a class="home" href="/"><img src="../static/home.png" width="75" height="75" style="position:absolute;right:1%;top:1%"></a>
+
+            <div id="sessionID" style="position:absolute;right:150%">{{ session.name }}</div>
+            <div id="round" style="position:absolute;right:150%"></div>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script>
+                function update_values() {
+                    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+                    $.getJSON($SCRIPT_ROOT+"/getGame",
+                        function(data) {
+
+                            $("#pot").text(data.pot);
+
+                            // Set table cards
+                            if (data.round >= 1) {
+                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
+                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/" + data.tableCards[1]._num + "_of_" + data.tableCards[1]._suit + ".png";
+                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/" + data.tableCards[2]._num + "_of_" + data.tableCards[2]._suit + ".png";
+                            } else {
+                                document.getElementById("flop1").src = "../static/PNG-cards-1.3/None_of_None.png";
+                                document.getElementById("flop2").src = "../static/PNG-cards-1.3/None_of_None.png";
+                                document.getElementById("flop3").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+                            if (data.round >= 2) {
+                                document.getElementById("turn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
+                            } else {
+                                document.getElementById("turn").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+                            if (data.round >= 3) {
+                                document.getElementById("river").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
+                            } else {
+                                document.getElementById("river").src = "../static/PNG-cards-1.3/None_of_None.png";
+                            }
+
+
+                            for (let i=0; i < data.players.length; i++) {
+
+                                // Display each players name with the correct color
+                                $(".playerName"+i.toString()).text(data.players[i].user);
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.color=data.players[i].color;
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.fontFamily="'Lucida Console', 'Monaco', monospace;";
+                                document.getElementsByClassName("slot-"+i.toString())[0].style.fontSize="26px";
+
+                                // Change current player marker
+                                if (data.round < 4) {
+                                    if (i == data.currentPlayer) {
+                                        document.getElementsByClassName("a")[i].id='a';
+                                    } else {
+                                        document.getElementsByClassName("a")[i].id='b';
+                                    }
+                                }
+
+                                // Handle blinds
+                                if (data.players[i].blind == 1) {
+                                    document.getElementById("blind"+i.toString()).src='../static/small.png';
+                                } else if (data.players[i].blind == 2) {
+                                    document.getElementById("blind"+i.toString()).src='../static/blind.png';
+                                } else {
+                                    document.getElementById("blind"+i.toString()).src='../static/empty.png';
+                                }
+
+                                // Only display slots which contain a currently active player
+                                if (i < data.players.length) {
+                                    document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='visible';
+                                } else {
+                                    document.getElementsByClassName("slot-"+(i).toString())[0].style.visibility='hidden';
+                                }
+                                
+                                // Handle chip to pot animation
+                                if (data.round == document.getElementById("round").innerHTML && document.getElementById("round").innerHTML != 4) {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.animationName = "example";
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
+                                } else if (document.getElementById("round").innerHTML == 4) {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "hidden";
+                                } else {
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.visibility = "visible";
+                                    document.getElementsByClassName("currentBet"+i.toString())[0].style.animationName = "example"+i.toString();
+                                }
+
+
+                                // Change chip count for each player
+                                $(".c"+i.toString()).text(data.players[i].chipCount);
+
+                                // Change current bet of each player
+                                $(".playerBet"+i.toString()).text(data.players[i].currentBet);
+                                
+                                if (data.round == document.getElementById("round").innerHTML) {
+                                    if (data.players[i].currentBet == 0 || data.players[i].currentBet == null) {
+                                        document.getElementsByClassName("bettag")[i].style.animationName = "none";
+                                        document.getElementsByClassName("chips")[i].style.animationName = "none";
+                                        document.getElementsByClassName("playerBet"+i.toString())[0].style.animationName = "none";
+                                    } else {
+                                        document.getElementsByClassName("bettag")[i].style.animationName = "bettage";
+                                        document.getElementsByClassName("chips")[i].style.animationName = "chips2";
+                                        document.getElementsByClassName("playerBet"+i.toString())[0].style.animationName = "betani";
+                                    }
+                                } else {
+                                    $("#pot").text(data.pot.toString());
+                                }
+
+
+                                // Handle folds and end of round
+                                if (data.round == 4) {
+                                    console.log("Hello")
+                                    if (data.lastWinners.includes(data.playerNames[i])) {
+                                        document.getElementsByClassName("card1")[i].src=data.players[i].card1;
+                                        document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                        document.getElementsByClassName("card2")[i].width="85";   
+                                        document.getElementsByClassName("card2")[i].height="130";   
+                                        document.getElementsByClassName("card1")[i].width="85.";   
+                                        document.getElementsByClassName("card1")[i].height="130";
+                                        document.getElementsByClassName("card2")[i].style.right="2%";
+                                        document.getElementsByClassName("card1")[i].style.right="50%";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="95";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="95";
+                                        document.getElementsByClassName("a")[i].id ='b';
+                                    } else {
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].id='folded1';
+                                        document.getElementsByClassName("a")[i].id ='b';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagfold 0.5s ease-in";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
+                                    }
+                                } else {
+                                    if (data.players[i].currentBet == null) {
+                                        document.getElementsByClassName("card1")[i].id='folded2';
+                                        document.getElementsByClassName("card2")[i].id='folded1';
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="tagfold 0.5s ease-in";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationDelay="0.2s";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animationFillMode="forwards";
+                                    } else {
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.animation="none";
+                                        document.getElementsByClassName("slot-"+i.toString())[0].style.opacity="1.0";
+                                        document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
+                                        document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';                                        
+                                        document.getElementsByClassName("card1")[i].id='nofold';
+                                        document.getElementsByClassName("card2")[i].id="nofold";
+                                        document.getElementsByClassName("card2")[i].width="65";   
+                                        document.getElementsByClassName("card2")[i].height="108";   
+                                        document.getElementsByClassName("card1")[i].width="65";   
+                                        document.getElementsByClassName("card1")[i].height="108";
+                                        document.getElementsByClassName("card2")[i].style.right="12%";
+                                        document.getElementsByClassName("card1")[i].style.right="48%";
+                                        document.getElementsByClassName("card1")[i].style.zIndex="-1";
+                                        document.getElementsByClassName("card2")[i].style.zIndex="-1";
+                                    }
+                                }
+                            }
+                            
+
+                            // Handle bomb pot
+                            if (document.getElementsByClassName("isBomb")[0].innerHTML == "yes" && data.round == 0) {
+                                setBombPot();
+                                document.getElementsByClassName("isBomb")[0].innerHTML = "active"
+                            } else if (document.getElementsByClassName("isBomb")[0].innerHTML == "active" && data.round == 0) {
+                                console.log('Active!')
+                            } else if (document.getElementsByClassName("isBomb")[0].innerHTML == "active" && data.round == 1) {
+                                console.log('Inactive!')
+                                document.getElementsByClassName("isBomb")[0].innerHTML = "no"
+                            }
+
+
+                            // Give personal user cards
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card1;
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card2;   
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].width="85";   
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].height="130";   
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].width="85";   
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].height="130";
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="2%";
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="50%";
+                            document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
+                            document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
+
+                            // Handle current bet
+                            $("#curBet").text("Current Bet: "+data.currentBet.toString());
+                            
+                            // Disable button if its not the users turn (comment out for debug)
+                            /*
+                            if (data.playerNames[data.currentPlayer] == document.getElementById("sessionID").innerHTML.toString()) {
+                                document.getElementsByClassName("button-75")[0].disabled = false;
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[1].disabled = false;
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[2].disabled = false;
+                                document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[3].disabled = false;
+                                document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[4].disabled = false;
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[5].disabled = false;
+                                document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-7")[0].disabled = false;
+                                document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                            } else {
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[0].disabled = true;
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[1].disabled = true;
+                                document.getElementsByClassName("button-75")[2].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[2].disabled = true;
+                                document.getElementsByClassName("button-75")[3].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[3].disabled = true;
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[4].disabled = true;
+                                document.getElementsByClassName("button-75")[5].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[5].disabled = true;
+                                document.getElementsByClassName("button-7")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-7")[0].disabled = true;
+                            }*/
+
+                            // Disable call/check when necessary
+                            if (data.currentBet == data.players[data.currentPlayer].currentBet) {
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[0].disabled = true;
+                                document.getElementsByClassName("button-75")[1].disabled = false;
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                            } else {
+                                document.getElementsByClassName("button-75")[0].disabled = false;
+                                document.getElementsByClassName("button-75")[0].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                                document.getElementsByClassName("button-75")[1].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[1].disabled = true;
+                            }
+
+                            // Disable pot size bet button when pot is larger than players amounts
+                            if (data.pot > data.players[data.currentPlayer].chipCount) {
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
+                                document.getElementsByClassName("button-75")[4].disabled = true;
+                            } else {
+                                document.getElementsByClassName("button-75")[4].disabled = false;
+                                document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(135deg, #AAFF00 -70%, #50C878)";
+                            }
+
+
+                            // Set call & bet slider to correct amounts
+                            document.getElementsByClassName("button-7")[0].id = (document.getElementById("rangeValue").innerText);
+                            if (data.currentBet > data.players[data.currentPlayer].chipCount) {
+                                document.getElementsByClassName("button-75")[0].id = data.players[data.currentPlayer].chipCount
+                            } else {
+                                document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            }
+                            document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                            document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
+                            if (document.getElementById("rangeValue").innerHTML < data.currentBet) {
+                                document.getElementById("rangeValue").innerHTML = data.currentBet;
+                            }
+                            document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
+
+
+                            
+
+                            
+                            // Call the function
+                            if (document.getElementById("round").innerHTML == data.round) {
+                                setTimeout(update_values, 200);
+                            } else {
+                                document.getElementById("round").innerHTML = data.round
+                                setTimeout(update_values, 600);
+                            }
+                        });
+                }
+
+                update_values();
+            </script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('.button-75').on('click', function(event) {
+                        var de = $(this).attr('id');
+                        $.ajax({
+                            data : {
+                                bet : $(this).attr('id'),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+                $(document).ready(function() {
+                    $('.button-7').on('click', function(event) {
+                        var de = $(this).attr('id');
+                        $.ajax({
+                            data : {
+                                bet : $(this).attr('id'),
+                            },
+                            type : 'POST',
+                            url : '/bet'
+                        })
+                        .done(function(data) {
+                            if (data.error) {
+                                $('#errorAlert').text(data.error).show();
+                                $('#successAlert').hide();
+                            }
+                            else {
+                                $('#successAlert').text(data.name).show();
+                                $('#errorAlert').hide();
+                            }
+                        });
+                        event.preventDefault();
+                    });
+                });
+                $(document).ready(function() {
+                    $('#allin').on('click', function(event) {
+                        document.getElementById("rangeValue").innerText = document.getElementsByClassName("betbet")[0].max
+                        document.getElementsByClassName("betbet")[0].value = document.getElementsByClassName("betbet")[0].max
+                    });
+                    $('#pottt2').on('click', function(event) {
+                        document.getElementById("rangeValue").innerText = document.getElementsByClassName("pot")[0].innerText
+                        document.getElementsByClassName("betbet")[0].value = document.getElementsByClassName("pot")[0].innerText
+                    });
+                    $('#2blind').on('click', function(event) {
+                        document.getElementById("rangeValue").innerText = document.getElementsByClassName("blind")[0].innerHTML * 2
+                        document.getElementsByClassName("betbet")[0].value = document.getElementsByClassName("blind")[0].innerHTML * 2
+                    });
+                });
+            </script>
+
+            <div class="blind" style="visibility:hidden;"></div>
+
+
+
+
+            <!-- Table Cards -->
+            <div class="tableCards">
+                <img id="flop1" src="" width="100" height="155" style="position:absolute;right:59.5%;bottom:52%;">
+                <img id="flop2" src="" width="100" height="155" style="position:absolute;right:53.5%;bottom:52%;">
+                <img id="flop3" src="" width="100" height="155" style="position:absolute;right:47.5%;bottom:52%;">
+                <img id="turn" src="" width="100" height="155" style="position:absolute;right:41.5%;bottom:52%;">
+                <img id="river" src="" width="100" height="155" style="position:absolute;right:35.5%;bottom:52%;">
+            </div>
+
+            
+            <!-- Player Slots -->
+            <div class="slots">
+                <div class="pot" id="pot" style="margin:auto;margin-top:50%;font-size:46px;text-align:center;"></div>
+                <div class="curBet" id="curBet" style="margin:auto;font-size:16px;text-align:center;"></div>
+                <div class="error" id="error" style="position:absolute;right:56%;bottom:40%;font-size:16px;color:red;"></div>
+
+
+                {% for i in range(10) %}
+                <div class="slot-{{i}}" style="opacity:1.0;visibility:hidden;">
+                    <img src="../static/tagg.png" class="a" id="a" width="175" height="120">
+                    <a class="grow" id="{{i}}" href=""> <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></a>
+                    <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
+                    <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
+                    <div class="c{{i}}" style="font-size:13px;position:absolute;left:45px;bottom:38px;"></div>
+                    <img class="card1" id="folded1" src="" width="5%" height="7.5%" style="position:absolute;right:48%;bottom:80%;transform: rotate(350deg);z-index:-10;">
+                    <img class="card2" id="folded2" src="" width="5%" height="7.5%" style="position:absolute;right:12%;bottom:80%;transform: rotate(10deg);z-index:-10;">
+                    <img id="blind{{i}}" src="" width="45" height="45" style="position:absolute;right:-10%;bottom:30%;">
+                    <div class="currentBet{{i}}">
+                        <img class="bettag" id="bettag" src="../static/bettag.png" width="60">
+                        <img class="chips" id="chips" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-15%;">
+                        <div class="playerBet{{i}}" id="playerBet" style="position:absolute;color:black;font-size:0px;left:30%;bottom:26%;">10000</div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            
+
+            <!-- Check, Bet, Fold buttons -->
+            <button class="button-75" style="position:absolute;right:78%;bottom:4.5%;" id="0"><span class="text">Call</span></button>
+            <button class="button-75" id='0' style="position:absolute;right:85%;bottom:4.5%;"><span class="text">Check</span></button>
+            <button class="button-75" id='-1' style="position:absolute;right:71%;bottom:4.5%;"><span class="text">Fold</span></button>
+            <div class="slider">
+                <input type="range" class="betbet" min="0" max="100" value="10"   oninput="rangeValue.innerText = this.value">
+                <button class="button-7" style="" id=''> <p id="rangeValue">10</p></button>
+                <button class="button-75" id='2blind' val="2blind" style="position:absolute;right:-19%;bottom:117%;width:85px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;"><span class="text">2x Blind</span></button>
+                <button class="button-75" id='pottt2' val="pot" style="position:absolute;right:-29%;bottom:117%;width:45px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;"><span class="text">Pot</span></button>
+                <button class="button-75" id='allin' val="allin" style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;"><span class="text">ALL IN</span></button>
+            </div>
+
+        </div>
+        {% extends "pokerTable.html" %} {% block content2 %} {% endblock content2 %}
+    </body>
 </html>
 
 

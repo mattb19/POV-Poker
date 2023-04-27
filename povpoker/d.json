@@ -1,0 +1,239 @@
+{
+    "players": [
+        {
+            "user": "Jeremy",
+            "card1": "../static/PNG-cards-1.3/4_of_Diamonds.png",
+            "card2": "../static/PNG-cards-1.3/Jack_of_Hearts.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 0,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Matt",
+            "card1": "../static/PNG-cards-1.3/3_of_Clubs.png",
+            "card2": "../static/PNG-cards-1.3/8_of_Spades.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 1,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Trent",
+            "card1": "../static/PNG-cards-1.3/5_of_Hearts.png",
+            "card2": "../static/PNG-cards-1.3/10_of_Spades.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 2,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Ryan",
+            "card1": "../static/PNG-cards-1.3/Ace_of_Hearts.png",
+            "card2": "../static/PNG-cards-1.3/5_of_Diamonds.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 3,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Jackson",
+            "card1": "../static/PNG-cards-1.3/3_of_Spades.png",
+            "card2": "../static/PNG-cards-1.3/7_of_Hearts.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 4,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Luke",
+            "card1": "../static/PNG-cards-1.3/Ace_of_Diamonds.png",
+            "card2": "../static/PNG-cards-1.3/Jack_of_Clubs.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 5,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "David",
+            "card1": "../static/PNG-cards-1.3/Jack_of_Spades.png",
+            "card2": "../static/PNG-cards-1.3/Queen_of_Diamonds.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 6,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Max",
+            "card1": "../static/PNG-cards-1.3/5_of_Clubs.png",
+            "card2": "../static/PNG-cards-1.3/5_of_Spades.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 6,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Ethan",
+            "card1": "../static/PNG-cards-1.3/King_of_Spades.png",
+            "card2": "../static/PNG-cards-1.3/4_of_Hearts.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 6,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        },
+        {
+            "user": "Jack",
+            "card1": "../static/PNG-cards-1.3/10_of_Clubs.png",
+            "card2": "../static/PNG-cards-1.3/9_of_Clubs.png",
+            "chipCount": 980,
+            "currentBet": 0,
+            "playerNum": 6,
+            "blind": 0,
+            "turn": true,
+            "color": "white",
+            "currentBetStr": ""
+        }
+    ],
+    "deck": [],
+    "pot": 200,
+    "currentBet": 0,
+    "round": 1,
+    "currentPlayer": 0,
+    "tableCards": [
+        {
+            "_suit": "Diamonds",
+            "_num": "7",
+            "_value": 7,
+            "_id": [
+                7,
+                "Diamonds"
+            ]
+        },
+        {
+            "_suit": "Diamonds",
+            "_num": "3",
+            "_value": 3,
+            "_id": [
+                3,
+                "Diamonds"
+            ]
+        },
+        {
+            "_suit": "Clubs",
+            "_num": "7",
+            "_value": 7,
+            "_id": [
+                7,
+                "Clubs"
+            ]
+        },
+        {
+            "_suit": "Hearts",
+            "_num": "9",
+            "_value": 9,
+            "_id": [
+                9,
+                "Hearts"
+            ]
+        },
+        {
+            "_suit": "Diamonds",
+            "_num": "9",
+            "_value": 9,
+            "_id": [
+                9,
+                "Diamonds"
+            ]
+        }
+    ],
+    "lastWinners": [],
+    "playerNames": [
+        "Jeremy",
+        "Matt",
+        "Trent",
+        "Ryan",
+        "Jackson",
+        "Luke",
+        "David",
+        "Max",
+        "Ethan",
+        "Jack"
+    ],
+    "playerCount": 10,
+    "playerQueue": [],
+    "active": true,
+    "flop1": {
+        "_suit": "Diamonds",
+        "_num": "7",
+        "_value": 7,
+        "_id": [
+            7,
+            "Diamonds"
+        ]
+    },
+    "flop2": {
+        "_suit": "Diamonds",
+        "_num": "3",
+        "_value": 3,
+        "_id": [
+            3,
+            "Diamonds"
+        ]
+    },
+    "flop3": {
+        "_suit": "Clubs",
+        "_num": "7",
+        "_value": 7,
+        "_id": [
+            7,
+            "Clubs"
+        ]
+    },
+    "turn": {
+        "_suit": "None",
+        "_num": "None",
+        "_value": 0,
+        "_id": [
+            "None",
+            "None"
+        ]
+    },
+    "river": {
+        "_suit": "None",
+        "_num": "None",
+        "_value": 0,
+        "_id": [
+            "None",
+            "None"
+        ]
+    },
+    "smallBlind": 10,
+    "bigBlind": 20
+}
