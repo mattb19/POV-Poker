@@ -73,8 +73,8 @@ theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
 @app.route('/')
 def home():
     conn = connectDB()
-    cursor = conn.execute("SELECT * FROM User")
-    val = cursor.fetchall()
+    cursor = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))
+    val = cursor
     return render_template_modal('home.html', theUser=theUser, val=val)
 
 
@@ -125,9 +125,28 @@ def login():
         
     else:
         return render_template("login.html")
+    
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        registername = str(request.form.get("username"))
+        registerpassword = str(request.form.get("password"))
+        registeremail = str(request.form.get("email"))
+        conn = connectDB()
+        user = list(str(conn.execute("SELECT userName FROM User WHERE userName=?", (registername,)).fetchall()).strip('(').strip(')').strip(','))
+        email = list(str(conn.execute("SELECT userName FROM User WHERE email=?", (registeremail,)).fetchall()).strip('(').strip(')').strip(','))
+        if len(user) and len(email) == 2:
+            print("hello")
+            session["name"] = registername
+            id = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))+1
+            conn.execute("INSERT INTO User VALUES (?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ?)", (id, registername, registerpassword, None, None, registeremail))
+            conn.commit()
+            num = str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(',')
+            return "SUCCESS"
+        return "Username or Email Taken!"
+    else:
+        return render_template("login.html")
 
-
-    return render_template('login.html', title='Login', form=form)
 
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
