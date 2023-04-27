@@ -10,6 +10,7 @@ import cv2
 import random
 import json
 import logging
+from werkzeug.security import generate_password_hash, check_password_hash
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -105,7 +106,7 @@ def login():
         password = list(password)
         newp = ""
         for i in password:
-            if i.isalnum() or i in ['!', '%', '$', '#']:
+            if i.isalnum() or i in ['!', '%', '$', '#', ':']:
                 newp += i
         
         user= list(user)
@@ -116,8 +117,7 @@ def login():
         
         session["name"] = loginname
         
-        
-        if newu==loginname and newp==loginpassword:
+        if newu==loginname and check_password_hash(newp, loginpassword)==True:
             session["name"] = loginname
             return redirect("/")
         else:
@@ -131,6 +131,7 @@ def register():
     if request.method == "POST":
         registername = str(request.form.get("username"))
         registerpassword = str(request.form.get("password"))
+        registerpassword = generate_password_hash(registerpassword)
         registeremail = str(request.form.get("email"))
         conn = connectDB()
         user = list(str(conn.execute("SELECT userName FROM User WHERE userName=?", (registername,)).fetchall()).strip('(').strip(')').strip(','))
