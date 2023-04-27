@@ -119,7 +119,7 @@ def login():
         
         if newu==loginname and newp==loginpassword:
             session["name"] = loginname
-            return redirect("/")
+            return "SUCCESS"
         else:
             return "User Not Found"
         
