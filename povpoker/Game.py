@@ -74,6 +74,7 @@ class Game:
         for i in self.players:
             if i.getChipCount() == 0:
                 self.players.remove(i)
+                self.playerNames.remove(i.getUser())
         
         # initialize blinds if its a new game
         if not self.active:
@@ -108,6 +109,7 @@ class Game:
             i.setTurn(True)
             i.setColor("white")
             i.setTotalValueZero()
+            i.setAllIn(False)
         
         
         # set all players bet counts
@@ -120,8 +122,6 @@ class Game:
                 self.players[i].setCurrentBet(self.bigBlind)
                 self.players[i].setChipCount(-self.bigBlind)
                 self.players[i].setTotalValue(self.bigBlind)
-            else:
-                self.players[i].setCurrentBet(0)
         
         # initialize pot
         self.pot = 0
@@ -203,7 +203,7 @@ class Game:
         
         # if they raise
         elif value >= self.currentBet and value < player.getChipCount():
-            player.setChipCount(0-(value-player.getCurrentBet()))
+            player.setChipCount(0-value)
             player.setTurn(False)
             player.setTotalValue(value-player.getCurrentBet())
             self.currentBet = value
@@ -215,7 +215,7 @@ class Game:
         # if they go all in
         elif value == player.getChipCount():
             player.setTotalValue(value-player.getCurrentBet())
-            player.setChipCount(0-(value-player.getCurrentBet()))
+            player.setChipCount(0-value)
             player.setTurn(False)
             player.setColor("#EE4B2B")
             self.pot += (value-player.getCurrentBet())
@@ -241,7 +241,7 @@ class Game:
                 continue
             elif value == None:
                 continue
-            elif i.getCurrentBet() < value:
+            elif i.getCurrentBet() < value and i.getAllIn() == False:
                 i.setTurn(True)
                 
         # determine who goes next
@@ -250,6 +250,8 @@ class Game:
         
     def whoGoesNext(self): 
         turns = [i.getTurn() for i in self.players]
+        print([i.getChipCount() for i in self.players])
+        print([i.getCurrentBet() for i in self.players])
         
         # if all players have folded/all-in'd except one
         currentPlayers = [i for i in self.players if i.getCurrentBet() != None]
@@ -265,7 +267,9 @@ class Game:
         if len(allinPlayers) == len(nonFolded):
             self.round = 4
             return self.endRound()
-        
+        elif len(allinPlayers)+1 == len(nonFolded) and True not in turns:
+            self.round = 4
+            return self.endRound()
         
     
         # if all players have called, checked or folded
@@ -308,8 +312,8 @@ class Game:
             if self.round == 3:
                 for i in self.players:
                     if i.getCurrentBet() is not None and i.getAllIn() != True:
-                        i.setCurrentBetZero()
                         i.setColor("white")
+                    i.setCurrentBetZero()
                 
                 # increment round
                 self.round = 4
@@ -321,7 +325,7 @@ class Game:
             
             # set all non-folded/all-in'd players current bets to zero
             for i in self.players:
-                if i.getCurrentBet() is not None and i.getAllIn() != True:
+                if i.getCurrentBet() is not None and i.getAllIn() == False:
                     i.setCurrentBetZero()
                     i.setTurn(True)
                     i.setColor("white")
@@ -538,6 +542,11 @@ class Game:
             splitCount = 1
             
             # Determine how many people need to split it with
+            if len(finalPlayers) == 1:
+                disWinnings.append([i, self.pot])
+                self.lastWinners.append(i.getUser())
+                break
+            
             for x in range(len(newList)):
                 if newList[x].getCurrentBet() == newList[x+1].getCurrentBet():
                     splitCount += 1
@@ -565,9 +574,7 @@ class Game:
         
         
         
-        time.sleep(10)
-        # for i in winners:
-        #     i[0].setChipCount(self.pot//len(winners))
+        time.sleep(5)
                 
         # Distribute winnings
         for i in disWinnings:
