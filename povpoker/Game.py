@@ -395,9 +395,7 @@ class Game:
           
                 
     def endRound(self):
-        print('Hello')
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
-        print([i.getCurrentBet() for i in self.players])
         
         
         for i in finalPlayers:
