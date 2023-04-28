@@ -1,6 +1,44 @@
 from Card import *
 
-def quads(cards):
+
+
+
+
+def isRoyalFlush(cards1):
+    cards = [i.getValue() for i in cards1]
+    suits = sorted(cards1, key=lambda x:x.getSuit(), reverse=True)
+    if ((cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and 
+    suits[0] == suits[1] and suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and cards[4] == 14) or
+    (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and 
+    suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and cards[5] == 14) or
+    (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6] and 
+    suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6] and cards[6] == 14)):
+        return [True, 10000000000000000000000000000000000000]
+    return [False, 0]
+
+
+def isStraightFlush(cards1):
+    cards = [i.getValue() for i in cards1]
+    suits = sorted(cards1, key=lambda x:x.getSuit(), reverse=True)
+    cards.sort()
+    sFlush = 0
+    if (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6] and 
+    suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6]):
+        sFlush = cards[6]
+    elif (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and 
+    suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5]):
+        sFlush = cards[5]
+    elif (cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and 
+    suits[0] == suits[1] and suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4]):
+        sFlush = cards[4]
+    
+    if sFlush == 0:
+        return [False, 0]
+    
+    val = 90000000000 + sFlush
+
+
+def isQuads(cards):
     cardValues = [i.getValue() for i in cards]
     quads = 0
     for i in cardValues:
@@ -21,6 +59,37 @@ def quads(cards):
     val = 80000000000 + quads*100000000 + h1*1000000
 
     return[True,val]
+
+
+def isFullHouse(cards):
+    cardValues = [i.getValue() for i in cards]
+    f1 = 0
+    f1c = 0
+    f2 = 0
+    f2c = 0
+    for i in cardValues:
+        if f1 == 0 and cardValues.count(i.getValue()) == 3:
+            f1 = cardValues
+            f1c = cardValues.count(i)
+            cardValues.remove(i)
+            cardValues.remove(i)
+            cardValues.remove(i)
+        elif f2 == 0 and cardValues.count(i.getValue()) >= 2:
+            f2 = cardValues
+            f2c = cardValues.count(i)
+    
+    if f1 == 0 or f2 == 0:
+        return [False, 0]
+    
+    if f1 < f2 and f1c == f2c:
+        f1, f2 = f2, f1
+    
+    val = 70000000000 + f1*100000000 + f2*1000000
+    return [True, val]
+    
+    
+
+
 def isFlush(cards):
     
     handSuits = [i.getSuit() for i in cards]
@@ -57,7 +126,9 @@ def isStraight(cards1):
         return [False,0]
     val = 50000000000 + straight*100000000 
     return[True,val]   
-def isTrip(cards):
+
+
+def isTrips(cards):
     cardValues = [i.getValue() for i in cards]
     tripValue = 0 
     for i in cardValues:
