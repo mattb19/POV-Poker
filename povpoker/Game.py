@@ -23,6 +23,7 @@ class Game:
         self.blinds = []
         self.buyIn = 1000
         self.flip = True
+        self.running = False
         
         self.bombPot = False
         
@@ -70,6 +71,7 @@ class Game:
         self.playerQueue = []
         
         self.round = 0
+        self.running = False
         
         for i in self.players:
             if i.getChipCount() == 0:
@@ -191,7 +193,6 @@ class Game:
                         self.placeBetFold((.10*1000))
         
     
-    
     def placeBetFold(self, value):
         # get current player
         x = self.currentPlayer
@@ -288,6 +289,7 @@ class Game:
                     self.flop1 = self.tableCards[0]
                     self.flop2 = self.tableCards[1]
                     self.flop3 = self.tableCards[2]
+                    self.running = True
                     self.round = 1
                     time.sleep(5)
                     for i in self.players:
@@ -296,6 +298,7 @@ class Game:
                 elif self.round == 1:
                     self.turn = self.tableCards[3]
                     self.round += 1
+                    self.running = True
                     time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
@@ -303,12 +306,14 @@ class Game:
                 elif self.round == 2:
                     self.river = self.tableCards[4]
                     self.round += 1
+                    self.running = True
                     time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
                             i.setCurrentBetZero()
                 elif self.round == 3:
-                    self.round == 4
+                    self.round = 4
+                    self.running = True
                     return self.endRound()
         
     
@@ -353,7 +358,7 @@ class Game:
                 for i in self.players:
                     if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setColor("white")
-                    if i.getSpectate() == False:
+                    if i.getSpectate() == False and i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                 
                 # increment round
@@ -390,14 +395,16 @@ class Game:
           
                 
     def endRound(self):
-        print('Hello')
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
+        
         
         for i in finalPlayers:
             lst = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
             unsortedCards = [[i.getValue(), i.getSuit()] for i in lst]
             card = sorted(unsortedCards,key=lambda l:l[0])
+            
             cards = [int(i[0]) for i in card]
+            
             suits = [i[1] for i in card]
                 
             
@@ -575,52 +582,31 @@ class Game:
             
             
         newList = sorted(finalPlayers, key=lambda x:x.getCurrentBet(), reverse=True)
-        disWinnings = []
-        print(finalPlayers)
+        hands = {0 : []}
+        for i in finalPlayers:
+            if i.getCurrentBet() is None:
+                hands[i.getCurrentBet()].append([i, i.getCurrentBet(), i.getTotalValue()])
+            elif i.getCurrentBet() in hands:
+                hands[i.getCurrentBet()].append([i, i.getCurrentBet(), i.getTotalValue()])
+            else:
+                hands[i.getCurrentBet()] = []
+                hands[i.getCurrentBet()].append([i, i.getCurrentBet(), i.getTotalValue()])
         
-        # Determine who wins what
-        for i in newList:
-            splitCount = 1
-            
-            # Determine how many people need to split it with
-            if len(finalPlayers) == 1:
-                disWinnings.append([i, self.pot])
-                self.lastWinners.append(i.getUser())
-                break
-            
-            for x in range(len(newList)):
-                if newList[x].getCurrentBet() == newList[x+1].getCurrentBet():
-                    splitCount += 1
-                    break
-                else:
-                    break
-            # determine what they win
-            amount = 0
-            for j in self.players:
-                if i.getUser() != j.getUser():
-                    if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
-                        amount += (j.getTotalValue()//splitCount)
-                        j.setTotalValue(-(j.getTotalValue()//splitCount))
-                    else:
-                        amount += (i.getTotalValue()//splitCount)
-                        j.setTotalValue(-(i.getTotalValue()//splitCount))
-            disWinnings.append([i, amount])
-            if amount != 0:
-                self.lastWinners.append(i.getUser())
+        print(hands)
         
-
+        
+        
+        # set all non folded players bets to
+        for j in self.players:
+            if j.getCurrentBet() is not None:
+                j.setCurrentBetZero()
+        time.sleep(5)
         # set all players current bets to zero
         for j in self.players:
             j.setCurrentBetZero()
-        
-        
-        
-        time.sleep(5)
-                
-        # Distribute winnings
-        for i in disWinnings:
-            self.players[self.players.index(i[0])].setChipCount(i[1])
+
             
+        # start a new round    
         self.newRound()
 
         
@@ -635,7 +621,13 @@ class Game:
 
     def getPot(self):
         return self.pot
+
+    def getCurrentPlayer(self):
+        return self.currentPlayer
     
+    def getPlayerNames(self):
+        return self.playerNames
+
     def getFlop1(self):
         return self.flop1
     
@@ -665,12 +657,6 @@ class Game:
         
     def setRiver(self, card):
         self.river = card
-
-    def getCurrentPlayer(self):
-        return self.currentPlayer
-    
-    def getPlayerNames(self):
-        return self.playerNames
     
     def getPlayerCount(self):
         return self.playerCount
