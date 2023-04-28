@@ -6,6 +6,7 @@ class Player:
         self.chipCount = chipCount
         self.currentBet = 0
         self.blind = blind
+        self.handWorth = 0
         self.turn = False
         self.color = "white"
         self.allIn = False
@@ -21,6 +22,12 @@ class Player:
         
     def getBlind(self):
         return self.blind
+    
+    def getHandWorth(self):
+        return self.handWorth
+    
+    def setHandWorth(self, value):
+        self.handWorth = value
     
     def setTotalValue(self, value):
         self.totalValue += value
