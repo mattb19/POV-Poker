@@ -64,6 +64,10 @@ class Game:
     
     def newRound(self):
         # generate a new deck
+        e = [i.getChipCount() for i in self.players]
+        print(sum(e))
+        
+        
         self.shuffleDeck()
         
         # add any waiting players
@@ -214,17 +218,17 @@ class Game:
         
         # if they call
         elif value+player.getCurrentBet() == self.currentBet and value < player.getChipCount(): 
-            player.setCurrentBet(value)
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value)
             self.pot += value
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
+            player.setCurrentBet(value-player.getCurrentBet())
         
         # if they raise
         elif value >= self.currentBet and value < player.getChipCount():
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value-player.getCurrentBet())
             self.currentBet = value
@@ -236,7 +240,7 @@ class Game:
         # if they go all in
         elif value == player.getChipCount():
             player.setTotalValue(value-player.getCurrentBet())
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setColor("#EE4B2B")
             self.pot += (value-player.getCurrentBet())
@@ -582,29 +586,54 @@ class Game:
             
             
         newList = sorted(finalPlayers, key=lambda x:x.getCurrentBet(), reverse=True)
-        hands = {0 : []}
-        for i in finalPlayers:
-            if i.getCurrentBet() is None:
-                hands[i.getCurrentBet()].append([i, i.getCurrentBet(), i.getTotalValue()])
-            elif i.getCurrentBet() in hands:
-                hands[i.getCurrentBet()].append([i, i.getCurrentBet(), i.getTotalValue()])
-            else:
-                hands[i.getCurrentBet()] = []
-                hands[i.getCurrentBet()].append([i, i.getCurrentBet(), i.getTotalValue()])
+        disWinnings = []
         
-        print(hands)
-        
-        
-        
-        # set all non folded players bets to
-        for j in self.players:
-            if j.getCurrentBet() is not None:
-                j.setCurrentBetZero()
-        time.sleep(5)
+        # Determine who wins what
+        for i in newList:
+            splitCount = 1
+            
+            # Determine how many people need to split it with
+            if len(finalPlayers) == 1:
+                disWinnings.append([i, self.pot])
+                self.lastWinners.append(i.getUser())
+                break
+            
+            for x in range(len(newList)):
+                if newList[x].getCurrentBet() == newList[x+1].getCurrentBet():
+                    splitCount += 1
+                    break
+                else:
+                    break
+                
+                
+            
+            # determine what they win
+            amount = 0
+            for j in self.players:
+                if i.getUser() != j.getUser():
+                    if (j.getCurrentBet() is None or j.getCurrentBet != i.getCurrentBet()):
+                        if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
+                            amount += (j.getTotalValue()//splitCount)
+                            j.setTotalValue(-(j.getTotalValue()//splitCount))
+                        else:
+                            amount += (i.getTotalValue()//splitCount)
+                            j.setTotalValue(-(i.getTotalValue()//splitCount))
+            amount += i.getTotalValue()
+            disWinnings.append([i, amount])
+            if amount != 0:
+                self.lastWinners.append(i.getUser())
+
         # set all players current bets to zero
         for j in self.players:
-            j.setCurrentBetZero()
-
+            if j.getSpectate() == False:
+                j.setCurrentBetZero()
+        
+        
+        time.sleep(5)
+                
+        # Distribute winnings
+        for i in disWinnings:
+            self.players[self.players.index(i[0])].setChipCount(i[1])
             
         # start a new round    
         self.newRound()
