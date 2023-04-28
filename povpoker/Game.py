@@ -217,17 +217,17 @@ class Game:
         
         # if they call
         elif value+player.getCurrentBet() == self.currentBet and value < player.getChipCount(): 
-            player.setCurrentBet(value)
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value)
             self.pot += value
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
+            player.setCurrentBet(value-player.getCurrentBet())
         
         # if they raise
         elif value >= self.currentBet and value < player.getChipCount():
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value-player.getCurrentBet())
             self.currentBet = value
@@ -239,7 +239,7 @@ class Game:
         # if they go all in
         elif value == player.getChipCount():
             player.setTotalValue(value-player.getCurrentBet())
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setColor("#EE4B2B")
             self.pot += (value-player.getCurrentBet())
