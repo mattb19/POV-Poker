@@ -614,13 +614,11 @@ class Game:
             disWinnings.append([i, amount])
             if amount != 0:
                 self.lastWinners.append(i.getUser())
-            print(amount)
 
         # set all players current bets to zero
         for j in self.players:
             j.setCurrentBetZero()
         
-        print([i for i in disWinnings])
         
         time.sleep(5)
                 
