@@ -1,17 +1,17 @@
 <html>
     <body class="bg">
-        <div class="loginScreen" style="position:absolute;right:33.2%;bottom:30%;animation-fill-mode: forwards;">
+        <div class="loginScreen" style="position:absolute;right:38.2%;bottom:35%;animation-fill-mode: forwards;">
             <div class="titleLabel">
-                Sign Up
+                Log In
             </div>
-            <label for="username">UserName:</label><br>
-            <input type="text" style="padding-left:6px; width:50%; margin-bottom:8px;" id="username" value="" ><br>
+            <label for="username">Username:</label><br>
+            <input type="text" style="padding-left:6px; width:50%; margin-bottom:8px;" id="newusername" value="" ><br>
             <label for="password">Password:</label><br>
-            <input type="password"style="padding-left:6px; width:50%; margin-bottom:8px;" id="password" value="">
+            <input type="password"style="padding-left:6px; width:50%; margin-bottom:8px;" id="newpassword" value="">
             
             <div id="error"></div><br><br>
-            <button class="login" >Login</button><br><br>
-            <a href="#" class="dont">Don't Have An Account?</a>
+            <button class="login" id="buttonTech2"style="position:absolute; left:35.8%; bottom:17.235673%;"><span class="text" style="color:black;">Sign In</span></button><br><br>
+            <a href="#" class="dont"><div class="dont"style="position:absolute; right:31.8%; top:87%; color:black; font-weight:normal;text-decoration:underline;">Dont have an account?</div></a>
 
         </div>
     
@@ -19,7 +19,7 @@
             <div class="titleLabel">
                 Sign Up
             </div>
-            <label for="username">UserName:</label><br>
+            <label for="username">Username:</label><br>
             <input style="padding-left:6px; width:50%; margin-bottom:8px;"type="text" id="newusername" value=""><br>
             <label for="email">Email</label><br>
             <input style="padding-left:6px; width:50%;margin-bottom:8px;" type="text" id="newemail" value=""><br>
@@ -31,7 +31,7 @@
             <div id="error2" style="color:white;font-size:26px;z-index:10;"></div><br><br>
             <button class="register" id="buttonTech"style="position:absolute; left:36.3%; bottom:17.235673%;"><span class="text" style="color:black;">Register</span></button><br><br>
             <div class="already"></div>
-            <a href="#" class="already" ><div class="already"style="position:absolute; right:35.8%; top:87%; color:black; font-weight:normal;">Already have an account?</div></a>
+            <a href="#" class="already" ><div class="already"style="position:absolute; right:35.8%; top:87%; color:black; font-weight:normal;text-decoration:underline;">Already have an account?</div></a>
         </div>
         
     </body>
@@ -175,13 +175,16 @@
         font-weight:bold;
         color:white;
         text-align:center;
-        height: 50%;
-        width:30%;
+        height: 30%;
+        width:20%;
         padding: 35px;
         background-image: linear-gradient(#3c1053,#ad5389);
         position:absolute;
         right:10%;
-        border-radius: 15px;
+        border-radius: 70px;
+        
+        
+        
     }
     .registerScreen {
         font-family: "Tahoma", sans-serif;
@@ -194,7 +197,8 @@
         background-image: linear-gradient(#3c1053,#ad5389);
         position:absolute;
         right:10%;
-        border-radius: 15px;
+        border-radius: 70px;
+        
     }
     
     @keyframes fadeout {
@@ -311,6 +315,53 @@
     }
       
     #buttonTech:hover span {
+        transform: scale(.9);
+        opacity: .75;
+    }
+    #buttonTech2{
+
+        
+        align-items: center;
+       
+        background-color:white;
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color:dark-black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        height: 30px;
+        justify-content: center;
+        letter-spacing: .4px;
+        line-height: 1;
+        max-width: 100%;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 3px;
+        text-decoration: none;
+        text-transform: uppercase;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      
+    #buttonTech2:active {
+        outline: 0;
+    }
+      
+    #buttonTech2:hover {
+        outline: 0;
+    }
+      
+    #buttonTech2 span {
+        transition: all 200ms;
+    }
+      
+    #buttonTech2:hover span {
         transform: scale(.9);
         opacity: .75;
     }
