@@ -17,8 +17,12 @@ class Player:
     
     def getHandWorth(self):
         return self.handWorth
-    def setHandWorth(self,handWorth):
-        self.handWorth = handWorth
+    
+    def setHandWorth(self,Worth):
+        self.handWorth = Worth
+        
+    def setHandWorthZero(self):
+        self.handWorth = 0
         
     def getBlind(self):
         return self.blind

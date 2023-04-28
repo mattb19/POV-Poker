@@ -29,45 +29,12 @@ player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Pla
 #player = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 game = Game(1, player, 10, 20)
 game.newRound()
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(10)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+
 
 
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
@@ -158,7 +125,7 @@ def register():
 def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
-        
+        #print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
         

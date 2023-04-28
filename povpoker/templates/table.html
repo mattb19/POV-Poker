@@ -501,7 +501,7 @@
                                     document.getElementById("newturn").style.animation = "rotateout ease-in 0.5s";
                                     document.getElementById("newriver").style.animation = "rotateout ease-in 0.5s";
                                 }
-                                if (data.round == 1) {
+                                if (data.round >= 1) {
 
                                     // remove card backs
 
@@ -519,13 +519,13 @@
                                     document.getElementById("newflop3").style.animationDelay = "0.5s"
                                     document.getElementById("newflop3").style.animationFillMode="forwards";
                                 }
-                                if (data.round == 2) {
+                                if (data.round >= 2) {
                                     document.getElementById("newturn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
                                     document.getElementById("newturn").style.animation = "rotatein ease-out 0.5s"
                                     document.getElementById("newturn").style.animationDelay = "0.5s"
                                     document.getElementById("newturn").style.animationFillMode="forwards";
                                 }
-                                if (data.round == 3) {
+                                if (data.round >= 3) {
                                     document.getElementById("newriver").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
                                     document.getElementById("newriver").style.animation = "rotatein ease-out 0.5s"
                                     document.getElementById("newriver").style.animationDelay = "0.5s"
@@ -744,16 +744,9 @@
 
                                 // Set call & bet slider to correct amounts
                                 document.getElementsByClassName("button-7")[0].id = (document.getElementById("rangeValue").innerText);
-                                if (data.currentBet > data.players[data.currentPlayer].chipCount) {
-                                    document.getElementsByClassName("button-75")[0].id = data.players[data.currentPlayer].chipCount
-                                } else {
-                                    document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
-                                }
-                                document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                                document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                                document.getElementsByClassName("betbet")[0].min = (data.currentBet);
                                 document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
-                                if (document.getElementById("rangeValue").innerHTML < data.currentBet) {
-                                    document.getElementById("rangeValue").innerHTML = data.currentBet;
-                                }
                                 document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
 
 
@@ -765,8 +758,6 @@
                                     setTimeout(update_values, 600);
                                 }
                             } catch (e) {
-                                console.log("HE")
-                                console.log(e)
                                 location.reload()
                             }
                         });

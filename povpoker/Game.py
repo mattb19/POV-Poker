@@ -1,9 +1,10 @@
 import random
 from Card import Card
 import time
-import Player
+from Player import Player
 import json
 from copy import deepcopy
+from checkHands import CheckHands
 
 class Game:
     def __init__(self, gameID, players, smallBlind, bigBlind) -> None:
@@ -67,6 +68,9 @@ class Game:
         e = [i.getChipCount() for i in self.players]
         print(sum(e))
         
+        # set all players hand worth to 0
+        for i in self.players:
+            i.setHandWorthZero()
         
         self.shuffleDeck()
         
@@ -190,9 +194,9 @@ class Game:
             for i in range(len(self.players)):
                 if self.players[i].getSpectate() == False:
                     if self.players[i].getBlind == 2:
-                        self.placeBetFold((.10*1000)-self.bigBlind)
+                        self.placeBetFold((.10*1000))
                     elif self.players[i].getBlind == 1:
-                        self.placeBetFold((.10*1000)-self.smallBlind)
+                        self.placeBetFold((.10*1000))
                     else:
                         self.placeBetFold((.10*1000))
         
@@ -201,7 +205,6 @@ class Game:
         # get current player
         x = self.currentPlayer
         player = self.players[x]
-        
         # if they fold
         if value == None: 
             player.setFolded()
@@ -217,17 +220,17 @@ class Game:
             final = player.getUser()+" Checks."
         
         # if they call
-        elif value+player.getCurrentBet() == self.currentBet and value < player.getChipCount(): 
-            player.setChipCount(0-(value-player.getCurrentBet()))
+        elif value+player.getCurrentBet() == self.currentBet and value+player.getCurrentBet() < player.getChipCount():
+            player.setChipCount(0-(value))
             player.setTurn(False)
             player.setTotalValue(value)
             self.pot += value
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
-            player.setCurrentBet(value-player.getCurrentBet())
+            player.setCurrentBet(value)
         
         # if they raise
-        elif value >= self.currentBet and value < player.getChipCount():
+        elif value > self.currentBet and value < player.getChipCount():
             player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value-player.getCurrentBet())
@@ -238,7 +241,7 @@ class Game:
             final = player.getUser()+" Bets "+str(value)+"!"
         
         # if they go all in
-        elif value == player.getChipCount():
+        elif value-player.getCurrentBet() == player.getChipCount():
             player.setTotalValue(value-player.getCurrentBet())
             player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
@@ -253,7 +256,7 @@ class Game:
                 
         
         # if they don't bet enough
-        elif value < self.currentBet:
+        elif value+player.getCurrentBet() < self.currentBet:
             return "You must put more in to call or raise"
         
         # if they put in too much
@@ -401,191 +404,45 @@ class Game:
     def endRound(self):
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
         
+        check = CheckHands()
         
         for i in finalPlayers:
-            lst = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
-            unsortedCards = [[i.getValue(), i.getSuit()] for i in lst]
-            card = sorted(unsortedCards,key=lambda l:l[0])
+            cards = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
             
-            cards = [int(i[0]) for i in card]
-            
-            suits = [i[1] for i in card]
-                
-            
-            quads = 0
-            for j in cards:
-                if cards.count(j) == 4:
-                    quads = j
-            
-            o = 0
-            t = 0
-            fullHouse = []
-            for j in cards:
-                if cards.count(j) == 3 and j > o:
-                    o = j
-                elif cards.count(j) == 2 and j > t:
-                    t = j
-            if t != 0 and o != 0:
-                fullHouse.append(o)
-                fullHouse.append(t)
-            
-            
-            trips = 0
-            one = 0
-            two = 0
-            for j in cards:
-                if cards.count(j) == 3 and j > trips:
-                    trips = j
-            if trips != 0:
-                newCards = [i for i in cards if i != trips]
-                newCards.reverse()
-                one = newCards[0]
-                two = newCards[1]
-            
-        
-            card5 = 0
-            twoPair = []
-            twowee = []
-            for j in cards:
-                if cards.count(j) == 2 and j not in twowee:
-                    twowee.append(j)
-            if len(twowee) >= 2:
-                twowee.sort()
-                twowee.reverse()
-                twoPair.append(twowee[0])
-                twoPair.append(twowee[1])
-                twoPair.sort()
-                newCards = [i for i in cards if i not in twowee]
-                card5 = max(newCards)
+            if check.isRoyalFlush(cards)[0]:
+                worth = check.isRoyalFlush(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isStraightFlush(cards)[0]:
+                worth = check.isStraightFlush(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isQuads(cards)[0]:
+                worth = check.isQuads(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isFullHouse(cards)[0]:
+                worth = check.isFullHouse(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isFlush(cards)[0]:
+                worth = check.isFlush(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isStraight(cards)[0]:
+                worth = check.isStraight(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isTrips(cards)[0]:
+                worth = check.isTrips(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isTwoPair(cards)[0]:
+                worth = check.isTwoPair(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isPair(cards)[0]:
+                worth = check.isPair(cards)[1]
+                i.setHandWorth(worth)
+            elif check.isHighCard(cards)[0]:
+                worth = check.isHighCard(cards)[1]
+                i.setHandWorth(worth)
+            print(i.getHandWorth())
             
             
-            
-            pair = 0
-            otherCards = []
-            for j in cards:
-                if cards.count(j) == 2 and j > pair:
-                    pair = j
-            if pair != 0:
-                newCards = [i for i in cards if i != pair]
-                newCards.reverse()
-                otherCards.append(newCards[0])
-                otherCards.append(newCards[1])
-                otherCards.append(newCards[2])
-            
-            
-            highCards = []
-            newCards = [i for i in cards]
-            newCards.reverse()
-            newCards.pop()
-            newCards.pop()
-            highCards = newCards
-            
-
-            
-            
-            
-            
-            
-            # royal flush check
-            if ((cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and 
-                suits[0] == suits[1] and suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and cards[4] == 14) or
-                (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and 
-                suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and cards[5] == 14) or
-                (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6] and 
-                suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6] and cards[6] == 14)):
-                
-                i.setCurrentBet(10000000000000000000)
-            
-            # straight flush check
-            elif ((cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and 
-                suits[0] == suits[1] and suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4]) or
-                (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and 
-                suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5]) or
-                (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6] and 
-                suits[2] == suits[3] and suits[3] == suits[4] and suits[4] == suits[5] and suits[5] == suits[6])):
-                
-                if cards[4]-cards[0] == 4:
-                    x = 900000000000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
-                    i.setCurrentBet(x)
-                elif cards[5]-cards[1] == 4:
-                    x = 900000000000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
-                    i.setCurrentBet(x)
-                elif cards[6]-cards[2] == 4:
-                    x = 900000000000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
-                    i.setCurrentBet(x)
-
-            # quads check
-            elif quads != 0:
-                x = 800000000000+(quads*4)
-                i.setCurrentBet(x)
-            
-            # full house check
-            elif len(fullHouse) != 0:
-                x = 70000000000+(fullHouse[0]*1000000)+(fullHouse[1]*1000)
-                i.setCurrentBet(x)
-            
-            # flush check
-            elif suits.count("Hearts") == 5 or suits.count("Spades") == 5 or suits.count("Diamonds") == 5 or suits.count("Clubs") == 5:
-                x = 0
-                if suits.count("Hearts") == 5:
-                    flush = [i for i in card if i[1] == "Hearts"]
-                    flushCount = [i[0] for i in flush]
-                    flushCount = reversed(flushCount)
-                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
-                elif suits.count("Spades") == 5:
-                    flush = [i for i in card if i[1] == "Spades"]
-                    flushCount = [i[0] for i in flush]
-                    flushCount = reversed(flushCount)
-                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
-                elif suits.count("Diamonds") == 5:
-                    flush = [i for i in card if i[1] == "Diamonds"]
-                    flushCount = [i[0] for i in flush]
-                    flushCount = reversed(flushCount)
-                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
-                elif suits.count("Clubs") == 5:
-                    flush = [i for i in card if i[1] == "Clubs"]
-                    flushCount = [i[0] for i in flush]
-                    flushCount = reversed(flushCount)
-                    x = 60000000000 + (flushCount[0]*100000000) + (flushCount[1]*1000000) + (flushCount[2]*10000) + (flushCount[3]*100) + (flushCount[4]*1)
-                i.setCurrentBet(x)
-            
-            # straight check
-            elif ((cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4]) or
-                (cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5]) or
-                (cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and cards[4]+1 == cards[5] and cards[5]+1 == cards[6])):
-                if cards[4]-cards[0] == 4:
-                    x = 500000000+cards[4]+cards[3]+cards[2]+cards[1]+cards[0]
-                    i.setCurrentBet(x)
-                elif cards[5]-cards[1] == 4:
-                    x = 500000000+cards[5]+cards[4]+cards[3]+cards[2]+cards[1]
-                    i.setCurrentBet(x)
-                elif cards[6]-cards[2] == 4:
-                    x = 500000000+cards[6]+cards[5]+cards[4]+cards[3]+cards[2]
-                    i.setCurrentBet(x)
-            
-            # trips check
-            elif trips != 0:
-                x = 400000000 + (trips*10000) + one*100 + two
-                i.setCurrentBet(x)
-            
-            # two pair check
-            elif len(twoPair) != 0:
-                x = 300000000 + (twoPair[0]*10000) + (twoPair[1]*100) + card5
-                i.setCurrentBet(x)
-            
-            # pair check
-            elif pair != 0:
-                x = 200000000 + pair*1000000 + otherCards[0]*10000 + otherCards[1]*100 + otherCards[2]
-                i.setCurrentBet(x)
-                
-            # high card check
-            else:
-                x = highCards[0]*10000 + highCards[1]*1000 + highCards[2]*100 + highCards[3]*10 + highCards[4]*1
-                i.setCurrentBet(x)
-
-            
-            
-        newList = sorted(finalPlayers, key=lambda x:x.getCurrentBet(), reverse=True)
+        newList = sorted(finalPlayers, key=lambda x:x.getHandWorth(), reverse=True)
         disWinnings = []
         
         # Determine who wins what
@@ -599,25 +456,25 @@ class Game:
                 break
             
             for x in range(len(newList)):
-                if newList[x].getCurrentBet() == newList[x+1].getCurrentBet():
+                if newList[x].getHandWorth() == newList[x+1].getHandWorth():
                     splitCount += 1
                     break
                 else:
                     break
-                
-                
-            
+
             # determine what they win
             amount = 0
             for j in self.players:
                 if i.getUser() != j.getUser():
-                    if (j.getCurrentBet() is None or j.getCurrentBet != i.getCurrentBet()):
+                    if (j.getHandWorth() is None or i.getHandWorth() > j.getHandWorth()):
                         if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
                             amount += (j.getTotalValue()//splitCount)
                             j.setTotalValue(-(j.getTotalValue()//splitCount))
+                            self.pot -= (j.getTotalValue()//splitCount)
                         else:
                             amount += (i.getTotalValue()//splitCount)
                             j.setTotalValue(-(i.getTotalValue()//splitCount))
+                            self.pot -= (j.getTotalValue()//splitCount)
             amount += i.getTotalValue()
             disWinnings.append([i, amount])
             if amount != 0:
@@ -629,7 +486,7 @@ class Game:
                 j.setCurrentBetZero()
         
         
-        time.sleep(5)
+        time.sleep(15)
                 
         # Distribute winnings
         for i in disWinnings:
