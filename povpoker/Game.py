@@ -63,6 +63,10 @@ class Game:
     
     def newRound(self):
         # generate a new deck
+        e = [i.getChipCount() for i in self.players]
+        print(sum(e))
+        
+        
         self.shuffleDeck()
         
         # add any waiting players
@@ -353,7 +357,7 @@ class Game:
                 for i in self.players:
                     if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setColor("white")
-                    if i.getSpectate() == False:
+                    if i.getSpectate() == False and i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                 
                 # increment round
@@ -390,7 +394,6 @@ class Game:
           
                 
     def endRound(self):
-        print('Hello')
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
         
         for i in finalPlayers:
@@ -576,7 +579,6 @@ class Game:
             
         newList = sorted(finalPlayers, key=lambda x:x.getCurrentBet(), reverse=True)
         disWinnings = []
-        print(finalPlayers)
         
         # Determine who wins what
         for i in newList:
@@ -594,26 +596,31 @@ class Game:
                     break
                 else:
                     break
+                
+                
+            
             # determine what they win
             amount = 0
             for j in self.players:
                 if i.getUser() != j.getUser():
-                    if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
-                        amount += (j.getTotalValue()//splitCount)
-                        j.setTotalValue(-(j.getTotalValue()//splitCount))
-                    else:
-                        amount += (i.getTotalValue()//splitCount)
-                        j.setTotalValue(-(i.getTotalValue()//splitCount))
+                    if (j.getCurrentBet() is None or j.getCurrentBet != i.getCurrentBet()):
+                        if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
+                            amount += (j.getTotalValue()//splitCount)
+                            j.setTotalValue(-(j.getTotalValue()//splitCount))
+                        else:
+                            amount += (i.getTotalValue()//splitCount)
+                            j.setTotalValue(-(i.getTotalValue()//splitCount))
+            amount += i.getTotalValue()
             disWinnings.append([i, amount])
             if amount != 0:
                 self.lastWinners.append(i.getUser())
-        
+            print(amount)
 
         # set all players current bets to zero
         for j in self.players:
             j.setCurrentBetZero()
         
-        
+        print([i for i in disWinnings])
         
         time.sleep(5)
                 
