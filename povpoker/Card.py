@@ -33,6 +33,6 @@ class Card:
             "queen" : "queen",
             "jack" : "jack",
         }
-        return "../static/PNG-cards-1.3/"+self._num+"_of_"+self._suit+".png"
+        return "../static/PNG-cards-1.3/"+cee[self._num]+"_of_"+self._suit+".png"
 
     
