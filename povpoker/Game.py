@@ -23,6 +23,7 @@ class Game:
         self.blinds = []
         self.buyIn = 1000
         self.flip = True
+        self.running = False
         
         self.bombPot = False
         
@@ -63,6 +64,10 @@ class Game:
     
     def newRound(self):
         # generate a new deck
+        e = [i.getChipCount() for i in self.players]
+        print(sum(e))
+        
+        
         self.shuffleDeck()
         
         # add any waiting players
@@ -70,6 +75,7 @@ class Game:
         self.playerQueue = []
         
         self.round = 0
+        self.running = False
         
         for i in self.players:
             if i.getChipCount() == 0:
@@ -191,7 +197,6 @@ class Game:
                         self.placeBetFold((.10*1000))
         
     
-    
     def placeBetFold(self, value):
         # get current player
         x = self.currentPlayer
@@ -213,17 +218,17 @@ class Game:
         
         # if they call
         elif value+player.getCurrentBet() == self.currentBet and value < player.getChipCount(): 
-            player.setCurrentBet(value)
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value)
             self.pot += value
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
+            player.setCurrentBet(value-player.getCurrentBet())
         
         # if they raise
         elif value >= self.currentBet and value < player.getChipCount():
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setTotalValue(value-player.getCurrentBet())
             self.currentBet = value
@@ -235,7 +240,7 @@ class Game:
         # if they go all in
         elif value == player.getChipCount():
             player.setTotalValue(value-player.getCurrentBet())
-            player.setChipCount(0-value)
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
             player.setColor("#EE4B2B")
             self.pot += (value-player.getCurrentBet())
@@ -288,6 +293,7 @@ class Game:
                     self.flop1 = self.tableCards[0]
                     self.flop2 = self.tableCards[1]
                     self.flop3 = self.tableCards[2]
+                    self.running = True
                     self.round = 1
                     time.sleep(5)
                     for i in self.players:
@@ -296,6 +302,7 @@ class Game:
                 elif self.round == 1:
                     self.turn = self.tableCards[3]
                     self.round += 1
+                    self.running = True
                     time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
@@ -303,12 +310,14 @@ class Game:
                 elif self.round == 2:
                     self.river = self.tableCards[4]
                     self.round += 1
+                    self.running = True
                     time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
                             i.setCurrentBetZero()
                 elif self.round == 3:
-                    self.round == 4
+                    self.round = 4
+                    self.running = True
                     return self.endRound()
         
     
@@ -353,7 +362,7 @@ class Game:
                 for i in self.players:
                     if i.getCurrentBet() is not None and i.getAllIn() != True:
                         i.setColor("white")
-                    if i.getSpectate() == False:
+                    if i.getSpectate() == False and i.getCurrentBet() is not None:
                         i.setCurrentBetZero()
                 
                 # increment round
@@ -390,14 +399,16 @@ class Game:
           
                 
     def endRound(self):
-        print('Hello')
         finalPlayers = [i for i in self.players if i.getCurrentBet() is not None]
+        
         
         for i in finalPlayers:
             lst = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
             unsortedCards = [[i.getValue(), i.getSuit()] for i in lst]
             card = sorted(unsortedCards,key=lambda l:l[0])
+            
             cards = [int(i[0]) for i in card]
+            
             suits = [i[1] for i in card]
                 
             
@@ -576,7 +587,6 @@ class Game:
             
         newList = sorted(finalPlayers, key=lambda x:x.getCurrentBet(), reverse=True)
         disWinnings = []
-        print(finalPlayers)
         
         # Determine who wins what
         for i in newList:
@@ -594,25 +604,29 @@ class Game:
                     break
                 else:
                     break
+                
+                
+            
             # determine what they win
             amount = 0
             for j in self.players:
                 if i.getUser() != j.getUser():
-                    if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
-                        amount += (j.getTotalValue()//splitCount)
-                        j.setTotalValue(-(j.getTotalValue()//splitCount))
-                    else:
-                        amount += (i.getTotalValue()//splitCount)
-                        j.setTotalValue(-(i.getTotalValue()//splitCount))
+                    if (j.getCurrentBet() is None or j.getCurrentBet != i.getCurrentBet()):
+                        if (i.getTotalValue()//splitCount) >= (j.getTotalValue()//splitCount):
+                            amount += (j.getTotalValue()//splitCount)
+                            j.setTotalValue(-(j.getTotalValue()//splitCount))
+                        else:
+                            amount += (i.getTotalValue()//splitCount)
+                            j.setTotalValue(-(i.getTotalValue()//splitCount))
+            amount += i.getTotalValue()
             disWinnings.append([i, amount])
             if amount != 0:
                 self.lastWinners.append(i.getUser())
-        
 
         # set all players current bets to zero
         for j in self.players:
-            j.setCurrentBetZero()
-        
+            if j.getSpectate() == False:
+                j.setCurrentBetZero()
         
         
         time.sleep(5)
@@ -621,6 +635,7 @@ class Game:
         for i in disWinnings:
             self.players[self.players.index(i[0])].setChipCount(i[1])
             
+        # start a new round    
         self.newRound()
 
         
@@ -635,7 +650,13 @@ class Game:
 
     def getPot(self):
         return self.pot
+
+    def getCurrentPlayer(self):
+        return self.currentPlayer
     
+    def getPlayerNames(self):
+        return self.playerNames
+
     def getFlop1(self):
         return self.flop1
     
@@ -665,12 +686,6 @@ class Game:
         
     def setRiver(self, card):
         self.river = card
-
-    def getCurrentPlayer(self):
-        return self.currentPlayer
-    
-    def getPlayerNames(self):
-        return self.playerNames
     
     def getPlayerCount(self):
         return self.playerCount
