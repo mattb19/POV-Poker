@@ -1,0 +1,65 @@
+<html>
+    <body>
+        <form>
+            Buy In:
+            <select id="buyIn">
+                <option value="1000">1000</option>
+            </select>
+        </form>
+        <form>
+            Blinds:
+            <select id="blinds">
+                <option value="20/10">20/10</option>
+            </select>
+        </form>
+        <button class="submit">SUBMIT</button>
+        <div id="name"> {{session.name}} </div>
+    </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.submit').on('click', function(event) {
+            var buy = (document.getElementById("buyIn").value)
+            var blinds = (document.getElementById("blinds").value)
+            var name = (document.getElementById("name").innerHTML)
+            console.log(name, blinds, buy)
+            $.ajax({
+                data : {
+                    blinds : blinds,
+                    buy : buy,
+                    name : name
+                },
+                type : 'POST',
+                url : '/create'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    console.log("ERROR")
+                    $('#successAlert').hide();
+                }
+                else {
+                    $('#successAlert').text(data.name).show();
+                    window.location = "/table/0";
+                    console.log(data)
+                    $('#errorAlert').hide();
+                }
+            });
+            event.preventDefault();
+        });
+    });
+</script>
+
+<style>
+    body {
+        background-image: radial-gradient(
+            farthest-corner at 40px 40px,
+            #43e 0%,
+            #f35 100%
+        );
+        text-align:center;
+        color:white;
+    }
+</style>

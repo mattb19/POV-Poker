@@ -104,6 +104,32 @@ def login():
         
     else:
         return render_template("login.html")
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if request.method == "POST":
+        buy = request.form.get("buyIn")
+        blinds = request.form.get("blinds")
+        name = request.form.get("name")
+        
+        print(name, blinds, buy)
+
+        conn = connectDB()
+        id = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))+1
+        
+        players = [Player(name,None,None,1000,0)]
+        newGame = Game(1, players, 10, 20)
+        gameJSON = newGame.json()
+        gameJSON = str(gameJSON)
+        
+        conn.execute("INSERT INTO Game VALUES (?, ?)", (id, gameJSON))
+        conn.commit()
+        return str(id)
+    else:
+        return render_template("create.html")
+        
+        
+        
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -131,11 +157,19 @@ def register():
         return "Username or Email Taken!"
     else:
         return render_template("login.html")
+    
+    
 
 
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
     if request.method == "POST":
+        
+        
+        
+        
+        
+        
         bet = request.form.get("bet")
         #print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
@@ -176,7 +210,14 @@ def connectDB():
 
 @app.route('/table/<int:Number>')
 def table(Number):
+    conn = connectDB()
+    name = list(str(conn.execute("SELECT * FROM Game").fetchall()).strip('(').strip(')').strip(','))
+    print(name)
+    
     global games
+    if Number == 0:
+        return render_template('table.html', game=game)
+        
     for i in games:
         if Number == i.getGameID():
             return render_template('table.html', game=i)

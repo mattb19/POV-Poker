@@ -7,7 +7,9 @@ from copy import deepcopy
 from checkHands import CheckHands
 
 class Game:
-    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0,) -> None:
+    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=0, tableCards=[], lastWinners=[], 
+                 playerNames=[], playerCount=[],  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
+                 flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0)) -> None:
         self.gameID = gameID
         self.players = players
         self.deck = deck
@@ -26,7 +28,6 @@ class Game:
         self.flip = True
         self.running = False
         self.abilities = "ON"
-        self.buyIn = 1000
         self.style = "TEXAS HOLD'EM"
         
         self.bombPot = False
