@@ -411,7 +411,9 @@ class Game:
         check = CheckHands()
         
         for i in finalPlayers:
-            cards = [self.flop1, self.flop2, self.flop3, self.turn, self.river, i.getCard1(), i.getCard2()]
+            cards = [self.tableCards[0], self.tableCards[1], self.tableCards[2], self.tableCards[3], self.tableCards[4], i.getCard1(), i.getCard2()]
+            print([i.getValue() for i in cards])
+            print([i for i in cards])
             
             if check.isRoyalFlush(cards)[0]:
                 worth = check.isRoyalFlush(cards)[1]

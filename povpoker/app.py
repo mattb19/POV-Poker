@@ -13,7 +13,7 @@ import logging
 from werkzeug.security import generate_password_hash, check_password_hash
 
 log = logging.getLogger('werkzeug')
-#log.setLevel(logging.ERROR)
+log.setLevel(logging.ERROR)
 from flask_modals import Modal
 from flask_modals import render_template_modal
 
@@ -58,6 +58,8 @@ def home():
     return render_template_modal('home.html', theUser=theUser, val=val, games=games)
 
 
+
+
 @app.route('/userProfile/')
 def profileCard():
     return render_template(
@@ -65,11 +67,15 @@ def profileCard():
         theUser = theUser,
     )
 
+
+
 @app.route("/ajaxfile",methods=["POST","GET"])
 def ajaxfile():
     if request.method == 'POST':
         pass
     return jsonify({'htmlresponse': render_template('response.html',theUser=theUser)})
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -104,6 +110,8 @@ def login():
         
     else:
         return render_template("login.html")
+
+
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
@@ -166,10 +174,6 @@ def bet():
     if request.method == "POST":
         
         
-        
-        
-        
-        
         bet = request.form.get("bet")
         #print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
@@ -189,6 +193,9 @@ def bet():
             return redirect("/table")
     return redirect("/table")
     
+    
+    
+    
 @app.route('/getGame/<int:Number>')
 def getGame(Number):
     for i in games:
@@ -196,9 +203,15 @@ def getGame(Number):
             return i.json()
     return "Game Not Found"
 
+
+
+
 @app.route('/test')
 def test():
     return render_template('test.html')
+
+
+
 
 def connectDB():
     conn = None
@@ -208,11 +221,13 @@ def connectDB():
         print(e)
     return conn
 
+
+
+
 @app.route('/table/<int:Number>')
 def table(Number):
     conn = connectDB()
-    name = list(str(conn.execute("SELECT * FROM Game").fetchall()).strip('(').strip(')').strip(','))
-    print(name)
+    name = str(conn.execute("SELECT JSON FROM Game").fetchall())
     
     global games
     if Number == 0:

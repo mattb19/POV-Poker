@@ -6,6 +6,7 @@ class CheckHands:
 
     def isRoyalFlush(self, cards1):
         cards = [i.getValue() for i in cards1]
+        print(cards)
         suits = sorted(cards1, key=lambda x:x.getSuit(), reverse=True)
         if ((cards[0]+1 == cards[1] and cards[1]+1 == cards[2] and cards[2]+1 == cards[3] and cards[3]+1 == cards[4] and 
         suits[0] == suits[1] and suits[1] == suits[2] and suits[2] == suits[3] and suits[3] == suits[4] and cards[4] == 14) or
@@ -177,7 +178,6 @@ class CheckHands:
         
         if pair1 == 0 or pair2 == 0:
             return [False, 0]
-        print("Two pair")
         return [True,val]
         
 
