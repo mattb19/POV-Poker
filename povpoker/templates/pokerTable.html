@@ -73,6 +73,19 @@
     function resetScreen() {document.getElementsByClassName("explosion")[0].id = "noexplosion";document.getElementsByClassName("explosion")[0].style.visibility = "hidden";}
 </script>
 
+<script>
+    var countdownNumberEl = document.getElementById('countdown-number');
+    var countdown = 30;
+
+    countdownNumberEl.textContent = countdown;
+
+    setInterval(function() {
+    countdown = --countdown <= 0 ? 30 : countdown;
+
+    countdownNumberEl.textContent = countdown;
+    }, 1000);
+</script>
+
 <style>
     #table {
         position: absolute;
@@ -183,6 +196,66 @@
         from {transform: rotate3d(0, 1, 0, 90deg);visibility:visible;}
         to {transform: rotate3d(0, 1, 0, 0deg);visibility:visible;}
     }
+      
+      #countdown {
+        position: relative;
+        margin: auto;
+        margin-top: 100px;
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        font-family: "Tahoma", sans-serif;
+      }
+      
+      svg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 54px;
+        height: 54px;
+        transform: rotateY(-180deg) rotateZ(-90deg);
+      }
+      
+      .spin {
+        stroke-dasharray: 113px;
+        stroke-dashoffset: 0px;
+        stroke-width: 36px;
+        stroke: white;
+        fill: none;
+        animation: countdown 30s linear forwards;
+      }
+      
+      @keyframes countdown {
+        0% {
+          stroke-dashoffset: 0px;
+          stroke:#39FF14;
+        }
+        50% {
+          stroke-dashoffset: 56px;
+          stroke:#39FF14;
+        }
+        51% {
+          stroke-dashoffset: 57px;
+          stroke:yellow;
+        }
+        75% {
+          stroke-dashoffset: 84px;
+          stroke:yellow;
+        }
+        76% {
+          stroke-dashoffset: 85px;
+          stroke:red;
+        }
+        100% {
+          stroke-dashoffset: 113px;
+          stroke:red;
+        }
+      }
+
+      #notcountdown {
+        visibility:hidden;
+        animation: none;
+      }
 
       
 </style>

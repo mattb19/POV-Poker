@@ -102,7 +102,7 @@
        }
        .button-7 {
         align-items: center;
-        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        background-color:white;
         border: 0;
         border-radius: 10px;
         box-sizing: border-box;
@@ -168,7 +168,7 @@
     }
     .button-75 {
         align-items: center;
-        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        background-color:white;
         border: 0;
         border-radius: 10px;
         box-sizing: border-box;
@@ -545,8 +545,13 @@
                                     if (data.round < 4) {
                                         if (i == data.currentPlayer) {
                                             document.getElementsByClassName("a")[i].id='a';
+                                            document.getElementsByClassName("spin")[i].style.animation="countdown 30s linear forwards";
+                                            document.getElementsByClassName("timer")[i].style.visibility="visible";
+                                            console.log(document.getElementsByClassName("spin")[i].style)
                                         } else {
                                             document.getElementsByClassName("a")[i].id='b';
+                                            document.getElementsByClassName("spin")[i].style.animation="none";
+                                            document.getElementsByClassName("timer")[i].style.visibility="hidden";
                                         }
                                     }
 
@@ -886,6 +891,12 @@
                         <img class="chips" id="chips" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-15%;">
                         <div class="playerBet{{i}}" id="playerBet" style="position:absolute;color:black;font-size:0px;left:30%;bottom:26%;">10000</div>
                     </div>
+                    <div id="countdown" class="timer" style="position:absolute;right:99%;bottom:37.5%;z-index:92;">
+                        <img src="../static/timer.png" width="64" "position:absolute;right:298.5%;bottom:50.5%;z-index:92;">
+                        <svg style="position:absolute;right:-18%;top:10%;">
+                          <circle r="18" cx="27" cy="27" class="spin"></circle>
+                        </svg>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -902,17 +913,17 @@
 
                 <button class="button-75" id='2blind' val="2blind" 
                 style="position:absolute;right:-19%;bottom:117%;width:85px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080)">
-                <span class="text" style="color:#39FF14;">2x Blind</span></button>
+                <span class="text" style="color:white;">2x Blind</span></button>
 
 
                 <button class="button-75" id='pottt2' val="pot" 
                 style="position:absolute;right:-29%;bottom:117%;width:45px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -50%, #808080)">
-                <span class="text" style="color:#39FF14;">Pot</span></button>
+                <span class="text" style="color:white;">Pot</span></button>
 
 
                 <button class="button-75" id='allin' val="allin" 
                 style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080);">
-                <span class="text" style="color:#39FF14;">ALL IN</span></button>
+                <span class="text" style="color:white;">ALL IN</span></button>
             </div>
 
             <!-- Special Chip Buttons -->
