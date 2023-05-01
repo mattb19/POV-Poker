@@ -1,5 +1,6 @@
 class Player:
-    def __init__(self, user, card1, card2, chipCount, blind) -> None:
+    def __init__(self, user, card1, card2, chipCount, blind, currentBet=0, handWorth=0, turn=False, color="white", allIn=False, 
+                 currentBetStr="", totalValue=0, spectate=False, muck=False, playerNum=0) -> None:
         self.user = user
         self.card1 = card1
         self.card2 = card2
@@ -13,12 +14,24 @@ class Player:
         self.currentBetStr = ""
         self.totalValue = 0
         self.spectate = False
-        self.handWorth = 0
+        self.muck = False
+        self.playerNum = 0
+        
+    
+    def getMuck(self):
+        return self.muck
+    
+    def setMuck(self, muck):
+        self.muck = muck
     
     def getHandWorth(self):
         return self.handWorth
-    def setHandWorth(self,handWorth):
-        self.handWorth = handWorth
+    
+    def setHandWorth(self,Worth):
+        self.handWorth = Worth
+        
+    def setHandWorthZero(self):
+        self.handWorth = 0
         
     def getBlind(self):
         return self.blind

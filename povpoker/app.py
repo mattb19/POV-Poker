@@ -24,50 +24,29 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SECRET_KEY'] = 'secret!'
 Session(app)
 
-#player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
+player4 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0), 
+           Player("Ryan",None,None,1000,0), Player("Max",None,None,1000,0), Player("Ethan",None,None,1000,0), Player("Luke",None,None,1000,0)]
 player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0)]
-#player = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
+player3 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
+player2 = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 game = Game(1, player, 10, 20)
+game2 = Game(2, player2, 10, 20)
+game3 = Game(3, player3, 10, 20)
+game4 = Game(4, player4, 10, 20)
+game5 = Game(5, player4, 10, 20)
+games = [game, game2, game3, game4, game5]
 game.newRound()
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(20)
-# game.placeBetFold(10)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
-# game.placeBetFold(0)
+game2.newRound()
+game3.newRound()
+game4.newRound()
+game5.newRound()
+
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+# game.placeBetFold(1000)
+
 
 
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
@@ -76,7 +55,9 @@ def home():
     conn = connectDB()
     cursor = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))
     val = cursor
-    return render_template_modal('home.html', theUser=theUser, val=val)
+    return render_template_modal('home.html', theUser=theUser, val=val, games=games)
+
+
 
 
 @app.route('/userProfile/')
@@ -86,11 +67,15 @@ def profileCard():
         theUser = theUser,
     )
 
+
+
 @app.route("/ajaxfile",methods=["POST","GET"])
 def ajaxfile():
     if request.method == 'POST':
         pass
     return jsonify({'htmlresponse': render_template('response.html',theUser=theUser)})
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -125,6 +110,34 @@ def login():
         
     else:
         return render_template("login.html")
+
+
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if request.method == "POST":
+        buy = request.form.get("buyIn")
+        blinds = request.form.get("blinds")
+        name = request.form.get("name")
+        
+        print(name, blinds, buy)
+
+        conn = connectDB()
+        id = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))+1
+        
+        players = [Player(name,None,None,1000,0)]
+        newGame = Game(1, players, 10, 20)
+        gameJSON = newGame.json()
+        gameJSON = str(gameJSON)
+        
+        conn.execute("INSERT INTO Game VALUES (?, ?)", (id, gameJSON))
+        conn.commit()
+        return str(id)
+    else:
+        return render_template("create.html")
+        
+        
+        
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -152,13 +165,17 @@ def register():
         return "Username or Email Taken!"
     else:
         return render_template("login.html")
+    
+    
 
 
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
     if request.method == "POST":
-        bet = request.form.get("bet")
         
+        
+        bet = request.form.get("bet")
+        #print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
         
@@ -176,13 +193,25 @@ def bet():
             return redirect("/table")
     return redirect("/table")
     
-@app.route('/getGame')
-def getGame():
-    return game.json()
+    
+    
+    
+@app.route('/getGame/<int:Number>')
+def getGame(Number):
+    for i in games:
+        if i.getGameID() == Number:
+            return i.json()
+    return "Game Not Found"
+
+
+
 
 @app.route('/test')
 def test():
     return render_template('test.html')
+
+
+
 
 def connectDB():
     conn = None
@@ -192,6 +221,19 @@ def connectDB():
         print(e)
     return conn
 
-@app.route('/table')
-def table():
-    return render_template('table.html', game=game)
+
+
+
+@app.route('/table/<int:Number>')
+def table(Number):
+    conn = connectDB()
+    name = str(conn.execute("SELECT JSON FROM Game").fetchall())
+    
+    global games
+    if Number == 0:
+        return render_template('table.html', game=game)
+        
+    for i in games:
+        if Number == i.getGameID():
+            return render_template('table.html', game=i)
+    return "Game Not Found"

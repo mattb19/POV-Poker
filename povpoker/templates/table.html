@@ -478,14 +478,14 @@
         <div id="flop4" style="visibility=hidden;"></div>
         <div>
             <a class="home" href="/"><img src="../static/home.png" width="75" height="75" style="position:absolute;right:1%;top:1%"></a>
-
-            <div id="sessionID" style="position:absolute;right:150%">{{ session.name }}</div>
+            <div id="gameID">{{game.getGameID()}}</div>
+            <div id="sessionID" style="position:absolute;right:90%">{{ session.name }}</div>
             <div id="round" style="position:absolute;right:150%"></div>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script>
                 function update_values() {
                     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-                    $.getJSON($SCRIPT_ROOT+"/getGame",
+                    $.getJSON($SCRIPT_ROOT+"/getGame/"+document.getElementById("gameID").innerHTML.toString(),
                         function(data) {
                             try {
 
@@ -501,7 +501,7 @@
                                     document.getElementById("newturn").style.animation = "rotateout ease-in 0.5s";
                                     document.getElementById("newriver").style.animation = "rotateout ease-in 0.5s";
                                 }
-                                if (data.round == 1) {
+                                if (data.round >= 1) {
 
                                     // remove card backs
 
@@ -519,13 +519,13 @@
                                     document.getElementById("newflop3").style.animationDelay = "0.5s"
                                     document.getElementById("newflop3").style.animationFillMode="forwards";
                                 }
-                                if (data.round == 2) {
+                                if (data.round >= 2) {
                                     document.getElementById("newturn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
                                     document.getElementById("newturn").style.animation = "rotatein ease-out 0.5s"
                                     document.getElementById("newturn").style.animationDelay = "0.5s"
                                     document.getElementById("newturn").style.animationFillMode="forwards";
                                 }
-                                if (data.round == 3) {
+                                if (data.round >= 3) {
                                     document.getElementById("newriver").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
                                     document.getElementById("newriver").style.animation = "rotatein ease-out 0.5s"
                                     document.getElementById("newriver").style.animationDelay = "0.5s"
@@ -603,8 +603,13 @@
                                     if (data.round == 4) {
                                         if (data.lastWinners.includes(data.playerNames[i])) {
                                             console.log("Hello")
-                                            document.getElementsByClassName("card1")[i].src=data.players[i].card1;
-                                            document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                            if (data.players[i].muck == false) {
+                                                document.getElementsByClassName("card1")[i].src=data.players[i].card1;
+                                                document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                            } else {
+                                                document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
+                                                document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';
+                                            }
                                             document.getElementsByClassName("card2")[i].width="85";   
                                             document.getElementsByClassName("card2")[i].height="130";   
                                             document.getElementsByClassName("card1")[i].width="85.";   
@@ -657,10 +662,6 @@
                                             document.getElementsByClassName("card2")[i].style.zIndex="-1";
                                         }
                                     }
-
-
-                                    // Handle all in runs
-
                                 }
 
 
@@ -744,16 +745,9 @@
 
                                 // Set call & bet slider to correct amounts
                                 document.getElementsByClassName("button-7")[0].id = (document.getElementById("rangeValue").innerText);
-                                if (data.currentBet > data.players[data.currentPlayer].chipCount) {
-                                    document.getElementsByClassName("button-75")[0].id = data.players[data.currentPlayer].chipCount
-                                } else {
-                                    document.getElementsByClassName("button-75")[0].id = (data.currentBet - data.players[data.currentPlayer].currentBet);
-                                }
-                                document.getElementsByClassName("betbet")[0].min = (data.currentBet - data.players[data.currentPlayer].currentBet);
+                                document.getElementsByClassName("button-75")[0].id = (data.currentBet);
+                                document.getElementsByClassName("betbet")[0].min = (data.currentBet);
                                 document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
-                                if (document.getElementById("rangeValue").innerHTML < data.currentBet) {
-                                    document.getElementById("rangeValue").innerHTML = data.currentBet;
-                                }
                                 document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
 
 
@@ -765,13 +759,10 @@
                                     setTimeout(update_values, 600);
                                 }
                             } catch (e) {
-                                console.log("HE")
-                                console.log(e)
                                 location.reload()
                             }
                         });
                 }
-
                 update_values();
 
             </script>
@@ -786,7 +777,7 @@
                                 bet : $(this).attr('id'),
                             },
                             type : 'POST',
-                            url : '/bet'
+                            url : '../bet'
                         })
                         .done(function(data) {
                             if (data.error) {
@@ -810,7 +801,7 @@
                                 bet : $(this).attr('id'),
                             },
                             type : 'POST',
-                            url : '/bet'
+                            url : '../bet'
                         })
                         .done(function(data) {
                             if (data.error) {
@@ -922,9 +913,9 @@
                 <button class="button-75" id='allin' val="allin" 
                 style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080);">
                 <span class="text" style="color:#39FF14;">ALL IN</span></button>
-                
-
             </div>
+
+            <!-- Special Chip Buttons -->
 
         </div>
         {% extends "pokerTable.html" %} {% block content2 %} {% endblock content2 %}
