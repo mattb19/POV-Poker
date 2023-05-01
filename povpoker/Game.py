@@ -7,12 +7,12 @@ from copy import deepcopy
 from checkHands import CheckHands
 
 class Game:
-    def __init__(self, gameID, players, smallBlind, bigBlind) -> None:
+    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0,) -> None:
         self.gameID = gameID
         self.players = players
-        self.deck = []
-        self.pot = 0
-        self.currentBet = 0
+        self.deck = deck
+        self.pot = pot
+        self.currentBet = currentBet
         self.round = 0
         self.currentPlayer = 0
         self.tableCards = []
@@ -25,6 +25,9 @@ class Game:
         self.buyIn = 1000
         self.flip = True
         self.running = False
+        self.abilities = "ON"
+        self.buyIn = 1000
+        self.style = "TEXAS HOLD'EM"
         
         self.bombPot = False
         
@@ -220,14 +223,14 @@ class Game:
             final = player.getUser()+" Checks."
         
         # if they call
-        elif value+player.getCurrentBet() == self.currentBet and value+player.getCurrentBet() < player.getChipCount():
-            player.setChipCount(0-(value))
+        elif value == self.currentBet and value < player.getChipCount():
+            player.setChipCount(0-(value-player.getCurrentBet()))
             player.setTurn(False)
-            player.setTotalValue(value)
-            self.pot += value
+            player.setTotalValue(value-player.getCurrentBet())
+            self.pot += value-player.getCurrentBet()
             self.players[x] = player
             final = player.getUser()+" Calls "+str(value)+"!"
-            player.setCurrentBet(value)
+            player.setCurrentBet(value-player.getCurrentBet())
         
         # if they raise
         elif value > self.currentBet and value < player.getChipCount():
@@ -412,38 +415,48 @@ class Game:
             if check.isRoyalFlush(cards)[0]:
                 worth = check.isRoyalFlush(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isStraightFlush(cards)[0]:
                 worth = check.isStraightFlush(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isQuads(cards)[0]:
                 worth = check.isQuads(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isFullHouse(cards)[0]:
                 worth = check.isFullHouse(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isFlush(cards)[0]:
                 worth = check.isFlush(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isStraight(cards)[0]:
                 worth = check.isStraight(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isTrips(cards)[0]:
                 worth = check.isTrips(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isTwoPair(cards)[0]:
                 worth = check.isTwoPair(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isPair(cards)[0]:
                 worth = check.isPair(cards)[1]
                 i.setHandWorth(worth)
+                
             elif check.isHighCard(cards)[0]:
                 worth = check.isHighCard(cards)[1]
                 i.setHandWorth(worth)
-            print(i.getHandWorth())
+                
             
             
         newList = sorted(finalPlayers, key=lambda x:x.getHandWorth(), reverse=True)
         disWinnings = []
+        print([i.getHandWorth() for i in newList])
         
         # Determine who wins what
         for i in newList:
@@ -531,6 +544,18 @@ class Game:
 
     def setFlop1(self, card):
         self.flop1 = card
+    
+    def getAbilities(self):
+        return self.abilities
+    
+    def getBuyIn(self):
+        return self.buyIn
+    
+    def getBlinds(self):
+        return str(self.bigBlind)+"/"+str(self.smallBlind)
+    
+    def getStyle(self):
+        return self.style
         
     def setFlop2(self, card):
         self.flop2 = card
@@ -545,7 +570,7 @@ class Game:
         self.river = card
     
     def getPlayerCount(self):
-        return self.playerCount
+        return str(len(self.players)+len(self.playerQueue))+"/10"
     
     def setTableCards(self):
         self.tableCards = [i.__dict__ for i in self.tableCards]

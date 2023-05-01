@@ -14,6 +14,14 @@ class Player:
         self.totalValue = 0
         self.spectate = False
         self.handWorth = 0
+        self.muck = False
+        
+    
+    def getMuck(self):
+        return self.muck
+    
+    def setMuck(self, muck):
+        self.muck = muck
     
     def getHandWorth(self):
         return self.handWorth

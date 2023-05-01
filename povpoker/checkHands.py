@@ -177,6 +177,7 @@ class CheckHands:
         
         if pair1 == 0 or pair2 == 0:
             return [False, 0]
+        print("Two pair")
         return [True,val]
         
 
@@ -184,8 +185,6 @@ class CheckHands:
 
     def isPair(self, cards):
         cardValues = [i.getValue() for i in cards]
-        count = 0
-        highestCard = 0
         pairType = 0
         for i in cardValues:
             if cardValues.count(i) == 2:

@@ -13,7 +13,7 @@ import logging
 from werkzeug.security import generate_password_hash, check_password_hash
 
 log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+#log.setLevel(logging.ERROR)
 from flask_modals import Modal
 from flask_modals import render_template_modal
 
@@ -24,11 +24,23 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SECRET_KEY'] = 'secret!'
 Session(app)
 
-#player = [Player("Jeremy",None,None,1000,0,0), Player("Matt",None,None,1000,1,0), Player("Trent",None,None,1000,2,0), Player("Ryan",None,None,1000,3,0), Player("Jackson",None,None,1000,4,0), Player("Luke",None,None,1000,5,0), Player("David",None,None,1000,6,0), Player("Max",None,None,1000,7,0), Player("Ethan",None,None,1000,8,0), Player("Jack",None,None,1000,9,0)]
+player4 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0), 
+           Player("Ryan",None,None,1000,0), Player("Max",None,None,1000,0), Player("Ethan",None,None,1000,0), Player("Luke",None,None,1000,0)]
 player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0)]
-#player = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
+player3 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
+player2 = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 game = Game(1, player, 10, 20)
+game2 = Game(2, player2, 10, 20)
+game3 = Game(3, player3, 10, 20)
+game4 = Game(4, player4, 10, 20)
+game5 = Game(5, player4, 10, 20)
+games = [game, game2, game3, game4, game5]
 game.newRound()
+game2.newRound()
+game3.newRound()
+game4.newRound()
+game5.newRound()
+
 # game.placeBetFold(1000)
 # game.placeBetFold(1000)
 # game.placeBetFold(1000)
@@ -43,7 +55,7 @@ def home():
     conn = connectDB()
     cursor = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))
     val = cursor
-    return render_template_modal('home.html', theUser=theUser, val=val)
+    return render_template_modal('home.html', theUser=theUser, val=val, games=games)
 
 
 @app.route('/userProfile/')
@@ -143,9 +155,12 @@ def bet():
             return redirect("/table")
     return redirect("/table")
     
-@app.route('/getGame')
-def getGame():
-    return game.json()
+@app.route('/getGame/<int:Number>')
+def getGame(Number):
+    for i in games:
+        if i.getGameID() == Number:
+            return i.json()
+    return "Game Not Found"
 
 @app.route('/test')
 def test():
@@ -159,6 +174,10 @@ def connectDB():
         print(e)
     return conn
 
-@app.route('/table')
-def table():
-    return render_template('table.html', game=game)
+@app.route('/table/<int:Number>')
+def table(Number):
+    global games
+    for i in games:
+        if Number == i.getGameID():
+            return render_template('table.html', game=i)
+    return "Game Not Found"

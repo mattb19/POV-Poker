@@ -1,6 +1,135 @@
-{{val}}
-{% extends "layout.html" %} {% block content %}
+<style>
+    #customers {
+      border-collapse: collapse;
+      font-family: "Tahoma", sans-serif;
+      width:100%;
+    }
 
+    table {border: none;}
 
-{%endblock content %}
+    *:focus {
+        outline: none;
+    }
+    
+    #customers td, #customers th {
+      padding: 15px;
+      color:white;
+      text-align:center;
+    }
+    
+    #customers th {
+      padding-top: 12px;
+      padding-bottom: 25px;
+      text-align: center;
+      font-size: 25px;
+      color: white;
+    }
+</style>
 
+<html>
+    <body>
+        <div>{{session.name}}</div>
+        <a href="#"><img src="../static/yuhfar.png" width="100" class="profile" style="position:fixed;right:1%;top:1%;z-index:100000;border-radius:13px;"><a>
+        <button class="register" id="buttonTech"style="position:absolute;right:44%;top:5%;"><span class="text" style="color:black;">CREATE GAME</span></button><br><br>
+
+        <div class="games" style="position:absolute;width:70%;top:15%;right:15%;">
+            <table id="customers" cellspacing="0" cellpadding="0">
+                <tr>
+                    <th>PLAYERS</th>
+                    <th>ABILITIES</th>
+                    <th>BUY IN</th>
+                    <th>BLINDS</th>
+                    <th>STYLE</th>
+                    <th></th>
+                </tr>
+                {% for game in games  %}
+                    <tr>
+                        <td>{{game.getPlayerCount()}}</td>
+                        <td> {{game.getAbilities()}} </td>
+                        <td> {{game.getBuyIn()}} </td>
+                        <td> {{game.getBlinds()}} </td>
+                        <td> {{game.getStyle()}} </td>
+                        <td>
+                            <a  href="/table/{{game.getGameID()}}" style="text-decoration: none">
+                            <button class="game" id="buttonTech" style="font-size:15px;padding:20px;min-width:0%;height:20px;margin:auto;display:block;">
+                                <span class="text" style="color:black;">JOIN</span>
+                            </button>
+                            </a>
+                        </td>
+                    </tr>
+                {%endfor%}
+            </table>
+        </div>
+    </body>
+    <script>
+
+    </script>
+</html>
+
+<style>
+    body {
+        background-image: radial-gradient(
+            farthest-corner at 40px 40px,
+            #43e 0%,
+            #f35 100%
+        );
+        text-align:center;
+    }
+
+    #buttonTech{
+        align-items: center;
+        background-color:white;
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color:dark-black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 21px;
+        font-weight: bold;
+        height: 54px;
+        justify-content: center;
+        letter-spacing: .4px;
+        line-height: 1;
+        max-width: 100%;
+        min-width:12%;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 3px;
+        text-decoration: none;
+        text-transform: uppercase;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+    }
+      
+    #buttonTech:active {
+        outline: 0;
+    }
+      
+    #buttonTech:hover {
+        outline: 0;
+    }
+      
+    #buttonTech span {
+        transition: all 200ms;
+    }
+      
+    #buttonTech:hover span {
+        transform: scale(.9);
+        opacity: .75;
+    }
+    
+    @media screen and (max-width: 991px) {
+        #buttonTech {
+          font-size: 15px;
+          height: 50px;
+        }
+      
+        #buttonTech span {
+          line-height: 50px;
+        }
+    }
+</style>
