@@ -102,7 +102,7 @@
        }
        .button-7 {
         align-items: center;
-        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        background-color:white;
         border: 0;
         border-radius: 10px;
         box-sizing: border-box;
@@ -168,7 +168,7 @@
     }
     .button-75 {
         align-items: center;
-        background-image: linear-gradient(135deg, #AAFF00 -70%, #50C878);
+        background-color:white;
         border: 0;
         border-radius: 10px;
         box-sizing: border-box;
@@ -489,8 +489,6 @@
                         function(data) {
                             try {
 
-                                console.log(data)
-
                                 $("#pot").text(data.pot);
 
                                 // Set table cards
@@ -508,27 +506,27 @@
                                     // add table cards
                                     document.getElementById("newflop1").src = "../static/PNG-cards-1.3/" + data.tableCards[0]._num + "_of_" + data.tableCards[0]._suit + ".png";
                                     document.getElementById("newflop1").style.animation = "rotatein ease-out 0.5s"
-                                    document.getElementById("newflop1").style.animationDelay = "0.5s"
+                                    document.getElementById("newflop1").style.animationDelay = "0s"
                                     document.getElementById("newflop1").style.animationFillMode="forwards";
                                     document.getElementById("newflop2").src = "../static/PNG-cards-1.3/" + data.tableCards[1]._num + "_of_" + data.tableCards[1]._suit + ".png";
                                     document.getElementById("newflop2").style.animation = "rotatein ease-out 0.5s"
-                                    document.getElementById("newflop2").style.animationDelay = "0.5s"
+                                    document.getElementById("newflop2").style.animationDelay = "0s"
                                     document.getElementById("newflop2").style.animationFillMode="forwards";
                                     document.getElementById("newflop3").src = "../static/PNG-cards-1.3/" + data.tableCards[2]._num + "_of_" + data.tableCards[2]._suit + ".png";
                                     document.getElementById("newflop3").style.animation = "rotatein ease-out 0.5s"
-                                    document.getElementById("newflop3").style.animationDelay = "0.5s"
+                                    document.getElementById("newflop3").style.animationDelay = "0s"
                                     document.getElementById("newflop3").style.animationFillMode="forwards";
                                 }
                                 if (data.round >= 2) {
                                     document.getElementById("newturn").src = "../static/PNG-cards-1.3/" + data.tableCards[3]._num + "_of_" + data.tableCards[3]._suit + ".png";
                                     document.getElementById("newturn").style.animation = "rotatein ease-out 0.5s"
-                                    document.getElementById("newturn").style.animationDelay = "0.5s"
+                                    document.getElementById("newturn").style.animationDelay = "0s"
                                     document.getElementById("newturn").style.animationFillMode="forwards";
                                 }
                                 if (data.round >= 3) {
                                     document.getElementById("newriver").src = "../static/PNG-cards-1.3/" + data.tableCards[4]._num + "_of_" + data.tableCards[4]._suit + ".png";
                                     document.getElementById("newriver").style.animation = "rotatein ease-out 0.5s"
-                                    document.getElementById("newriver").style.animationDelay = "0.5s"
+                                    document.getElementById("newriver").style.animationDelay = "0s"
                                     document.getElementById("newriver").style.animationFillMode="forwards";                            
                                 }
 
@@ -545,9 +543,18 @@
                                     if (data.round < 4) {
                                         if (i == data.currentPlayer) {
                                             document.getElementsByClassName("a")[i].id='a';
+                                            document.getElementsByClassName("spin")[i].style.animation="countdown 10s linear forwards";
+                                            document.getElementsByClassName("timer")[i].style.visibility="visible";
+
                                         } else {
                                             document.getElementsByClassName("a")[i].id='b';
+                                            document.getElementsByClassName("spin")[i].style.animation="none";
+                                            document.getElementsByClassName("timer")[i].style.visibility="hidden";
                                         }
+                                    } else {
+                                        document.getElementsByClassName("a")[i].id='b';
+                                        document.getElementsByClassName("spin")[i].style.animation="none";
+                                        document.getElementsByClassName("timer")[i].style.visibility="hidden";
                                     }
 
                                     // Handle blinds
@@ -602,7 +609,6 @@
                                     // Handle folds and end of round
                                     if (data.round == 4) {
                                         if (data.lastWinners.includes(data.playerNames[i])) {
-                                            console.log("Hello")
                                             if (data.players[i].muck == false) {
                                                 document.getElementsByClassName("card1")[i].src=data.players[i].card1;
                                                 document.getElementsByClassName("card2")[i].src=data.players[i].card2;
@@ -691,8 +697,6 @@
                                 document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold1";
                                 document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold2";
 
-                                console.log(document.getElementById("sessionID").innerHTML);
-
 
                                 // Handle current bet
                                 $("#curBet").text("Current Bet: "+data.currentBet.toString());
@@ -759,7 +763,8 @@
                                     setTimeout(update_values, 600);
                                 }
                             } catch (e) {
-                                location.reload()
+                                //location.reload()
+                                console.log("reloading")
                             }
                         });
                 }
@@ -799,6 +804,7 @@
                         $.ajax({
                             data : {
                                 bet : $(this).attr('id'),
+                                id : document.getElementById("gameID").innerHTML
                             },
                             type : 'POST',
                             url : '../bet'
@@ -829,6 +835,15 @@
                     $('#2blind').on('click', function(event) {
                         document.getElementById("rangeValue").innerText = document.getElementsByClassName("blind")[0].innerHTML * 2
                         document.getElementsByClassName("betbet")[0].value = document.getElementsByClassName("blind")[0].innerHTML * 2
+                    });
+                    $('.spin').on('animationend', function(event) {
+                        $.ajax({
+                            data : {
+                                bet : -1
+                            },
+                            type : 'POST',
+                            url : '../bet'
+                        })
                     });
                 });
                 function disableButtons() {
@@ -886,6 +901,11 @@
                         <img class="chips" id="chips" src="../static/chips.png" width="45" style="position:absolute;right:65%;bottom:-15%;">
                         <div class="playerBet{{i}}" id="playerBet" style="position:absolute;color:black;font-size:0px;left:30%;bottom:26%;">10000</div>
                     </div>
+                    <div id="countdown" class="timer" style="position:absolute;right:88%;bottom:51%;z-index:92;opacity:0.65;">
+                        <svg style="position:absolute;right:-18%;top:10%;">
+                          <circle r="45" cx="46" cy="46" class="spin"></circle>
+                        </svg>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -902,17 +922,17 @@
 
                 <button class="button-75" id='2blind' val="2blind" 
                 style="position:absolute;right:-19%;bottom:117%;width:85px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080)">
-                <span class="text" style="color:#39FF14;">2x Blind</span></button>
+                <span class="text" style="color:white;">2x Blind</span></button>
 
 
                 <button class="button-75" id='pottt2' val="pot" 
                 style="position:absolute;right:-29%;bottom:117%;width:45px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -50%, #808080)">
-                <span class="text" style="color:#39FF14;">Pot</span></button>
+                <span class="text" style="color:white;">Pot</span></button>
 
 
                 <button class="button-75" id='allin' val="allin" 
                 style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080);">
-                <span class="text" style="color:#39FF14;">ALL IN</span></button>
+                <span class="text" style="color:white;">ALL IN</span></button>
             </div>
 
             <!-- Special Chip Buttons -->

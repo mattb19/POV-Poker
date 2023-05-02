@@ -73,6 +73,19 @@
     function resetScreen() {document.getElementsByClassName("explosion")[0].id = "noexplosion";document.getElementsByClassName("explosion")[0].style.visibility = "hidden";}
 </script>
 
+<script>
+    var countdownNumberEl = document.getElementById('countdown-number');
+    var countdown = 30;
+
+    countdownNumberEl.textContent = countdown;
+
+    setInterval(function() {
+    countdown = --countdown <= 0 ? 30 : countdown;
+
+    countdownNumberEl.textContent = countdown;
+    }, 1000);
+</script>
+
 <style>
     #table {
         position: absolute;
@@ -183,6 +196,80 @@
         from {transform: rotate3d(0, 1, 0, 90deg);visibility:visible;}
         to {transform: rotate3d(0, 1, 0, 0deg);visibility:visible;}
     }
+      
+      #countdown {
+        position: relative;
+        margin: auto;
+        margin-top: 100px;
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        font-family: "Tahoma", sans-serif;
+      }
+      
+      svg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 92px;
+        height: 92px;
+        border-radius:15px;
+        transform: rotateY(-180deg) rotateZ(-90deg);
+      }
+      
+      .spin {
+        stroke-dasharray: 283px;
+        stroke-dashoffset: 0px;
+        stroke-width: 1px;
+        stroke: white;
+        fill: none;
+        animation: countdown 30.5s linear;
+      }
+      
+      @keyframes countdown {
+        0% {
+          stroke-dashoffset: 0px;
+          stroke:#39FF14;
+          stroke-width:1px;
+        }
+        1.5% {
+          stroke-dashoffset: 0px;
+          stroke:#39FF14;
+          stroke-width:90px;
+        }
+        50% {
+          stroke-dashoffset: 141px;
+          stroke:#39FF14;
+          stroke-width:90px;
+        }
+        51% {
+          stroke-dashoffset: 143px;
+          stroke:yellow;
+          stroke-width:90px;
+        }
+        75% {
+          stroke-dashoffset: 214px;
+          stroke:yellow;
+          stroke-width:90px;
+        }
+        76% {
+          stroke-dashoffset: 216px;
+          stroke:red;
+          fill:2;
+          stroke-width:90px;
+        }
+        100% {
+          stroke-dashoffset: 283px;
+          stroke:red;
+          fill:1;
+          stroke-width:90px;
+        }
+      }
+
+      #notcountdown {
+        visibility:hidden;
+        animation: none;
+      }
 
       
 </style>

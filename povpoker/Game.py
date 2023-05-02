@@ -206,6 +206,9 @@ class Game:
         
     
     def placeBetFold(self, value):
+        if self.round == 4:
+            print("end of round")
+            return "End of round, no bets"
         # get current player
         x = self.currentPlayer
         player = self.players[x]
@@ -349,7 +352,6 @@ class Game:
                         c += 1
 
             # sleep for ui changes on frontend
-            time.sleep(0.6)
             self.currentPlayer = c
             self.currentBet = 0
 
@@ -412,8 +414,6 @@ class Game:
         
         for i in finalPlayers:
             cards = [self.tableCards[0], self.tableCards[1], self.tableCards[2], self.tableCards[3], self.tableCards[4], i.getCard1(), i.getCard2()]
-            print([i.getValue() for i in cards])
-            print([i for i in cards])
             
             if check.isRoyalFlush(cards)[0]:
                 worth = check.isRoyalFlush(cards)[1]
@@ -459,7 +459,6 @@ class Game:
             
         newList = sorted(finalPlayers, key=lambda x:x.getHandWorth(), reverse=True)
         disWinnings = []
-        print([i.getHandWorth() for i in newList])
         
         # Determine who wins what
         for i in newList:

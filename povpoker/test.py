@@ -13,6 +13,7 @@ game.placeBetFold(20)
 
 
 data = game.json()
+print(type(data))
 datas = str(data)
 datas = eval(datas)
 
