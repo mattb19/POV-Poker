@@ -15,28 +15,28 @@ class Game:
         self.deck = deck
         self.pot = pot
         self.currentBet = currentBet
-        self.round = 0
-        self.currentPlayer = None
-        self.tableCards = []
-        self.lastWinners = []
+        self.round = round
+        self.currentPlayer = currentPlayer
+        self.tableCards = tableCards
+        self.lastWinners = lastWinners
         self.playerNames = [i.getUser() for i in self.players]
         self.playerCount = len(self.players)
-        self.playerQueue = []
-        self.active = False
-        self.blinds = []
-        self.buyIn = 1000
-        self.flip = True
-        self.running = False
-        self.abilities = "ON"
-        self.style = "TEXAS HOLD'EM"
+        self.playerQueue = playerQueue
+        self.active = active
+        self.blinds = blinds
+        self.buyIn = buyIn
+        self.flip = flip
+        self.running = running
+        self.abilities = abilities
+        self.style = style
         
-        self.bombPot = False
+        self.bombPot = bombPot
         
-        self.flop1 = Card("None","None",0)
-        self.flop2 = Card("None","None",0)
-        self.flop3 = Card("None","None",0)
-        self.turn = Card("None","None",0)
-        self.river = Card("None","None",0)
+        self.flop1 = flop1
+        self.flop2 = flop2
+        self.flop3 = flop3
+        self.turn = turn
+        self.river = river
         
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
@@ -515,6 +515,9 @@ class Game:
     def getGameID(self):
         return self.gameID
     
+    def getRound(self):
+        return self.round
+    
     def getPlayers(self):
         return self.players
     
@@ -544,6 +547,9 @@ class Game:
     
     def getRiver(self):
         return self.river
+    
+    def getActive(self):
+        return self.active
 
     def setFlop1(self, card):
         self.flop1 = card
@@ -579,7 +585,7 @@ class Game:
         return len(self.players)
     
     def setTableCards(self):
-        self.tableCards = [i.__dict__ for i in self.tableCards]
+        self.tableCards = [i for i in self.tableCards]
 
     def setGameID(self, gameID):
         self.gameID = gameID
@@ -587,11 +593,19 @@ class Game:
     def setPlayers(self, players):
         self.players = players
     
-    def addPlayers(self, name):
+    def addPlayer(self, name):
         if self.active:
-            self.playerQueue.append(Player(name, None, None, self.buyIn, 0))
+            print(self.playerNames)
+            if len(self.players) <= 10 and name not in self.playerNames:
+                self.playerQueue.append(Player(name, None, None, self.buyIn, 0))
+            else:
+                return None
         else:
-            self.players.append(Player(name, None, None, self.buyIn, 0))
+            print(self.playerNames)
+            if len(self.players) <= 10 and name not in self.playerNames:
+                self.players.append(Player(name, None, None, self.buyIn, 0))
+            else:
+                return None
     
     def isActive(self):
         return self.active
@@ -608,11 +622,11 @@ class Game:
     def json(self):
         try:
             game = deepcopy(self)
-            game.setFlop1(game.getFlop1().__dict__)
-            game.setFlop2(game.getFlop2().__dict__)
-            game.setFlop3(game.getFlop3().__dict__)
-            game.setTurn(game.getTurn().__dict__)
-            game.setRiver(game.getRiver().__dict__)
+            game.setFlop1(game.getFlop1())
+            game.setFlop2(game.getFlop2())
+            game.setFlop3(game.getFlop3())
+            game.setTurn(game.getTurn())
+            game.setRiver(game.getRiver())
             game.setTableCards()
             for i in game.players:
                 i.setCard1(str(i.getCard1()))

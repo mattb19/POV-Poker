@@ -29,13 +29,13 @@ player4 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Pl
 player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0)]
 player3 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 player2 = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
-game = Game(0, player, 10, 20)
+game1 = Game(0, player, 10, 20)
 # game2 = Game(2, player2, 10, 20)
 # game3 = Game(3, player3, 10, 20)
 # game4 = Game(4, player4, 10, 20)
 # game5 = Game(5, player4, 10, 20)
-games = [game]
-game.newRound()
+games = [game1]
+game1.newRound()
 # game2.newRound()
 # game3.newRound()
 # game4.newRound()
@@ -46,6 +46,10 @@ game.newRound()
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
 @app.route('/')
 def home():
+    try:
+        s = session["name"]
+    except:
+        return redirect(url_for("login"))
     games = []
     conn = connectDB()
     test = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))
@@ -115,8 +119,6 @@ def create():
         buy = request.form.get("buyIn")
         blinds = request.form.get("blinds")
         name = request.form.get("name")
-        
-        print(name, blinds, buy)
 
         conn = connectDB()
         id = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))+1
@@ -153,23 +155,25 @@ def register():
             id = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))+1
             conn.execute("INSERT INTO User VALUES (?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ?)", (id, registername, registerpassword, None, None, registeremail))
             conn.commit()
-            print("User Added")
             return "SUCCESS"
         return "Username or Email Taken!"
     else:
         return render_template("login.html")
-    
-@app.route('/bet', methods=['GET', 'POST'])
-def bet():
-    if request.method == "POST":
+
+
+@app.route('/join', methods=['GET', 'POST'])
+def join():
+    if request.method ==  "POST":
         conn = connectDB()
-        bet = request.form.get("bet")
+        
+        user = request.form.get("user")
         id = request.form.get("id")
-
-        # MAY BE THE PROBLEM
-        if id==0:
-            game.placeBetFold(bet)
-
+        
+        if id == "buttonTech":
+            return "No."
+        
+        print(user, id)
+        
         game = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (id,)).fetchone())
         game = game.strip('(').strip(')')
         game = game.replace("\\", "")
@@ -177,45 +181,82 @@ def bet():
         game = game[:-1]
         game = game[:-1]
         poker = convertGame(game)
-        re = poker.placeBetFold(bet)
+        e = [i.strip(' ') for i in poker.getPlayerNames()]
+        if user in e:
+            return "SUCCESS"
+        poker.addPlayer(user)
         game = poker.json()
         game = str(game)
         conn.execute("UPDATE Game SET JSON=? WHERE GameID=?", (game, id,))
         conn.commit()
         
+        return 'SUCCESS'
+    else:
+        return "No."
+        
+
+
+@app.route('/bet', methods=['GET', 'POST'])
+def bet():
+    if request.method == "POST":
+        conn = connectDB()
+        bet = request.form.get("bet")
+        id = request.form.get("id")
+        re = "no."
+        
+        print(bet, id)
+        
+        if id == None:
+            return re
         
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
         
+        # MAY BE THE PROBLEM
+        if id=='0':
+            if bet == 'BOMB POT':
+                game1.setBombPot()
+                return "debug"
+            else:
+                bet = int(bet)
+                if bet < 0:
+                    bet = None
+            game1.placeBetFold(bet)
+            return 'debug'
+
+
+
+
+        game = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (id,)).fetchone())
+        game = game.strip('(').strip(')')
+        game = game.replace("\\", "")
+        game = game[1:]
+        game = game[:-1]
+        game = game[:-1]
         
+        poker = convertGame(game)       # convert json to game object
         if bet == 'BOMB POT':
-            game.setBombPot()
-            return "BOMB POT"
-        
-        
-        if bet == 'begin':
-            re =  game.activate()
-            print(re)
-            return re
-        
-        
-        bet = int(bet)
-        if bet < 0:
-            bet = None
-        
-        
-        if re != None:
-            return re
-        
-        
+            poker.setBombPot()
+        elif bet == 'begin':
+            poker.activate()
         else:
-            return redirect("/table")
-    return redirect("/table")
+            bet = int(bet)
+            if bet < 0:
+                bet = None
+            poker.placeBetFold(bet)
+        
+        game = poker.json()
+        game = str(game)
+        conn.execute("UPDATE Game SET JSON=? WHERE GameID=?", (game, id,))
+        conn.commit()
+        return "SUCCESS"
+    
+    return redirect(url_for("home"))
      
 @app.route('/getGame/<int:Number>')
 def getGame(Number):
     if Number == 0:
-        return game.json()
+        return game1.json()
     conn = connectDB()
     name = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (str(Number),)).fetchone())
     name = name.strip('(').strip(')')
@@ -241,7 +282,7 @@ def connectDB():
 @app.route('/table/<int:Number>')
 def table(Number):
     if Number == 0:
-        return render_template('table.html', game=game)
+        return render_template('table.html', game=game1)
     conn = connectDB()
     name = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (str(Number),)).fetchone())
     name = name.strip('(').strip(')')
