@@ -478,16 +478,38 @@
         <div id="flop4" style="visibility=hidden;"></div>
         <div>
             <a class="home" href="/"><img src="../static/home.png" width="75" height="75" style="position:absolute;right:1%;top:1%"></a>
-            <div id="gameID">{{game.getGameID()}}</div>
-            <div id="sessionID" style="position:absolute;right:90%">{{ session.name }}</div>
+            <div id="gameID" style="position:absolute;right:150%">{{game.getGameID()}}</div>
+            <div id="sessionID" style="position:absolute;right:150%">{{ session.name }}</div>
             <div id="round" style="position:absolute;right:150%"></div>
+
+
+            <!-- Before the game starts, include button to start game -->
+            <button class="button-75" id="begin" style="width:400;height:100;text-align:center;font-size:50;margin-top:50%;"><span class="text">START GAME</span></button>
+
+
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script>
                 function update_values() {
                     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
                     $.getJSON($SCRIPT_ROOT+"/getGame/"+document.getElementById("gameID").innerHTML.toString(),
                         function(data) {
+                            console.log(data)
                             try {
+
+                                if (data.active == false) {
+                                    console.log(document.getElementById("gameID").innerHTML)
+                                    document.getElementById("pot").style.visibility="hidden";
+                                    if (data.players.length >= 2) {
+                                        document.getElementById("begin").style.opacity="1.0";
+                                        document.getElementById("begin").disabled="false";
+                                    } else {
+                                        document.getElementById("begin").style.opacity="0.2";
+                                        document.getElementById("begin").disabled="true";
+                                    }
+                                    setTimeout(update_values, 3000);
+                                } else {
+                                    document.getElementById("pot").style.visibility="visible";
+                                }
 
                                 $("#pot").text(data.pot);
 
@@ -780,6 +802,7 @@
                         $.ajax({
                             data : {
                                 bet : $(this).attr('id'),
+                                id : document.getElementById("gameID").innerHTML
                             },
                             type : 'POST',
                             url : '../bet'
@@ -800,7 +823,9 @@
                 });
                 $(document).ready(function() {
                     $('.button-7').on('click', function(event) {
-                        var de = $(this).attr('id');
+                        var de = document.getElementById("gameID").innerHTML
+                        console.log(de)
+                        
                         $.ajax({
                             data : {
                                 bet : $(this).attr('id'),

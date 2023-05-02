@@ -30,49 +30,16 @@ player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Pla
 player3 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 player2 = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 game = Game(0, player, 10, 20)
-game2 = Game(2, player2, 10, 20)
-game3 = Game(3, player3, 10, 20)
-game4 = Game(4, player4, 10, 20)
-game5 = Game(5, player4, 10, 20)
-games = [game, game2, game3, game4, game5]
+# game2 = Game(2, player2, 10, 20)
+# game3 = Game(3, player3, 10, 20)
+# game4 = Game(4, player4, 10, 20)
+# game5 = Game(5, player4, 10, 20)
+games = [game]
 game.newRound()
-game2.newRound()
-game3.newRound()
-game4.newRound()
-game5.newRound()
-
-# game2.placeBetFold(20)
-# game2.placeBetFold(0)
-# game2.placeBetFold(0)
-# game2.placeBetFold(0)
-
-# game3.placeBetFold(20)
-# game3.placeBetFold(20)
-# game3.placeBetFold(20)
-# game3.placeBetFold(0)
-# game3.placeBetFold(0)
-# game3.placeBetFold(0)
-# game3.placeBetFold(0)
-# game3.placeBetFold(0)
-# game3.placeBetFold(0)
-# game3.placeBetFold(0)
-
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(20)
-# game4.placeBetFold(0)
-
-# game.placeBetFold(1000)
-# game.placeBetFold(1000)
-# game.placeBetFold(1000)
-# game.placeBetFold(1000)
-# game.placeBetFold(1000)
+# game2.newRound()
+# game3.newRound()
+# game4.newRound()
+# game5.newRound()
 
 
 
@@ -186,6 +153,7 @@ def bet():
     if request.method == "POST":
         bet = request.form.get("bet")
         id = request.form.get("id")
+        print(bet)
         print(id)
         #print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
@@ -195,10 +163,18 @@ def bet():
             game.setBombPot()
             return "BOMB POT"
         
+        if bet == 'begin':
+            re =  game.activate()
+            print(re)
+            return re
+        
         bet = int(bet)
         if bet < 0:
             bet = None
+            
+        
         re = game.placeBetFold(bet)
+        
         if re != None:
             return re
         else:
@@ -249,7 +225,6 @@ def table(Number):
 
 def convertGame(g):
     data = g
-    print(data)
     datas = eval(data)
     players = [Player(**i) for i in datas["players"]]
     del datas["players"]

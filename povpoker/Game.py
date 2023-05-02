@@ -7,8 +7,8 @@ from copy import deepcopy
 from checkHands import CheckHands
 
 class Game:
-    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=0, tableCards=[], lastWinners=[], 
-                 playerNames=[], playerCount=[],  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
+    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=None, tableCards=[], lastWinners=[], 
+                 playerNames=[], playerCount=0,  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
                  flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0)) -> None:
         self.gameID = gameID
         self.players = players
@@ -16,7 +16,7 @@ class Game:
         self.pot = pot
         self.currentBet = currentBet
         self.round = 0
-        self.currentPlayer = 0
+        self.currentPlayer = None
         self.tableCards = []
         self.lastWinners = []
         self.playerNames = [i.getUser() for i in self.players]
@@ -70,7 +70,6 @@ class Game:
     def newRound(self):
         # generate a new deck
         e = [i.getChipCount() for i in self.players]
-        print(sum(e))
         
         # set all players hand worth to 0
         for i in self.players:
@@ -206,9 +205,11 @@ class Game:
         
     
     def placeBetFold(self, value):
-        if self.round == 4:
-            print("end of round")
-            return "End of round, no bets"
+        if self.round == 4 or self.active == False:
+            print("Error, invalid time to bet")
+            return "Error: Invalid Bet Time"
+
+        
         # get current player
         x = self.currentPlayer
         player = self.players[x]
@@ -574,6 +575,9 @@ class Game:
     def getPlayerCount(self):
         return str(len(self.players)+len(self.playerQueue))+"/10"
     
+    def getPlayerCountInt(self):
+        return len(self.players)
+    
     def setTableCards(self):
         self.tableCards = [i.__dict__ for i in self.tableCards]
 
@@ -583,14 +587,23 @@ class Game:
     def setPlayers(self, players):
         self.players = players
     
-    def addPlayers(self, name, chipCount):
-        self.playerQueue.append(Player(name, None, None, chipCount, len(self.players)+len(self.playerQueue)-1, None))
+    def addPlayers(self, name):
+        if self.active:
+            self.playerQueue.append(Player(name, None, None, self.buyIn, 0))
+        else:
+            self.players.append(Player(name, None, None, self.buyIn, 0))
     
     def isActive(self):
         return self.active
     
     def setBombPot(self):
         self.bombPot = True
+    
+    def activate(self):
+        if len(self.players) >= 2:
+            self.newRound()
+            return "Activated!"
+        return "Error: Not Enough Players."
     
     def json(self):
         try:
