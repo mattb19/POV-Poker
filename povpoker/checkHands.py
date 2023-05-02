@@ -154,6 +154,7 @@ class CheckHands:
 
     def isTwoPair(self, cards):
         cardValues = [i.getValue() for i in cards]
+        cardValues.sort()
         pair1 = 0
         pair2 = 0
         for i in cardValues:
@@ -184,6 +185,7 @@ class CheckHands:
 
     def isPair(self, cards):
         cardValues = [i.getValue() for i in cards]
+        cardValues.sort()
         pairType = 0
         for i in cardValues:
             if cardValues.count(i) == 2:

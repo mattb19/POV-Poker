@@ -14,6 +14,7 @@ import logging
 from werkzeug.security import generate_password_hash, check_password_hash
 
 log = logging.getLogger('werkzeug')
+
 log.setLevel(logging.ERROR)
 from flask_modals import Modal
 from flask_modals import render_template_modal
@@ -42,6 +43,19 @@ game1.newRound()
 # game4.newRound()
 # game5.newRound()
 
+
+
+@app.route('/reset', methods=["POST", "GET"])
+def reset():
+    if request.method == 'POST':
+        if request.form.get("data") != "admin":
+            return "ERROR"
+        conn = connectDB()
+        conn.execute("DELETE FROM Game")
+        conn.commit()
+        return 'SUCCESS'
+    else:
+        return redirect(url_for('home'))
 
 
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
@@ -163,7 +177,6 @@ def register():
     else:
         return render_template("login.html")
 
-
 @app.route('/join', methods=['GET', 'POST'])
 def join():
     if request.method ==  "POST":
@@ -196,8 +209,6 @@ def join():
         return 'SUCCESS'
     else:
         return "No."
-        
-
 
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
@@ -207,53 +218,70 @@ def bet():
         id = request.form.get("id")
         re = "no."
         
+        print(id, bet)
+        
+        ssid = session["name"]
+
+        # Don't allow requests with no game ID to be fulfilled
         if id == None:
             return re
         
-        if bet in ["2blind", "pottt2", "allin"]:
-            return "Ignore"
         
-        # MAY BE THE PROBLEM
-        if id=='0':
-            if bet == 'BOMB POT':
-                game1.setBombPot()
-                return "debug"
-            else:
-                bet = int(bet)
-                if bet < 0:
-                    bet = None
-            game1.placeBetFold(bet)
-            return 'debug'
-
-
-
-
+        # Get json game data from database and convert it to game object to be modified
         game = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (id,)).fetchone())
         game = game.strip('(').strip(')')
         game = game.replace("\\", "")
         game = game[1:]
         game = game[:-1]
         game = game[:-1]
-        
         poker = convertGame(game)       #convert json to game object
-        if time.time()-poker.getTime() > 0.1:       # make 1.5 when not debugging
+        
+        
+        # Handle mucks
+        if bet == "muck":
+            playerNames = poker.getPlayerNames()
+            x = playerNames.index(ssid)
+            poker.muckPlayer(x)
+        
+        
+        # Rate limiting to make sure new round isn't started until 10 seconds has passed
+        if poker.getRound() == 4 and time.time()-poker.getTime() < 10:
+            return 'Error'
+        
+        # Rate limiting to not fold player unless necessary
+        if time.time()-poker.getTime() <= 30 and bet == "timeOut":
+            return "invalid"
+        elif time.time()-poker.getTime() > 30 and bet == "timeOut":
+            bet = -1
+        
+        # Rate limiting to make sure players cant spam bet for eachother
+        if time.time()-poker.getTime() > 0.1:       # make condition > 2.0 when not debugging
             poker.setTime(time.time())
         else:
-            print("You're being rate limited")
             return "You're being rate limited"
-            
+        
+        
+        # Handle various bet values
         if bet == 'BOMB POT':
             poker.setBombPot()
         elif bet == 'begin':
             poker.activate()
         elif bet == 'newRound' and poker.getRound() == 4:
             poker.newRound()
+        elif bet == 'newRound' and poker.getRound() != 4:
+            return "Error"
+        elif bet == 'rTen':
+            poker.setR10()
+            poker.placeBetFold(poker.getBuyIn()*0.01)
+        elif bet == 'muck':
+            bet = None
         else:
             bet = int(bet)
             if bet < 0:
                 bet = None
             poker.placeBetFold(bet)
         
+        # Convert game back to a json string and update it in the database
         game = poker.json()
         game = str(game)
         conn.execute("UPDATE Game SET JSON=? WHERE GameID=?", (game, id,))
@@ -276,9 +304,13 @@ def getGame(Number):
     poker = convertGame(name)
     return poker.json()
 
+
+
 @app.route('/test')
 def test():
     return render_template('test.html')
+
+
 
 def connectDB():
     conn = None

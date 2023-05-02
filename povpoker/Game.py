@@ -8,8 +8,9 @@ from checkHands import CheckHands
 
 class Game:
     def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=None, tableCards=[], lastWinners=[], 
-                 playerNames=[], playerCount=0,  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
-                 flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0), Time=0) -> None:
+                 playerNames=[], playerCount=0,  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", 
+                 style="TEXAS HOLD'EM", bombPot=False, flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), 
+                 turn=Card("None", "None", 0), river=Card("None", "None", 0), Time=0, r10=False, disWinnings=[]) -> None:
         self.gameID = gameID
         self.players = players
         self.deck = deck
@@ -42,6 +43,8 @@ class Game:
         self.bigBlind = bigBlind
         
         self.Time = Time
+        self.r10 = r10
+        self.disWinnings = disWinnings
        
         
     def shuffleDeck(self):
@@ -73,10 +76,24 @@ class Game:
         # generate a new deck
         e = [i.getChipCount() for i in self.players]
         
-        # set all players hand worth to 0
+        # Reset r10 chip
+        self.r10 = False
+        
+        count = 0
+        for i in self.players:
+            count += i.getChipCount()
+            
+        print(count)
+        
+        
+        
+        # set all players hand worth to 0 and muck to false
         for i in self.players:
             i.setHandWorthZero()
+            i.setMuck(False)
+            
         
+        # shuffle the deck
         self.shuffleDeck()
         
         # add any waiting players
@@ -86,8 +103,9 @@ class Game:
         self.round = 0
         self.running = False
         
+        # set any players who ran out of money into spectator mode
         for i in self.players:
-            if i.getChipCount() == 0:
+            if i.getChipCount() <= 0:
                 i.setSpectate(True)
                 i.setAllIn(False)
         
@@ -193,9 +211,8 @@ class Game:
             elif self.players[i].getBlind() == 2 and i == len(self.players)-1:
                 self.currentPlayer = nonFolded.index(False)
         
-        if self.bombPot:
-            # sleep for ui 
-            time.sleep(5)
+        if self.bombPot == "ready":
+            self.bombPot = True
             for i in range(len(self.players)):
                 if self.players[i].getSpectate() == False:
                     if self.players[i].getBlind == 2:
@@ -216,10 +233,35 @@ class Game:
         x = self.currentPlayer
         player = self.players[x]
         # if they fold
+        
+        if self.r10 and value != self.buyIn*.01:
+            player.setFolded()
+            player.setTurn(False)
+            self.players[x] = player
+            self.whoGoesNext()
+            return "Error: Invalid Bet"
+        elif self.r10 and value == self.buyIn*.01:
+            val = self.buyIn*.01
+            if player.getChipCount() < val:
+                player.setFolded()
+                player.setTurn(False)
+                self.players[x] = player
+            else:
+                player.setTurn(False)
+                player.setChipCount(-val)
+                player.setTotalValue(val)
+                self.pot += val
+                player.setCurrentBet(val)
+                
+                
+            self.whoGoesNext()
+            return "Good to go"
+        
+        final = ""
+        
         if value == None: 
             player.setFolded()
             player.setTurn(False)
-            player.setColor("white")
             self.players[x] = player
             final = player.getUser()+" Folds."
         
@@ -249,6 +291,21 @@ class Game:
             self.players[x] = player
             player.setCurrentBet(value-player.getCurrentBet())
             final = player.getUser()+" Bets "+str(value)+"!"
+            
+            
+        elif value-player.getCurrentBet() > player.getChipCount():
+            chipCount = player.getChipCount()
+            player.setTotalValue(chipCount)
+            player.setChipCount(0-(chipCount))
+            player.setTurn(False)
+            player.setColor("#EE4B2B")
+            self.pot += (chipCount)
+            if chipCount >= self.currentBet:
+                self.currentBet = chipCount
+            self.players[x] = player
+            self.players[x].setAllIn(True)
+            player.setCurrentBet(chipCount-player.getCurrentBet())
+            final = player.getUser()+" IS ALL IN! "
         
         # if they go all in
         elif value-player.getCurrentBet() == player.getChipCount():
@@ -310,7 +367,6 @@ class Game:
                     self.flop3 = self.tableCards[2]
                     self.running = True
                     self.round = 1
-                    time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
                             i.setCurrentBetZero()
@@ -318,7 +374,6 @@ class Game:
                     self.turn = self.tableCards[3]
                     self.round += 1
                     self.running = True
-                    time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
                             i.setCurrentBetZero()
@@ -326,7 +381,6 @@ class Game:
                     self.river = self.tableCards[4]
                     self.round += 1
                     self.running = True
-                    time.sleep(5)
                     for i in self.players:
                         if i.getSpectate() == False and i.getCurrentBet() is not None:
                             i.setCurrentBetZero()
@@ -338,10 +392,7 @@ class Game:
     
         # if all players have called, checked or folded
         if True not in turns:
-            if self.bombPot and self.round == 0:
-                self.bombPot = False
-                # sleep for ui
-                time.sleep(5)
+            self.r10 = False
             
             
             l = [i.getBlind() for i in self.players]
@@ -505,12 +556,21 @@ class Game:
         for j in self.players:
             if j.getSpectate() == False:
                 j.setCurrentBetZero()
+                
+        for i in self.players:
+            winners = [i[0] for i in disWinnings]
+            if i in winners:
+                x = winners.index(i)
+                i.setCurrentBet(disWinnings[x][1])
         
         self.currentPlayer = None
                 
         # Distribute winnings
         for i in disWinnings:
             self.players[self.players.index(i[0])].setChipCount(i[1])
+            
+        if self.bombPot == True:
+            self.bombPot == False
 
         
     def getGameID(self):
@@ -530,6 +590,9 @@ class Game:
 
     def getCurrentPlayer(self):
         return self.currentPlayer
+    
+    def getBombPot(self):
+        return self.bombPot
     
     def getPlayerNames(self):
         return self.playerNames
@@ -585,6 +648,9 @@ class Game:
     def setRiver(self, card):
         self.river = card
     
+    def muckPlayer(self, x):
+        self.players[x].setMuck(True)
+    
     def getPlayerCount(self):
         return str(len(self.players)+len(self.playerQueue))+"/10"
     
@@ -599,6 +665,13 @@ class Game:
         
     def setPlayers(self, players):
         self.players = players
+    
+    def setR10(self):
+        if self.currentBet <= self.buyIn * .01:
+            self.currentBet = self.buyIn * .01
+            self.r10 = True
+        else:
+            self.r10 = False
     
     def addPlayer(self, name):
         if self.active:
@@ -618,7 +691,7 @@ class Game:
         return self.active
     
     def setBombPot(self):
-        self.bombPot = True
+        self.bombPot = "ready"
     
     def activate(self):
         if len(self.players) >= 2:

@@ -6,22 +6,21 @@
             </div>
         </div>
         <div>
-            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:5%;animation-delay:0.6s">
-            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:25%;animation-delay:0.4s">
-            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:45%;animation-delay:0.2s">
-            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:65%;animation-delay:0.8s">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:05%";>
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:25%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:45%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:65%;">
             <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:85%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="450px" width='450px' style="z-index:1000;position:absolute;bottom:110%;right:15%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="450px" width='450px' style="z-index:1000;position:absolute;bottom:110%;right:35%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="550px" width='550px' style="z-index:1000;position:absolute;bottom:110%;right:55%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="550px" width='550px' style="z-index:1000;position:absolute;bottom:110%;right:75%;">
+            <img src="../static/bomb.png" class="bomb" id="nobomb" height="350px" width='350px' style="z-index:1000;position:absolute;bottom:110%;right:0%;">
         </div>
 
-        <div class="explosion" id="noexplosion" style="visibility:hidden;z-index:3000;">
-            <img src="../static/white.png" height="10000px" style="right:0%;bottom:0%;position:absolute;box-shadow:none !important">
-            <div style="font-family:'Tahoma', sans-serif;font-size:200px;z-index:5000;font-weight:bold;color:black;position:absolute;right:23%;bottom:45%;">BOMB POT</div>
-        </div>
+        <img id="r10" src="../static/respectableten.png" style="visibility:hidden" height="50%">
+        <img id="muck" src="../static/muckchip.png"  style="visibility:hidden" height="75%">
 
-        <div>
-            <button class="bombPot" style="position:absolute;right:25%;top:50%;visibility:hidden;">Click Me</button>
-        </div>
-        <div class="isBomb" style="visibility:hidden;">no</div>
     </body>
 
 </html>
@@ -29,15 +28,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('.bombPot').on('click', function(event) {
+        $('#bombPot').on('click', function(event) {
             document.getElementsByClassName("isBomb")[0].innerHTML = "yes";
         });
     });
     $(document).ready(function() {
-        $('.bombPot').on('click', function(event) {
+        $('#bombPot').on('click', function(event) {
             $.ajax({
                 data : {
                     bet : "BOMB POT",
+                    id : document.getElementById("gameID").innerHTML
                 },
                 type : 'POST',
                 url : '../bet',
@@ -57,34 +57,39 @@
         });
     });
     function setBombPot() {
-        for (let i=0; i<5; i++) {
-            document.getElementsByClassName("bomb")[i].id = "bomb";
+        for (let i=0; i<10; i++) {
+            document.getElementsByClassName("bomb")[i].style.animation = "bombs 2s ease-in forwards";
+            document.getElementsByClassName("bomb")[i].style.animationDelay = "0."+(i*4).toString()+"s";
         }
-        setTimeout(resetBomb, 4000);
     }
     function resetBomb() {
-        document.getElementsByClassName("explosion")[0].style.visibility = "visible";
-        document.getElementsByClassName("explosion")[0].id = "explosion";
         for (let i=0; i<5; i++) {
-            document.getElementsByClassName("bomb")[i].id = "nobomb";
+            document.getElementsByClassName("bomb")[i].style.animation = "none";
+            document.getElementsByClassName("bomb")[i].style.animationDelay = "0."+(i*4).toString()+"s";
         }
-        setTimeout(resetScreen,5000)
     }
-    function resetScreen() {document.getElementsByClassName("explosion")[0].id = "noexplosion";document.getElementsByClassName("explosion")[0].style.visibility = "hidden";}
+    function activateR10() {
+        console.log("Hello")
+        document.getElementById("r10").style.visibility = "visible";
+        document.getElementById("r10").style.animation = "rSpin 4s ease-in forwards";
+    }
+    function resetR10() {
+        console.log("Hello")
+        document.getElementById("r10").style.visibility = "hidden";
+        document.getElementById("r10").style.animation = "none";
+    }
+    function setMuck() {
+        document.getElementById("muck").style.animation = 'muck 6s ease-in-out forwards';
+        document.getElementById("muck").style.visibility = 'visible'
+        setTimeout(resetMuck, 6500)
+    }
+    function resetMuck() {
+        document.getElementById("muck").style.animation = 'none';
+        document.getElementById("muck").style.visibility = 'hidden'
+    }
 </script>
 
-<script>
-    var countdownNumberEl = document.getElementById('countdown-number');
-    var countdown = 30;
 
-    countdownNumberEl.textContent = countdown;
-
-    setInterval(function() {
-    countdown = --countdown <= 0 ? 30 : countdown;
-
-    countdownNumberEl.textContent = countdown;
-    }, 1000);
-</script>
 
 <style>
     #table {
@@ -172,12 +177,11 @@
         position:absolute;
         right:40%;
         bottom:110%;
-        animation: bombs 2s ease-in;
-        animation-fill-mode: forwards;
     }
     @keyframes bombs {
-        0% {bottom:110%;transform: rotate(180deg)}
-        100% {bottom:0%;transform: rotate(90deg)}
+        0% {bottom:110%;transform:rotate(90deg);visibility:visible;}
+        99.9% {bottom:-70%;transform:rotate(90deg);visibility:visible;}
+        100% {bottom:110%;transform:rotate(90deg);visibility:hidden;}
     }
     #explosion {
         animation: exploded 2s;
@@ -223,7 +227,6 @@
         stroke-width: 1px;
         stroke: white;
         fill: none;
-        animation: countdown 30.5s linear;
       }
       
       @keyframes countdown {
@@ -270,6 +273,31 @@
         visibility:hidden;
         animation: none;
       }
+
+    #r10 {
+        position: absolute;
+        top:10%;
+        left:-50%;
+        z-index:1000000;
+    }
+    @keyframes rSpin {
+        0% {left:-37%;transform:rotate(0deg)}
+        99.9% {left:137%;transform:rotate(720deg)}
+        100% {left:-50%;transform:rotate(720deg)}
+    }
+    #muck {
+        position:absolute;
+        top:10%;
+    }
+    @keyframes muck {
+        0% {transform:scale(0.0);}
+        20% {transform:scale(1.2);}
+        35% {transform:scale(1.0);}
+        50% {transform:scale(1.2);}
+        65% {transform:scale(1.0);}
+        80% {transform:scale(1.2);}
+        100% {transform:scale(0.0);}
+    }
 
       
 </style>

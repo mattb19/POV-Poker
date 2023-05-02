@@ -60,6 +60,7 @@
                 {%endfor%}
             </table>
         </div>
+        <button class="reset" id="buttonTech">RESET</button>
     </body>
 </html>
 
@@ -87,6 +88,31 @@
                     $('#successAlert').text(data.name).show();
                     if (data == "SUCCESS") {
                         window.location = "/table/"+id.toString();
+                    }
+                    $('#errorAlert').hide();
+                    //disableButtons();
+                }
+            });
+            event.preventDefault();
+        });
+        $('.reset').on('click', function(event) {
+            console.log('Hello')
+            $.ajax({
+                data : {
+                    data : "admin"
+                },
+                type : 'POST',
+                url : '/reset'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    $('#successAlert').hide();
+                }
+                else {
+                    $('#successAlert').text(data.name).show();
+                    if (data == "SUCCESS") {
+                        window.location = "/"
                     }
                     $('#errorAlert').hide();
                     //disableButtons();
