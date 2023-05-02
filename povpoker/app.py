@@ -46,8 +46,19 @@ game.newRound()
 theUser = User(1, 'LunarSleep', 'hollowknight@gmail.com', 'juul12345')
 @app.route('/')
 def home():
+    games = []
     conn = connectDB()
-    cursor = int(str(conn.execute("SELECT COUNT(*) FROM User").fetchall()[0]).strip('(').strip(')').strip(','))
+    test = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))
+    for i in range(test):
+        id = str(conn.execute("SELECT GameID FROM Game").fetchall()[i]).strip('(').strip(')').strip(',')
+        game = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (id,)).fetchone())
+        game = game.strip('(').strip(')')
+        game = game.replace("\\", "")
+        game = game[1:]
+        game = game[:-1]
+        game = game[:-1]
+        games.append(convertGame(game))
+    cursor = str(conn.execute("SELECT GameID FROM Game").fetchall()).strip('(').strip(')').strip(',')
     val = cursor
     return render_template_modal('home.html', theUser=theUser, val=val, games=games)
 
@@ -151,32 +162,52 @@ def register():
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
     if request.method == "POST":
+        conn = connectDB()
         bet = request.form.get("bet")
         id = request.form.get("id")
-        print(bet)
-        print(id)
-        #print(bet)
+
+        # MAY BE THE PROBLEM
+        if id==0:
+            game.placeBetFold(bet)
+
+        game = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (id,)).fetchone())
+        game = game.strip('(').strip(')')
+        game = game.replace("\\", "")
+        game = game[1:]
+        game = game[:-1]
+        game = game[:-1]
+        poker = convertGame(game)
+        re = poker.placeBetFold(bet)
+        game = poker.json()
+        game = str(game)
+        conn.execute("UPDATE Game SET JSON=? WHERE GameID=?", (game, id,))
+        conn.commit()
+        
+        
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
+        
         
         if bet == 'BOMB POT':
             game.setBombPot()
             return "BOMB POT"
+        
         
         if bet == 'begin':
             re =  game.activate()
             print(re)
             return re
         
+        
         bet = int(bet)
         if bet < 0:
             bet = None
-            
         
-        re = game.placeBetFold(bet)
         
         if re != None:
             return re
+        
+        
         else:
             return redirect("/table")
     return redirect("/table")
