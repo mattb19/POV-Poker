@@ -29,7 +29,7 @@ player4 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Pl
 player = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0), Player("Jackson",None,None,1000,0), Player("David",None,None,1000,0)]
 player3 = [Player("Matt",None,None,1000,0), Player("Trent",None,None,1000,0), Player("Jack",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
 player2 = [Player("Matt",None,None,1000,0), Player("Jeremy",None,None,1000,0)]
-game = Game(1, player, 10, 20)
+game = Game(0, player, 10, 20)
 game2 = Game(2, player2, 10, 20)
 game3 = Game(3, player3, 10, 20)
 game4 = Game(4, player4, 10, 20)
@@ -84,9 +84,6 @@ def home():
     val = cursor
     return render_template_modal('home.html', theUser=theUser, val=val, games=games)
 
-
-
-
 @app.route('/userProfile/')
 def profileCard():
     return render_template(
@@ -94,15 +91,11 @@ def profileCard():
         theUser = theUser,
     )
 
-
-
 @app.route("/ajaxfile",methods=["POST","GET"])
 def ajaxfile():
     if request.method == 'POST':
         pass
     return jsonify({'htmlresponse': render_template('response.html',theUser=theUser)})
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -138,8 +131,6 @@ def login():
     else:
         return render_template("login.html")
 
-
-
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     if request.method == "POST":
@@ -153,7 +144,7 @@ def create():
         id = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))+1
         
         players = [Player(name,None,None,1000,0)]
-        newGame = Game(1, players, 10, 20)
+        newGame = Game(id, players, 10, 20)
         gameJSON = newGame.json()
         gameJSON = str(gameJSON)
         
@@ -163,9 +154,6 @@ def create():
     else:
         return render_template("create.html")
         
-        
-        
-    
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
@@ -193,15 +181,12 @@ def register():
     else:
         return render_template("login.html")
     
-    
-
-
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
     if request.method == "POST":
-        
-        
         bet = request.form.get("bet")
+        id = request.form.get("id")
+        print(id)
         #print(bet)
         if bet in ["2blind", "pottt2", "allin"]:
             return "Ignore"
@@ -219,26 +204,24 @@ def bet():
         else:
             return redirect("/table")
     return redirect("/table")
-    
-    
-    
-    
+     
 @app.route('/getGame/<int:Number>')
 def getGame(Number):
-    for i in games:
-        if i.getGameID() == Number:
-            return i.json()
-    return "Game Not Found"
-
-
-
+    if Number == 0:
+        return game.json()
+    conn = connectDB()
+    name = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (str(Number),)).fetchone())
+    name = name.strip('(').strip(')')
+    name = name.replace("\\", "")
+    name = name[1:]
+    name = name[:-1]
+    name = name[:-1]
+    poker = convertGame(name)
+    return poker.json()
 
 @app.route('/test')
 def test():
     return render_template('test.html')
-
-
-
 
 def connectDB():
     conn = None
@@ -248,19 +231,27 @@ def connectDB():
         print(e)
     return conn
 
-
-
-
 @app.route('/table/<int:Number>')
 def table(Number):
-    conn = connectDB()
-    name = str(conn.execute("SELECT JSON FROM Game").fetchall())
-    
-    global games
     if Number == 0:
         return render_template('table.html', game=game)
+    conn = connectDB()
+    name = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (str(Number),)).fetchone())
+    name = name.strip('(').strip(')')
+    name = name.replace("\\", "")
+    name = name[1:]
+    name = name[:-1]
+    name = name[:-1]
+    
+    poker = convertGame(name)
         
-    for i in games:
-        if Number == i.getGameID():
-            return render_template('table.html', game=i)
-    return "Game Not Found"
+    return render_template('table.html', game=poker)
+
+def convertGame(g):
+    data = g
+    print(data)
+    datas = eval(data)
+    players = [Player(**i) for i in datas["players"]]
+    del datas["players"]
+    x = Game(**datas, players=players)
+    return x
