@@ -195,6 +195,7 @@ def register():
 @app.route('/bet', methods=['GET', 'POST'])
 def bet():
     if request.method == "POST":
+        conn = connectDB()
         bet = request.form.get("bet")
         id = request.form.get("id")
         print(id)
@@ -209,7 +210,22 @@ def bet():
         bet = int(bet)
         if bet < 0:
             bet = None
-        re = game.placeBetFold(bet)
+
+        # MAY BE THE PROBLEM
+        if id==0:
+            game.placeBetFold(bet)
+
+        game = str(conn.execute("SELECT JSON FROM Game WHERE GameID=?", (id,)).fetchone())
+        game = game.strip('(').strip(')')
+        game = game.replace("\\", "")
+        game = game[1:]
+        game = game[:-1]
+        game = game[:-1]
+        poker = convertGame(game)
+        re = poker.placeBetFold(bet)
+        game = poker.json()
+        conn.execute("UPDATE Game SET JSON=? WHERE GameID=?", (game, id,))
+        conn.commit()
         if re != None:
             return re
         else:
