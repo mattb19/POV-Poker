@@ -1,21 +1,21 @@
 class Player:
     def __init__(self, user, card1, card2, chipCount, blind, currentBet=0, handWorth=0, turn=False, color="white", allIn=False, 
                  currentBetStr="", totalValue=0, spectate=False, muck=False, playerNum=0) -> None:
-        self.user = user
+        self.user = user.strip(' ')
         self.card1 = card1
         self.card2 = card2
         self.chipCount = chipCount
-        self.currentBet = 0
+        self.currentBet = currentBet
         self.blind = blind
-        self.handWorth = 0
-        self.turn = False
-        self.color = "white"
-        self.allIn = False
-        self.currentBetStr = ""
-        self.totalValue = 0
-        self.spectate = False
-        self.muck = False
-        self.playerNum = 0
+        self.handWorth = handWorth
+        self.turn = turn
+        self.color = color
+        self.allIn = allIn
+        self.currentBetStr = currentBetStr
+        self.totalValue = totalValue
+        self.spectate = spectate
+        self.muck = muck
+        self.playerNum = playerNum
         
     
     def getMuck(self):

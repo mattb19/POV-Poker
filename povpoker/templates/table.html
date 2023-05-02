@@ -480,11 +480,10 @@
             <a class="home" href="/"><img src="../static/home.png" width="75" height="75" style="position:absolute;right:1%;top:1%"></a>
             <div id="gameID" style="position:absolute;right:150%">{{game.getGameID()}}</div>
             <div id="sessionID" style="position:absolute;right:150%">{{ session.name }}</div>
-            <div id="round" style="position:absolute;right:150%"></div>
+            <div id="round" style="position:absolute;right:150%">{{game.getRound()}}</div>
 
 
-            <!-- Before the game starts, include button to start game -->
-            <button class="button-75" id="begin" style="width:400;height:100;text-align:center;font-size:50;margin-top:50%;"><span class="text">START GAME</span></button>
+
 
 
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -494,21 +493,23 @@
                     $.getJSON($SCRIPT_ROOT+"/getGame/"+document.getElementById("gameID").innerHTML.toString(),
                         function(data) {
                             console.log(data)
-                            try {
-
+                            //try {
+                                var sessionID = document.getElementById("sessionID").innerHTML
                                 if (data.active == false) {
-                                    console.log(document.getElementById("gameID").innerHTML)
                                     document.getElementById("pot").style.visibility="hidden";
+                                    document.getElementById("curBet").style.visibility="hidden";
                                     if (data.players.length >= 2) {
                                         document.getElementById("begin").style.opacity="1.0";
-                                        document.getElementById("begin").disabled="false";
+                                        document.getElementById("begin").disabled=false;
                                     } else {
                                         document.getElementById("begin").style.opacity="0.2";
-                                        document.getElementById("begin").disabled="true";
+                                        document.getElementById("begin").disabled=true;
                                     }
                                     setTimeout(update_values, 3000);
                                 } else {
+                                    document.getElementById("begin").style.visibility='hidden';
                                     document.getElementById("pot").style.visibility="visible";
+                                    document.getElementById("curBet").style.visibility="visible";
                                 }
 
                                 $("#pot").text(data.pot);
@@ -559,13 +560,13 @@
                                     $(".playerName"+i.toString()).text(data.players[i].user);
                                     document.getElementsByClassName("slot-"+i.toString())[0].style.color=data.players[i].color;
                                     document.getElementsByClassName("slot-"+i.toString())[0].style.fontFamily="'Lucida Console', 'Monaco', monospace;";
-                                    document.getElementsByClassName("slot-"+i.toString())[0].style.fontSize="26px";
+                                    document.getElementsByClassName("slot-"+i.toString())[0].style.fontSize="20px";
 
                                     // Change current player marker
                                     if (data.round < 4) {
                                         if (i == data.currentPlayer) {
                                             document.getElementsByClassName("a")[i].id='a';
-                                            document.getElementsByClassName("spin")[i].style.animation="countdown 10s linear forwards";
+                                            document.getElementsByClassName("spin")[i].style.animation="countdown 5s linear forwards";
                                             document.getElementsByClassName("timer")[i].style.visibility="visible";
 
                                         } else {
@@ -632,8 +633,10 @@
                                     if (data.round == 4) {
                                         if (data.lastWinners.includes(data.playerNames[i])) {
                                             if (data.players[i].muck == false) {
-                                                document.getElementsByClassName("card1")[i].src=data.players[i].card1;
-                                                document.getElementsByClassName("card2")[i].src=data.players[i].card2;
+                                                c1 = data.players[i].card1;
+                                                c2 = data.players[i].card2;
+                                                document.getElementsByClassName("card1")[i].src="../static/PNG-cards-1.3/" + c1._num + "_of_" + c1._suit + ".png";
+                                                document.getElementsByClassName("card2")[i].src="../static/PNG-cards-1.3/" + c2._num + "_of_" + c2._suit + ".png";
                                             } else {
                                                 document.getElementsByClassName("card1")[i].src='../static/PNG-cards-1.3/None_of_None.png';
                                                 document.getElementsByClassName("card2")[i].src='../static/PNG-cards-1.3/None_of_None.png';
@@ -706,18 +709,26 @@
 
 
                                 // Give personal user cards
-                                document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card1;
-                                document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].src=data.players[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].card2;   
-                                document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].width="85";   
-                                document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].height="130";   
-                                document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].width="85";   
-                                document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].height="130";
-                                document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="2%";
-                                document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.right="50%";
-                                document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
-                                document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].style.zIndex="95";
-                                document.getElementsByClassName("card1")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold1";
-                                document.getElementsByClassName("card2")[data.playerNames.indexOf(document.getElementById("sessionID").innerHTML)].id="nofold2";
+                                var p1 = data.players[data.playerNames.indexOf(sessionID)].card1
+                                var p2 = data.players[data.playerNames.indexOf(sessionID)].card2
+
+                                if (data.active == true) {
+                                    document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].src="../static/PNG-cards-1.3/" + p1._num + "_of_" + p1._suit + ".png";
+                                    document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].src="../static/PNG-cards-1.3/" + p2._num + "_of_" + p2._suit + ".png";
+                                } else {
+                                    document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].src="../static/PNG-cards-1.3/None_of_None.png";
+                                    document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].src="../static/PNG-cards-1.3/None_of_None.png";
+                                }
+                                document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].width="85";   
+                                document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].height="130";   
+                                document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].width="85";   
+                                document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].height="130";
+                                document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].style.right="2%";
+                                document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].style.right="50%";
+                                document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].style.zIndex="95";
+                                document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].style.zIndex="95";
+                                document.getElementsByClassName("card1")[data.playerNames.indexOf(sessionID)].id="nofold1";
+                                document.getElementsByClassName("card2")[data.playerNames.indexOf(sessionID)].id="nofold2";
 
 
                                 // Handle current bet
@@ -756,49 +767,50 @@
                                     document.getElementsByClassName("button-7")[0].disabled = true;
                                 }*/
 
-                                // Disable call/check when necessary
-
-
-                                // Disable pot size bet button when pot is larger than players amounts
-                                if (data.pot > data.players[data.currentPlayer].chipCount) {
-                                    document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #ff3131 -10%, #6e260e)";
-                                    document.getElementsByClassName("button-75")[4].disabled = true;
-                                } else {
-                                    document.getElementsByClassName("button-75")[4].disabled = false;
-                                    document.getElementsByClassName("button-75")[4].style.backgroundImage = "linear-gradient(170deg, #000000 -20%, #808080)";
-                                }
-
 
                                 // Set call & bet slider to correct amounts
                                 document.getElementsByClassName("button-7")[0].id = (document.getElementById("rangeValue").innerText);
                                 document.getElementsByClassName("button-75")[0].id = (data.currentBet);
-                                document.getElementsByClassName("betbet")[0].min = (data.currentBet);
-                                document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
-                                document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
+                                //document.getElementsByClassName("betbet")[0].min = (data.currentBet);
+                                //document.getElementsByClassName("betbet")[0].max = (data.players[data.currentPlayer].chipCount);
+                                //document.getElementsByClassName("blind")[0].innerHTML = data.bigBlind
 
 
                                 // Call the function
-                                if (document.getElementById("round").innerHTML == data.round) {
+                                if (document.getElementById("round").innerHTML == data.round && data.active == true && data.round < 4) {
                                     setTimeout(update_values, 200);
-                                } else {
+                                } else if (document.getElementById("round").innerHTML == data.round && data.active == true && data.round == 4) {
+                                    setTimeout(update_values, 10000);
+                                    newRound();
+                                } else if (data.active == true) {
                                     document.getElementById("round").innerHTML = data.round
                                     setTimeout(update_values, 600);
                                 }
-                            } catch (e) {
+                            //} catch (e) {
                                 //location.reload()
                                 console.log("reloading")
-                            }
+                            //}
                         });
                 }
                 update_values();
-
             </script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
             <script>
+                function newRound() {
+                    $.ajax({
+                        data : {
+                            bet : "newRound",
+                            id : document.getElementById("gameID").innerHTML
+                        },
+                        type : 'POST',
+                        url : '../bet'
+                    })
+                }
                 $(document).ready(function() {
                     $('.button-75').on('click', function(event) {
                         var de = $(this).attr('id');
+                        console.log(de)
                         $.ajax({
                             data : {
                                 bet : $(this).attr('id'),
@@ -862,9 +874,11 @@
                         document.getElementsByClassName("betbet")[0].value = document.getElementsByClassName("blind")[0].innerHTML * 2
                     });
                     $('.spin').on('animationend', function(event) {
+                        console.log('Hey!')
                         $.ajax({
                             data : {
-                                bet : -1
+                                bet : -1,
+                                id : document.getElementById("gameID").innerHTML
                             },
                             type : 'POST',
                             url : '../bet'
@@ -913,7 +927,7 @@
 
                 {% for i in range(10) %}
                 <div class="slot-{{i}}" style="opacity:1.0;visibility:hidden;">
-                    <img src="../static/tagg.png" class="a" id="a" width="175" height="120">
+                    <img src="../static/tagg.png" class="a" id="a" width="210" height="120">
                     <a class="grow" id="{{i}}" href=""> <img src="../static/userpp.png" width="92" height="92" style="position:absolute;left:-62px;bottom:14px;border-radius:15px;z-index:90;"></a>
                     <img src="../static/ppborder.png" width="100" height="100" style="position:absolute;left:-66px;bottom:10px;border-radius:15px;">
                     <div class="playerName{{i}}" style="position:absolute;left:45px;bottom:53px;"></div>
@@ -927,7 +941,7 @@
                         <div class="playerBet{{i}}" id="playerBet" style="position:absolute;color:black;font-size:0px;left:30%;bottom:26%;">10000</div>
                     </div>
                     <div id="countdown" class="timer" style="position:absolute;right:88%;bottom:51%;z-index:92;opacity:0.65;">
-                        <svg style="position:absolute;right:-18%;top:10%;">
+                        <svg style="position:absolute;right:-10%;top:10%;">
                           <circle r="45" cx="46" cy="46" class="spin"></circle>
                         </svg>
                     </div>
@@ -943,28 +957,104 @@
             <div class="slider">
                 <input type="range" class="betbet" min="0" max="100" value="10"   oninput="rangeValue.innerText = this.value">
                 <button class="button-7" style="" id=''> <span class="text" style="color:#000000;"><p id="rangeValue">10</p></span></button>
-
-
-                <button class="button-75" id='2blind' val="2blind" 
-                style="position:absolute;right:-19%;bottom:117%;width:85px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080)">
-                <span class="text" style="color:white;">2x Blind</span></button>
-
-
-                <button class="button-75" id='pottt2' val="pot" 
-                style="position:absolute;right:-29%;bottom:117%;width:45px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -50%, #808080)">
-                <span class="text" style="color:white;">Pot</span></button>
-
-
-                <button class="button-75" id='allin' val="allin" 
-                style="position:absolute;right:-42%;bottom:117%;width:60px;height:25px;padding-left:5px;padding-right:5px;font-size:13px;border-radius:7px;background-image:linear-gradient(170deg, #000000 -20%, #808080);">
-                <span class="text" style="color:white;">ALL IN</span></button>
             </div>
 
             <!-- Special Chip Buttons -->
 
         </div>
+        <!-- Before the game starts, include button to start game -->
+        <button class="buttonTech" id="begin" style="width:400;height:100;text-align:center;font-size:50;margin-top:-5%;"><span class="text">START GAME</span></button>
+        <script>
+            $(document).ready(function() {
+                $('.buttonTech').on('click', function(event) {
+                    var de = $(this).attr('id');
+                    console.log(de)
+                    $.ajax({
+                        data : {
+                            bet : 'begin',
+                            id : document.getElementById("gameID").innerHTML
+                        },
+                        type : 'POST',
+                        url : '../bet'
+                    })
+                    .done(function(data) {
+                        if (data.error) {
+                            $('#errorAlert').text(data.error).show();
+                            $('#successAlert').hide();
+                        }
+                        else {
+                            $('#successAlert').text(data.name).show();
+                            $('#errorAlert').hide();
+                            //disableButtons();
+                        }
+                    });
+                    event.preventDefault();
+                });
+            });
+        </script>
         {% extends "pokerTable.html" %} {% block content2 %} {% endblock content2 %}
     </body>
 </html>
+
+<style>
+    .buttonTech{
+
+        
+        align-items: center;
+       
+        background-color:white;
+        border: 0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        color:dark-black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-family: "Tahoma", sans-serif;
+        font-size: 21px;
+        font-weight: bold;
+        height: 54px;
+        justify-content: center;
+        letter-spacing: .4px;
+        line-height: 1;
+        max-width: 100%;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 3px;
+        text-decoration: none;
+        text-transform: uppercase;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      
+    .buttonTech:active {
+        outline: 0;
+    }
+      
+    .buttonTech:hover {
+        outline: 0;
+    }
+      
+    .buttonTech span {
+        transition: all 200ms;
+    }
+      
+    .buttonTech:hover span {
+        transform: scale(.9);
+        opacity: .75;
+    }
+    
+    @media screen and (max-width: 991px) {
+        .buttonTech {
+          font-size: 15px;
+          height: 50px;
+        }
+      
+        .buttonTech span {
+          line-height: 50px;
+        }
+      }
+</style>
 
 

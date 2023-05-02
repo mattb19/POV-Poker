@@ -9,7 +9,7 @@ from checkHands import CheckHands
 class Game:
     def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=None, tableCards=[], lastWinners=[], 
                  playerNames=[], playerCount=0,  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
-                 flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0)) -> None:
+                 flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0), Time=0) -> None:
         self.gameID = gameID
         self.players = players
         self.deck = deck
@@ -19,7 +19,7 @@ class Game:
         self.currentPlayer = currentPlayer
         self.tableCards = tableCards
         self.lastWinners = lastWinners
-        self.playerNames = [i.getUser() for i in self.players]
+        self.playerNames = [i.getUser().strip(' ') for i in self.players]
         self.playerCount = len(self.players)
         self.playerQueue = playerQueue
         self.active = active
@@ -40,6 +40,8 @@ class Game:
         
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
+        
+        self.Time = Time
        
         
     def shuffleDeck(self):
@@ -279,6 +281,8 @@ class Game:
                 continue
             elif i.getCurrentBet() < value and i.getAllIn() == False:
                 i.setTurn(True)
+        
+        print(final)
                 
         # determine who goes next
         self.whoGoesNext()
@@ -415,7 +419,8 @@ class Game:
         
         for i in finalPlayers:
             cards = [self.tableCards[0], self.tableCards[1], self.tableCards[2], self.tableCards[3], self.tableCards[4], i.getCard1(), i.getCard2()]
-            
+            cards = [Card(**i) for i in cards]
+
             if check.isRoyalFlush(cards)[0]:
                 worth = check.isRoyalFlush(cards)[1]
                 i.setHandWorth(worth)
@@ -501,15 +506,11 @@ class Game:
             if j.getSpectate() == False:
                 j.setCurrentBetZero()
         
-        
-        time.sleep(15)
+        self.currentPlayer = None
                 
         # Distribute winnings
         for i in disWinnings:
             self.players[self.players.index(i[0])].setChipCount(i[1])
-            
-        # start a new round    
-        self.newRound()
 
         
     def getGameID(self):
@@ -565,6 +566,12 @@ class Game:
     
     def getStyle(self):
         return self.style
+    
+    def setTime(self, Time):
+        self.Time = Time
+        
+    def getTime(self):
+        return self.Time
         
     def setFlop2(self, card):
         self.flop2 = card
@@ -597,13 +604,13 @@ class Game:
         if self.active:
             print(self.playerNames)
             if len(self.players) <= 10 and name not in self.playerNames:
-                self.playerQueue.append(Player(name, None, None, self.buyIn, 0))
+                self.players.append(Player(name,'../static/PNG-cards-1.3/None_of_None.png', '../static/PNG-cards-1.3/None_of_None.png', self.buyIn, 0, currentBet=None))
             else:
                 return None
         else:
             print(self.playerNames)
             if len(self.players) <= 10 and name not in self.playerNames:
-                self.players.append(Player(name, None, None, self.buyIn, 0))
+                self.players.append(Player(name, '../static/PNG-cards-1.3/None_of_None.png', '../static/PNG-cards-1.3/None_of_None.png', self.buyIn, 0))
             else:
                 return None
     
@@ -629,8 +636,8 @@ class Game:
             game.setRiver(game.getRiver())
             game.setTableCards()
             for i in game.players:
-                i.setCard1(str(i.getCard1()))
-                i.setCard2(str(i.getCard2()))
+                i.setCard1(i.getCard1())
+                i.setCard2(i.getCard2())
             game.setPlayers([i.__dict__ for i in game.getPlayers()])
             return json.loads(json.dumps(game, default=lambda o: o.__dict__))
         except TypeError:

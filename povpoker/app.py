@@ -4,6 +4,7 @@ from forms import *
 from Game import Game
 from Player import Player
 from User import User
+import time
 import sqlite3
 import os
 import cv2
@@ -123,7 +124,9 @@ def create():
         conn = connectDB()
         id = int(str(conn.execute("SELECT COUNT(*) FROM Game").fetchall()[0]).strip('(').strip(')').strip(','))+1
         
-        players = [Player(name,None,None,1000,0)]
+        players = [Player(name,'../static/PNG-cards-1.3/None_of_None.png','../static/PNG-cards-1.3/None_of_None.png',1000,0),
+                   Player("Jeremy",'../static/PNG-cards-1.3/None_of_None.png','../static/PNG-cards-1.3/None_of_None.png',1000,0),
+                   Player("Jackcc",'../static/PNG-cards-1.3/None_of_None.png','../static/PNG-cards-1.3/None_of_None.png',1000,0)]
         newGame = Game(id, players, 10, 20)
         gameJSON = newGame.json()
         gameJSON = str(gameJSON)
@@ -204,8 +207,6 @@ def bet():
         id = request.form.get("id")
         re = "no."
         
-        print(bet, id)
-        
         if id == None:
             return re
         
@@ -234,11 +235,19 @@ def bet():
         game = game[:-1]
         game = game[:-1]
         
-        poker = convertGame(game)       # convert json to game object
+        poker = convertGame(game)       #convert json to game object
+        if time.time()-poker.getTime() > 0.1:       # make 1.5 when not debugging
+            poker.setTime(time.time())
+        else:
+            print("You're being rate limited")
+            return "You're being rate limited"
+            
         if bet == 'BOMB POT':
             poker.setBombPot()
         elif bet == 'begin':
             poker.activate()
+        elif bet == 'newRound' and poker.getRound() == 4:
+            poker.newRound()
         else:
             bet = int(bet)
             if bet < 0:
