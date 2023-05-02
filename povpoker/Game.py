@@ -7,39 +7,41 @@ from copy import deepcopy
 from checkHands import CheckHands
 
 class Game:
-    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=0, tableCards=[], lastWinners=[], 
-                 playerNames=[], playerCount=[],  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
-                 flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0)) -> None:
+    def __init__(self, gameID, players, smallBlind, bigBlind, deck=[], pot=0, currentBet=0, round=0, currentPlayer=None, tableCards=[], lastWinners=[], 
+                 playerNames=[], playerCount=0,  playerQueue=[], active=False, blinds=[], buyIn=1000, flip=True, running=False, abilities="ON", style="TEXAS HOLD'EM", bombPot=False, 
+                 flop1=Card("None", "None", 0), flop2=Card("None", "None", 0), flop3=Card("None", "None", 0), turn=Card("None", "None", 0), river=Card("None", "None", 0), Time=0) -> None:
         self.gameID = gameID
         self.players = players
         self.deck = deck
         self.pot = pot
         self.currentBet = currentBet
-        self.round = 0
-        self.currentPlayer = 0
-        self.tableCards = []
-        self.lastWinners = []
-        self.playerNames = [i.getUser() for i in self.players]
+        self.round = round
+        self.currentPlayer = currentPlayer
+        self.tableCards = tableCards
+        self.lastWinners = lastWinners
+        self.playerNames = [i.getUser().strip(' ') for i in self.players]
         self.playerCount = len(self.players)
-        self.playerQueue = []
-        self.active = False
-        self.blinds = []
-        self.buyIn = 1000
-        self.flip = True
-        self.running = False
-        self.abilities = "ON"
-        self.style = "TEXAS HOLD'EM"
+        self.playerQueue = playerQueue
+        self.active = active
+        self.blinds = blinds
+        self.buyIn = buyIn
+        self.flip = flip
+        self.running = running
+        self.abilities = abilities
+        self.style = style
         
-        self.bombPot = False
+        self.bombPot = bombPot
         
-        self.flop1 = Card("None","None",0)
-        self.flop2 = Card("None","None",0)
-        self.flop3 = Card("None","None",0)
-        self.turn = Card("None","None",0)
-        self.river = Card("None","None",0)
+        self.flop1 = flop1
+        self.flop2 = flop2
+        self.flop3 = flop3
+        self.turn = turn
+        self.river = river
         
         self.smallBlind = smallBlind
         self.bigBlind = bigBlind
+        
+        self.Time = Time
        
         
     def shuffleDeck(self):
@@ -70,7 +72,6 @@ class Game:
     def newRound(self):
         # generate a new deck
         e = [i.getChipCount() for i in self.players]
-        print(sum(e))
         
         # set all players hand worth to 0
         for i in self.players:
@@ -206,9 +207,11 @@ class Game:
         
     
     def placeBetFold(self, value):
-        if self.round == 4:
-            print("end of round")
-            return "End of round, no bets"
+        if self.round == 4 or self.active == False:
+            print("Error, invalid time to bet")
+            return "Error: Invalid Bet Time"
+
+        
         # get current player
         x = self.currentPlayer
         player = self.players[x]
@@ -278,6 +281,8 @@ class Game:
                 continue
             elif i.getCurrentBet() < value and i.getAllIn() == False:
                 i.setTurn(True)
+        
+        print(final)
                 
         # determine who goes next
         self.whoGoesNext()
@@ -414,7 +419,8 @@ class Game:
         
         for i in finalPlayers:
             cards = [self.tableCards[0], self.tableCards[1], self.tableCards[2], self.tableCards[3], self.tableCards[4], i.getCard1(), i.getCard2()]
-            
+            cards = [Card(**i) for i in cards]
+
             if check.isRoyalFlush(cards)[0]:
                 worth = check.isRoyalFlush(cards)[1]
                 i.setHandWorth(worth)
@@ -500,19 +506,18 @@ class Game:
             if j.getSpectate() == False:
                 j.setCurrentBetZero()
         
-        
-        time.sleep(15)
+        self.currentPlayer = None
                 
         # Distribute winnings
         for i in disWinnings:
             self.players[self.players.index(i[0])].setChipCount(i[1])
-            
-        # start a new round    
-        self.newRound()
 
         
     def getGameID(self):
         return self.gameID
+    
+    def getRound(self):
+        return self.round
     
     def getPlayers(self):
         return self.players
@@ -543,6 +548,9 @@ class Game:
     
     def getRiver(self):
         return self.river
+    
+    def getActive(self):
+        return self.active
 
     def setFlop1(self, card):
         self.flop1 = card
@@ -558,6 +566,12 @@ class Game:
     
     def getStyle(self):
         return self.style
+    
+    def setTime(self, Time):
+        self.Time = Time
+        
+    def getTime(self):
+        return self.Time
         
     def setFlop2(self, card):
         self.flop2 = card
@@ -574,8 +588,11 @@ class Game:
     def getPlayerCount(self):
         return str(len(self.players)+len(self.playerQueue))+"/10"
     
+    def getPlayerCountInt(self):
+        return len(self.players)
+    
     def setTableCards(self):
-        self.tableCards = [i.__dict__ for i in self.tableCards]
+        self.tableCards = [i for i in self.tableCards]
 
     def setGameID(self, gameID):
         self.gameID = gameID
@@ -583,8 +600,19 @@ class Game:
     def setPlayers(self, players):
         self.players = players
     
-    def addPlayers(self, name, chipCount):
-        self.playerQueue.append(Player(name, None, None, chipCount, len(self.players)+len(self.playerQueue)-1, None))
+    def addPlayer(self, name):
+        if self.active:
+            print(self.playerNames)
+            if len(self.players) <= 10 and name not in self.playerNames:
+                self.players.append(Player(name,'../static/PNG-cards-1.3/None_of_None.png', '../static/PNG-cards-1.3/None_of_None.png', self.buyIn, 0, currentBet=None))
+            else:
+                return None
+        else:
+            print(self.playerNames)
+            if len(self.players) <= 10 and name not in self.playerNames:
+                self.players.append(Player(name, '../static/PNG-cards-1.3/None_of_None.png', '../static/PNG-cards-1.3/None_of_None.png', self.buyIn, 0))
+            else:
+                return None
     
     def isActive(self):
         return self.active
@@ -592,18 +620,24 @@ class Game:
     def setBombPot(self):
         self.bombPot = True
     
+    def activate(self):
+        if len(self.players) >= 2:
+            self.newRound()
+            return "Activated!"
+        return "Error: Not Enough Players."
+    
     def json(self):
         try:
             game = deepcopy(self)
-            game.setFlop1(game.getFlop1().__dict__)
-            game.setFlop2(game.getFlop2().__dict__)
-            game.setFlop3(game.getFlop3().__dict__)
-            game.setTurn(game.getTurn().__dict__)
-            game.setRiver(game.getRiver().__dict__)
+            game.setFlop1(game.getFlop1())
+            game.setFlop2(game.getFlop2())
+            game.setFlop3(game.getFlop3())
+            game.setTurn(game.getTurn())
+            game.setRiver(game.getRiver())
             game.setTableCards()
             for i in game.players:
-                i.setCard1(str(i.getCard1()))
-                i.setCard2(str(i.getCard2()))
+                i.setCard1(i.getCard1())
+                i.setCard2(i.getCard2())
             game.setPlayers([i.__dict__ for i in game.getPlayers()])
             return json.loads(json.dumps(game, default=lambda o: o.__dict__))
         except TypeError:

@@ -28,7 +28,7 @@
 
 <html>
     <body>
-        <div>{{session.name}}</div>
+        <div id="userID">{{session.name}}</div>
         <a href="#"><img src="../static/yuhfar.png" width="100" class="profile" style="position:fixed;right:1%;top:1%;z-index:100000;border-radius:13px;"><a>
         <a href="/create" style="text-decoration: none"> <button class="create" href="/create" id="buttonTech"style="position:absolute;right:44%;top:5%;"><span class="text" style="color:black;">CREATE GAME</span></button></a>
 
@@ -50,7 +50,7 @@
                         <td> {{game.getBlinds()}} </td>
                         <td> {{game.getStyle()}} </td>
                         <td>
-                            <a  href="/table/{{game.getGameID()}}" style="text-decoration: none">
+                            <a class="game" id={{game.getGameID()}} style="text-decoration: none">
                             <button class="game" id="buttonTech" style="font-size:15px;padding:20px;min-width:0%;height:20px;margin:auto;display:block;">
                                 <span class="text" style="color:black;">JOIN</span>
                             </button>
@@ -61,10 +61,42 @@
             </table>
         </div>
     </body>
-    <script>
-
-    </script>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.game').on('click', function(event) {
+            console.log('Hello')
+            var id = $(this).attr('id');
+            console.log(id)
+            $.ajax({
+                data : {
+                    user : document.getElementById("userID").innerHTML,
+                    id : id
+                },
+                type : 'POST',
+                url : '/join'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    $('#successAlert').hide();
+                }
+                else {
+                    $('#successAlert').text(data.name).show();
+                    if (data == "SUCCESS") {
+                        window.location = "/table/"+id.toString();
+                    }
+                    $('#errorAlert').hide();
+                    //disableButtons();
+                }
+            });
+            event.preventDefault();
+        });
+    });
+</script>
+
 
 <style>
     body {

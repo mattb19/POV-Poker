@@ -1,9 +1,8 @@
 class Card:
-    def __init__(self, suit, num, value) -> None:
-        self._suit = suit
-        self._num = str(num)
-        self._value = value
-        self._id = [num, suit]
+    def __init__(self, _suit, _num, _value) -> None:
+        self._suit = _suit
+        self._num = str(_num)
+        self._value = _value
         
     def getSuit(self):
         return self._suit
@@ -15,7 +14,7 @@ class Card:
         return self._value
     
     def getId(self):
-        return self._id
+        return [self._num, self._suit]
     
     def __str__(self) -> str:
         '''gfgg'''
