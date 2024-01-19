@@ -26,6 +26,8 @@ class Player:
     
     def getHandWorth(self):
         return self.handWorth
+
+    
     
     def setHandWorth(self,Worth):
         self.handWorth = Worth

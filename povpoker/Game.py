@@ -602,13 +602,11 @@ class Game:
     
     def addPlayer(self, name):
         if self.active:
-            print(self.playerNames)
             if len(self.players) <= 10 and name not in self.playerNames:
                 self.players.append(Player(name,'../static/PNG-cards-1.3/None_of_None.png', '../static/PNG-cards-1.3/None_of_None.png', self.buyIn, 0, currentBet=None))
             else:
                 return None
         else:
-            print(self.playerNames)
             if len(self.players) <= 10 and name not in self.playerNames:
                 self.players.append(Player(name, '../static/PNG-cards-1.3/None_of_None.png', '../static/PNG-cards-1.3/None_of_None.png', self.buyIn, 0))
             else:
